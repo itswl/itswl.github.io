@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="5.1 Token1.Token概述以下是网站登录和使用API登录的区别   与网站登录不同的是，网站登录将登录信息写入cookie存储在浏览器，而API只负责生成token发送给客户端，而客户端怎么存储有自己决定。  Token具有有效期 Token可以标示用户身份，如存储用户id  2.获取Token令牌密码校验–app.models/user.py 123456789101112131415">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户">
+<meta property="og:url" content="http://imwl.ml/flask-api/Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="5.1 Token1.Token概述以下是网站登录和使用API登录的区别   与网站登录不同的是，网站登录将登录信息写入cookie存储在浏览器，而API只负责生成token发送给客户端，而客户端怎么存储有自己决定。  Token具有有效期 Token可以标示用户身份，如存储用户id  2.获取Token令牌密码校验–app.models/user.py 123456789101112131415">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/14597179-16de41d674064a75?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/14597179-0682ece851c33e40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/14597179-bd0bcffaff1f7451.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/14597179-258ed95eac5b0760.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/14597179-a2e70aff0db906a6?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/14597179-3cd26baf973aba35?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2020-04-01T09:23:43.682Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户">
+<meta name="twitter:description" content="5.1 Token1.Token概述以下是网站登录和使用API登录的区别   与网站登录不同的是，网站登录将登录信息写入cookie存储在浏览器，而API只负责生成token发送给客户端，而客户端怎么存储有自己决定。  Token具有有效期 Token可以标示用户身份，如存储用户id  2.获取Token令牌密码校验–app.models/user.py 123456789101112131415">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/14597179-16de41d674064a75?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/flask-api/Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户/">
+
+
+
+
+
+  <title>Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/flask-api/Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-18T18:36:16+08:00">
+                2018-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flask-api/" itemprop="url" rel="index">
+                    <span itemprop="name">flask-api</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="5-1-Token"><a href="#5-1-Token" class="headerlink" title="5.1 Token"></a>5.1 Token</h1><h3 id="1-Token概述"><a href="#1-Token概述" class="headerlink" title="1.Token概述"></a>1.Token概述</h3><p>以下是网站登录和使用API登录的区别</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/14597179-16de41d674064a75?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<p>与网站登录不同的是，网站登录将登录信息写入cookie存储在浏览器，而API只负责生成token发送给客户端，而客户端怎么存储有自己决定。</p>
+<ul>
+<li>Token具有有效期</li>
+<li>Token可以标示用户身份，如存储用户id</li>
+</ul>
+<h3 id="2-获取Token令牌"><a href="#2-获取Token令牌" class="headerlink" title="2.获取Token令牌"></a>2.获取Token令牌</h3><p>密码校验–app.models/user.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">from sqlalchemy import inspect, Column, Integer, String, SmallInteger, orm</span><br><span class="line">from werkzeug.security import generate_password_hash, check_password_hash</span><br><span class="line"></span><br><span class="line">from app.libs.erro_code import NotFound, AuthFailed</span><br><span class="line">from app.models.base import Base , db #, MixinJSONSerializer</span><br><span class="line">import datetime</span><br><span class="line"></span><br><span class="line">class User(Base):</span><br><span class="line">    id = Column(Integer, primary_key=True)</span><br><span class="line">    email = Column(String(24), unique=True, nullable=False)</span><br><span class="line">    nickname = Column(String(24), unique=True)</span><br><span class="line">    auth = Column(SmallInteger, default=1)   # 做层级的标志</span><br><span class="line">    _password = Column(&apos;password&apos;, String(100))</span><br><span class="line"></span><br><span class="line">    def keys(self):</span><br><span class="line">        return [&apos;id&apos;, &apos;email&apos;, &apos;nickname&apos;, &apos;auth&apos;]</span><br><span class="line"></span><br><span class="line">    @property               </span><br><span class="line">    def password(self):</span><br><span class="line">        return self._password   #  对密码的处理</span><br><span class="line"></span><br><span class="line">    @password.setter</span><br><span class="line">    def password(self, raw):</span><br><span class="line">        self._password = generate_password_hash(raw)    #  对密码的处理</span><br><span class="line"></span><br><span class="line">    @staticmethod</span><br><span class="line">    def register_by_email(nickname, account, secret):</span><br><span class="line">        with db.auto_commit():</span><br><span class="line">            user = User()</span><br><span class="line">            user.nickname = nickname</span><br><span class="line">            user.email = account</span><br><span class="line">            user.password = secret</span><br><span class="line">            db.session.add(user)</span><br><span class="line"></span><br><span class="line">    @staticmethod</span><br><span class="line">    def verify(email, password):</span><br><span class="line">        user = User.query.filter_by(email=email).first_or_404()   # 查询出当前用户</span><br><span class="line">        if not user:</span><br><span class="line">            raise NotFound(msg = &apos;user not found...&apos;)</span><br><span class="line">        if not user.check_password(password):  # 检验密码</span><br><span class="line">            raise AuthFailed()   #抛出异常</span><br><span class="line">        return &#123;&apos;uid&apos;: user.id&#125;  #成功，返回uid</span><br><span class="line"></span><br><span class="line">    def check_password(self, raw):   # 密码检验</span><br><span class="line">        if not self._password:</span><br><span class="line">            return False</span><br><span class="line">        return check_password_hash(self._password, raw)</span><br></pre></td></tr></table></figure>
+<p>返回token的试图函数，这里稍微破坏一下REST的规则，由于登录操作密码安全性较高，使用GET的话会泄漏<br>app\api\v1\token.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">from app.libs.redprint import Redprint</span><br><span class="line"></span><br><span class="line">from flask import current_app</span><br><span class="line">from app.libs.enums import ClientTypeEnum</span><br><span class="line">from app.models.user import User</span><br><span class="line">from app.validators.forms import ClientForm</span><br><span class="line">from itsdangerous import TimedJSONWebSignatureSerializer as Serializer</span><br><span class="line"></span><br><span class="line">from flask import jsonify</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">api = Redprint(&apos;token&apos;) # 实例化一个Redprint</span><br><span class="line"></span><br><span class="line">@api.route(&apos;&apos;, methods=[&apos;POST&apos;])  # 路由注册</span><br><span class="line"># 返回token的试图函数，这里稍微破坏一下REST的规则，由于登录操作密码安全性较高，使用GET的话会泄漏</span><br><span class="line">def get_token():</span><br><span class="line">    form = ClientForm().validate_for_api()   # 同注册过程，不同client 区分</span><br><span class="line">    promise = &#123;</span><br><span class="line">        ClientTypeEnum.USER_EMAIL: User.verify,  #验证 # 在 user中编写 verify</span><br><span class="line">        # ClientTypeEnum.USER_MINA: __register_user_by_MINA </span><br><span class="line">    &#125;</span><br><span class="line">    # 拿到用户信息</span><br><span class="line">    identity = promise[form.type.data](</span><br><span class="line">        form.account.data,</span><br><span class="line">        form.secret.data</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    # 调用函数生成token</span><br><span class="line">    expiration = current_app.config[&apos;TOKEN_EXPIRATION&apos;]  #过期时间</span><br><span class="line">    token = generator_auth_token(identity[&apos;uid&apos;],</span><br><span class="line">                                form.type.data,</span><br><span class="line">                                None,</span><br><span class="line">                                expiration=expiration)</span><br><span class="line">    t = &#123;</span><br><span class="line">            &apos;token&apos;: token.decode(&apos;utf-8&apos;)  # 因为是byte</span><br><span class="line">        &#125;</span><br><span class="line">    return jsonify(t), 201  # 返回 json 字典</span><br><span class="line"></span><br><span class="line">def generator_auth_token(uid, ac_type, scope=None,expiration=7200):</span><br><span class="line">    &quot;&quot;&quot;生成令牌  ，拿到uid,client类型，权限作用域，过期时间&quot;&quot;&quot;</span><br><span class="line">    s = Serializer(current_app.config[&apos;SECRET_KEY&apos;],expires_in=expiration)  # expires_in 生成令牌的有效期</span><br><span class="line">    return s.dumps(&#123;</span><br><span class="line">                    &apos;uid&apos;: uid,</span><br><span class="line">                    &apos;type&apos;: ac_type.value</span><br><span class="line">                &#125;)  # 将想写入的信息以字典形式写入令牌</span><br></pre></td></tr></table></figure></p>
+<p>app.setting.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">TOKEN_EXPIRATION = 30 * 24 * 3600</span><br></pre></td></tr></table></figure>
+<p>app\libs\erro_code.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">from app.libs.erro import APIException</span><br><span class="line"></span><br><span class="line">class ClientTypeErro(APIException):</span><br><span class="line">    code = 400</span><br><span class="line">    msg = &apos;client is invalid&apos;</span><br><span class="line">    erro_code = 1006</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ParameterException(APIException):</span><br><span class="line">    code = 400</span><br><span class="line">    msg = &apos;invalid parameter&apos;</span><br><span class="line">    erro_code = 1000</span><br><span class="line"></span><br><span class="line"># 将成功返回也当作一中 APIException，来优化代码</span><br><span class="line">class Success(APIException):</span><br><span class="line">    code = 201</span><br><span class="line">    msg = &apos;ok&apos;</span><br><span class="line">    erro_code = 0</span><br><span class="line"></span><br><span class="line">class ServerError(APIException):</span><br><span class="line">    code = 500</span><br><span class="line">    msg  = &apos;sorry,we made a mistaake&apos;</span><br><span class="line">    erro_code = 999</span><br><span class="line"></span><br><span class="line">class NotFound(APIException):</span><br><span class="line">    code = 404</span><br><span class="line">    msg = &apos;the resource are not found O__O...&apos;</span><br><span class="line">    error_code = 1001</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class AuthFailed(APIException):</span><br><span class="line">    code = 401</span><br><span class="line">    error_code = 1005</span><br><span class="line">    msg = &apos;authorization failed&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Forbidden(APIException):</span><br><span class="line">    code = 403</span><br><span class="line">    error_code = 1004</span><br><span class="line">    msg = &apos;forbidden, not in scope&apos;</span><br></pre></td></tr></table></figure></p>
+<p>注册到Blueprint<br>app\api\v1__init__.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from flask import Blueprint</span><br><span class="line">from app.api.v1 import user, book ,client ,token</span><br><span class="line"></span><br><span class="line"> #  创建一个Bluerint,把Redprint注册到Blueprint上，并传入Redprint一个前缀&apos;/book</span><br><span class="line">def create_blueprint_v1():</span><br><span class="line">    bp_v1 = Blueprint(&apos;v1&apos;, __name__) </span><br><span class="line"></span><br><span class="line">    user.api.register(bp_v1)  # , url_prefix=&apos;/uesr&apos;)</span><br><span class="line">    book.api.register(bp_v1)  # ,url_prefix=&apos;/book&apos;)</span><br><span class="line">    client.api.register(bp_v1)</span><br><span class="line">    token.api.register(bp_v1)</span><br><span class="line">    return bp_v1</span><br></pre></td></tr></table></figure>
+<h3 id="3-Token的用处"><a href="#3-Token的用处" class="headerlink" title="3.Token的用处"></a>3.Token的用处</h3><p><img src="https://upload-images.jianshu.io/upload_images/14597179-0682ece851c33e40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功拿到token"></p>
+<p>我们不可能让任何一个用户都来访问我们获取用户资料的接口，必须对这个加以控制，也就是说只有确定了身份的用户可以访问我们的接口。</p>
+<p>如何对这个接口做保护呢？</p>
+<p>当用户访问问的接口的时候，我们需要获取他传来的token并进行解析验证，只有token是合法的且没有过期，我们才允许访问。</p>
+<p>由于每个需要验证token的试图函数都需要上面的业务逻辑，所以我们可以编写一个装饰器，以面向切面的方式统一处理，编写一个函数验证token，如果验证通过，我们就继续执行试图函数的方法，如果不通过，我们就返回一个自定义异常。</p>
+<p>app.libs/token_auth.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from flask_httpauth import HTTPBasicAuth</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">auth = HTTPBasicAuth()</span><br><span class="line"></span><br><span class="line">@auth.verify_password</span><br><span class="line">def verify_password(account, password):</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+<p>app/api/v1/user.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from app.libs.redprint import Redprint</span><br><span class="line">from app.libs.token_auth import auth</span><br><span class="line"></span><br><span class="line">api = Redprint(&apos;user&apos;)</span><br><span class="line">#@api.route(&apos;/get&apos;)  URL中不应该包含动词</span><br><span class="line">@api.route(&apos;&apos;,methods = [&apos;GET&apos;])</span><br><span class="line">@auth.login_required</span><br><span class="line">def get_user():</span><br><span class="line">    return &apos;get_user&apos;</span><br></pre></td></tr></table></figure></p>
+<h1 id="5-2-HTTPBasicAuth"><a href="#5-2-HTTPBasicAuth" class="headerlink" title="5.2 HTTPBasicAuth"></a>5.2 HTTPBasicAuth</h1><h3 id="1-HTTPBasicAuth基本原理"><a href="#1-HTTPBasicAuth基本原理" class="headerlink" title="1.HTTPBasicAuth基本原理"></a>1.HTTPBasicAuth基本原理</h3><p>除了自定义发送账号和密码之外，HTTP这种协议本身就有多种规范，来允许我们来传递账号和密码。其中一种就是HTTPBasic</p>
+<p>HTTPBasic：需要在HTTP请求的头部设置一个固定的键值对key=Authorization,value=basic base64(account:psd)<br><img src="https://upload-images.jianshu.io/upload_images/14597179-bd0bcffaff1f7451.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="https://upload-images.jianshu.io/upload_images/14597179-258ed95eac5b0760.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="2-以BasicAuth方式来发送token"><a href="#2-以BasicAuth方式来发送token" class="headerlink" title="2.以BasicAuth方式来发送token"></a>2.以BasicAuth方式来发送token</h3><p>我们可以将token作为上面所说的账号account，而密码psd传递空值</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/14597179-a2e70aff0db906a6?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<p><img src="http://upload-images.jianshu.io/upload_images/14597179-3cd26baf973aba35?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"> </p>
+<h1 id="5-3-Token的发送与验证"><a href="#5-3-Token的发送与验证" class="headerlink" title="5.3 Token的发送与验证"></a>5.3 Token的发送与验证</h1><h3 id="1-验证token"><a href="#1-验证token" class="headerlink" title="1.验证token"></a>1.验证token</h3><p>app\libs\token_auth.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># 编写一个验证token的装饰器</span><br><span class="line"></span><br><span class="line">from flask_httpauth import HTTPBasicAuth</span><br><span class="line"></span><br><span class="line">from flask import current_app, g</span><br><span class="line">from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, \</span><br><span class="line">          SignatureExpired</span><br><span class="line"></span><br><span class="line">from collections import namedtuple</span><br><span class="line"></span><br><span class="line">from app.libs.erro_code import AuthFailed</span><br><span class="line"></span><br><span class="line">auth = HTTPBasicAuth()</span><br><span class="line"></span><br><span class="line">User = namedtuple(&apos;User&apos;, [&apos;uid&apos;, &apos;ac_type&apos;, &apos;scope&apos;])</span><br><span class="line"></span><br><span class="line"># @auth.verify_password</span><br><span class="line"># def verify_password(account, password):</span><br><span class="line"></span><br><span class="line">#   # 需要在HTTP请求的头部设置一个固定的键值对</span><br><span class="line">#   # key=Authorization,value=basic base64(account:psd)</span><br><span class="line">#   #    imwl@live.com:12345678   编码后 aW13bEBsaXZlLmNvbToxMjM0NTY3OA==</span><br><span class="line">#   #  key=Authorization,value=basic aW13bEBsaXZlLmNvbToxMjM0NTY3OA==</span><br><span class="line">#     return True</span><br><span class="line"></span><br><span class="line">@auth.verify_password</span><br><span class="line">def verify_password(token, password):</span><br><span class="line">    user_info =  verify_auth_token(token) # token 赋值给 user_info</span><br><span class="line">    if not user_info:</span><br><span class="line">        return False</span><br><span class="line">    else:</span><br><span class="line">        g.user = user_info  # g 变量 ,代理模式</span><br><span class="line">        return True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def verify_auth_token(token):</span><br><span class="line">    s = Serializer(current_app.config[&apos;SECRET_KEY&apos;])</span><br><span class="line">    try:</span><br><span class="line">        data = s.loads(token)   # 解密 token</span><br><span class="line">    # token不合法抛出的异常</span><br><span class="line">    except BadSignature:</span><br><span class="line">        raise AuthFailed(msg=&apos;token is valid&apos;, erro_code=1002)</span><br><span class="line">    # token过期抛出的异常</span><br><span class="line">    except SignatureExpired:</span><br><span class="line">        raise AuthFailed(msg=&apos;token is expired&apos;, erro_code=1003)</span><br><span class="line"></span><br><span class="line">    uid = data[&apos;uid&apos;]</span><br><span class="line">    ac_type = data[&apos;type&apos;]   # 生成令牌的时候写入了 uid ac_type</span><br><span class="line"></span><br><span class="line">    return User(uid, ac_type, &apos;&apos;)   # 定义对象式 接口返回回去 ,scope 先返回为空字符串</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-视图函数的编写"><a href="#2-视图函数的编写" class="headerlink" title="2.视图函数的编写"></a>2.视图函数的编写</h3><p>app\api\v1\user.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from app.libs.redprint import Redprint</span><br><span class="line">from app.libs.token_auth import auth</span><br><span class="line">from app.models.user import User</span><br><span class="line">from app.models.base import db</span><br><span class="line">from flask import jsonify</span><br><span class="line"></span><br><span class="line">api = Redprint(&apos;user&apos;)</span><br><span class="line">#@api.route(&apos;/get&apos;)  URL中不应该包含动词</span><br><span class="line">@api.route(&apos;/&lt;int:uid&gt;&apos;, methods = [&apos;GET&apos;])  # 获取到用户的uid</span><br><span class="line">@auth.login_required</span><br><span class="line">def get_user(uid):   # 接收 uid</span><br><span class="line">    user = User.query.get_or_404 (uid) # 获取到用户，用get_or_404简化判断用户是否存在</span><br><span class="line">                                # 因为get_or_404 抛出的不是APIException,所以要重写</span><br><span class="line">                                # query 属性下的方法 </span><br><span class="line">    r = &#123;</span><br><span class="line">        &apos;nickname&apos;:user.nickname,</span><br><span class="line">        &apos;email&apos;:user.email,</span><br><span class="line">        &apos;password&apos;:user.password</span><br><span class="line">    &#125;         #  追求更好的写法</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-重写后的get-or-404-抛出自定义异常"><a href="#3-重写后的get-or-404-抛出自定义异常" class="headerlink" title="3.重写后的get_or_404,抛出自定义异常"></a>3.重写后的get_or_404,抛出自定义异常</h3><p>app\models\base.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">from datetime import datetime</span><br><span class="line"></span><br><span class="line">from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery</span><br><span class="line">from sqlalchemy import Column, Integer, SmallInteger</span><br><span class="line">from contextlib import contextmanager</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class SQLAlchemy(_SQLAlchemy):</span><br><span class="line">    @contextmanager</span><br><span class="line">    def auto_commit(self):</span><br><span class="line">        try:</span><br><span class="line">            yield</span><br><span class="line">            self.session.commit()</span><br><span class="line">        except Exception as e:</span><br><span class="line">            db.session.rollback()</span><br><span class="line">            raise e</span><br><span class="line"></span><br><span class="line">from app.libs.erro_code import NotFound</span><br><span class="line">class Query(BaseQuery):</span><br><span class="line">    def filter_by(self, **kwargs):</span><br><span class="line">        if &apos;status&apos; not in kwargs.keys():</span><br><span class="line">            kwargs[&apos;status&apos;] = 1</span><br><span class="line">        return super(Query, self).filter_by(**kwargs)</span><br><span class="line"></span><br><span class="line">    #  仿照源码改写get_or_404，覆盖原来的 get_or_404]</span><br><span class="line"></span><br><span class="line">    def get_or_404(self, ident):</span><br><span class="line">        &quot;&quot;&quot;Like :meth:`get` but aborts with 404 if not found instead of returning ``None``.&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        rv = self.get(ident)</span><br><span class="line">        if rv is None:</span><br><span class="line">            raise NotFound()</span><br><span class="line">        return rv</span><br><span class="line"></span><br><span class="line">    def first_or_404(self):</span><br><span class="line"></span><br><span class="line">        rv = self.first()</span><br><span class="line">        if rv is None:</span><br><span class="line">            raise NotFound()</span><br><span class="line">        return rv</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">db = SQLAlchemy(query_class=Query)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Base(db.Model):</span><br><span class="line">    __abstract__ = True</span><br><span class="line">    create_time = Column(Integer)</span><br><span class="line">    status = Column(SmallInteger, default=1)</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.create_time = int(datetime.now().timestamp())</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def create_datetime(self):</span><br><span class="line">        if self.create_time:</span><br><span class="line">            return datetime.fromtimestamp(self.create_time)</span><br><span class="line">        else:</span><br><span class="line">            return None</span><br><span class="line"></span><br><span class="line">    def set_attrs(self, attrs_dict):</span><br><span class="line">        for key, value in attrs_dict.items():</span><br><span class="line">            if hasattr(self, key) and key != &apos;id&apos;:</span><br><span class="line">                setattr(self, key, value)</span><br><span class="line"></span><br><span class="line">    def delete(self):</span><br><span class="line">        self.status = 0</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-获取令牌信息"><a href="#4-获取令牌信息" class="headerlink" title="4.获取令牌信息"></a>4.获取令牌信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@api.route(&apos;/secret&apos;, methods=[&apos;POST&apos;])</span><br><span class="line">def get_token_info():</span><br><span class="line">&quot;&quot;&quot;获取令牌信息&quot;&quot;&quot;</span><br><span class="line">    form = TokenForm().validate_for_api()</span><br><span class="line">    s = Serializer(current_app.config[&apos;SECRET_KEY&apos;])</span><br><span class="line">    try:</span><br><span class="line">        data = s.loads(form.token.data, return_header=True)</span><br><span class="line">    except SignatureExpired:</span><br><span class="line">        raise AuthFailed(msg=&apos;token is expired&apos;, error_code=1003)</span><br><span class="line">    except BadSignature:</span><br><span class="line">        raise AuthFailed(msg=&apos;token is invalid&apos;, error_code=1002)</span><br><span class="line"></span><br><span class="line">    r = &#123;</span><br><span class="line">        &apos;scope&apos;: data[0][&apos;scope&apos;],</span><br><span class="line">        &apos;create_at&apos;: data[1][&apos;iat&apos;],</span><br><span class="line">        &apos;expire_in&apos;: data[1][&apos;exp&apos;],</span><br><span class="line">        &apos;uid&apos;: data[0][&apos;uid&apos;]</span><br><span class="line">    &#125;</span><br><span class="line">    return jsonify(r)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/flask-api/Flask构建可扩展的RESTful-API-6--模型对象的序列化/" rel="next" title="Flask构建可扩展的RESTful-API-6--模型对象的序列化">
+                <i class="fa fa-chevron-left"></i> Flask构建可扩展的RESTful-API-6--模型对象的序列化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/flask-api/Flask构建可扩展的RESTful-API-4--理解WTForms并灵活改造她/" rel="prev" title="Flask构建可扩展的RESTful-API-4--理解WTForms并灵活改造她">
+                Flask构建可扩展的RESTful-API-4--理解WTForms并灵活改造她 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-Token"><span class="nav-number">1.</span> <span class="nav-text">5.1 Token</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Token概述"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.Token概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-获取Token令牌"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.获取Token令牌</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Token的用处"><span class="nav-number">1.0.3.</span> <span class="nav-text">3.Token的用处</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#5-2-HTTPBasicAuth"><span class="nav-number">2.</span> <span class="nav-text">5.2 HTTPBasicAuth</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HTTPBasicAuth基本原理"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.HTTPBasicAuth基本原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-以BasicAuth方式来发送token"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.以BasicAuth方式来发送token</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-3-Token的发送与验证"><span class="nav-number">3.</span> <span class="nav-text">5.3 Token的发送与验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-验证token"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.验证token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-视图函数的编写"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.视图函数的编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-重写后的get-or-404-抛出自定义异常"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.重写后的get_or_404,抛出自定义异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-获取令牌信息"><span class="nav-number">3.0.4.</span> <span class="nav-text">4.获取令牌信息</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

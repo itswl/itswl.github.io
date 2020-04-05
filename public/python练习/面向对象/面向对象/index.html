@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="待解决dataclass + __solts__的问题  __solts__ 使用slots一个不好的地方就是我们不能再给实例添加新的属性了，只能使用在 __slots__ 中定义的那些属性名 使用__solts__,python实例通过一个很小的固定大小的数组来构建，而不是为每个实例定义一个字典，这跟元组或列表很类似.Python的很多特性都依赖于普通的基于字典的实现。另外，定义了slots后的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象">
+<meta property="og:url" content="http://imwl.ml/python练习/面向对象/面向对象/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="待解决dataclass + __solts__的问题  __solts__ 使用slots一个不好的地方就是我们不能再给实例添加新的属性了，只能使用在 __slots__ 中定义的那些属性名 使用__solts__,python实例通过一个很小的固定大小的数组来构建，而不是为每个实例定义一个字典，这跟元组或列表很类似.Python的很多特性都依赖于普通的基于字典的实现。另外，定义了slots后的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-01T09:23:43.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面向对象">
+<meta name="twitter:description" content="待解决dataclass + __solts__的问题  __solts__ 使用slots一个不好的地方就是我们不能再给实例添加新的属性了，只能使用在 __slots__ 中定义的那些属性名 使用__solts__,python实例通过一个很小的固定大小的数组来构建，而不是为每个实例定义一个字典，这跟元组或列表很类似.Python的很多特性都依赖于普通的基于字典的实现。另外，定义了slots后的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/python练习/面向对象/面向对象/">
+
+
+
+
+
+  <title>面向对象 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python练习/面向对象/面向对象/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面向对象</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-13T11:05:31+08:00">
+                2019-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="待解决"><a href="#待解决" class="headerlink" title="待解决"></a>待解决</h1><p><code>dataclass</code> + <code>__solts__</code>的问题 </p>
+<p><code>__solts__</code> 使用slots一个不好的地方就是我们不能再给实例添加新的属性了，只能使用在 <code>__slots__</code> 中定义的那些属性名</p>
+<p>使用<code>__solts__</code>,python实例通过一个很小的固定大小的数组来构建，而不是为每个实例定义一个字典，这跟元组或列表很类似.Python的很多特性都依赖于普通的基于字典的实现。<br>另外，定义了slots后的类不再支持一些普通类特性了，比如多继承。</p>
+<p>尽量不要使用 <code>__solts__</code></p>
+<p><a href="https://github.com/ericvsmith/dataclasses/issues/28" target="_blank" rel="noopener">github上相关问题</a></p>
+<p><a href="https://github.com/ericvsmith/dataclasses/blob/master/dataclass_tools.py" target="_blank" rel="noopener">多加一个装饰器</a></p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Color():</span><br><span class="line">    r = 200</span><br><span class="line">    def __init__(self,r=250):</span><br><span class="line">        self.r = r</span><br><span class="line">        self.g = self.get_g()</span><br><span class="line">        self.b = self.get_b</span><br><span class="line"></span><br><span class="line">    def get_g(self):</span><br><span class="line">        g = 223</span><br><span class="line">        return g</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def get_b(self):</span><br><span class="line">        b = 222</span><br><span class="line">        return b</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return  f&apos;&#123;self.__class__.__name__&#125;(class_r = &#123;self.__class__.r&#125;, r = &#123;self.r&#125;, g = &#123;self.g&#125;, b = &#123;self.b&#125;)&apos;</span><br><span class="line"></span><br><span class="line">color = Color(255)</span><br><span class="line">color1 = Color()</span><br><span class="line">print(color)  #  Color(class_r = 200, r = 255, g = 223, b = 222)</span><br><span class="line">print(color1)  # Color(class_r = 200, r = 250, g = 223, b = 222)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Color():</span><br><span class="line">    r = 200</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.g = self.get_g()</span><br><span class="line">        self.b = self.get_b</span><br><span class="line"></span><br><span class="line">    def get_g(self):</span><br><span class="line">        g = 223</span><br><span class="line">        return g</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def get_b(self):</span><br><span class="line">        b = 222</span><br><span class="line">        return b</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return  f&apos;&#123;self.__class__.__name__&#125;(class_r = &#123;self.__class__.r&#125;, r = &#123;self.r&#125;, g = &#123;self.g&#125;, b = &#123;self.b&#125;)&apos;</span><br><span class="line"></span><br><span class="line">color = Color()</span><br><span class="line">print(color)  #  Color(class_r = 200, r = 255, g = 223, b = 222)</span><br></pre></td></tr></table></figure>
+<h2 id="使用第三方插件修改一下"><a href="#使用第三方插件修改一下" class="headerlink" title="使用第三方插件修改一下"></a>使用第三方插件修改一下</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from attr import attrs, attrib  # dataclass 内置库可替代</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">attrs 修饰符，可以自动实现__init__,__repr__,__eq__,__ne__,__it__,__le__,__gt__,</span><br><span class="line">__ge__,__hash__,这几个方法</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line"></span><br><span class="line">@attrs</span><br><span class="line">class Color():</span><br><span class="line">    r = attrib(type=int, default=100)</span><br><span class="line">    g = attrib(type=int, default=200)</span><br><span class="line">    b = attrib(type=int, default=222)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">color = Color(255,254,253)</span><br><span class="line">color1 = Color()</span><br><span class="line">print(color)  #  Color(class_r = 200, r = 255, g = 223, b = 222)</span><br><span class="line">print(color1)  # Color(class_r = 200, r = 250, g = 223, b = 222)</span><br></pre></td></tr></table></figure>
+<h2 id="声明和比较"><a href="#声明和比较" class="headerlink" title="声明和比较"></a>声明和比较</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from attr import attrs, attrib  # dataclass内置库可替代</span><br><span class="line"></span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">attrs 修饰符，可以自动实现__init__,__repr__,__eq__,__ne__,__it__,__le__,__gt__,</span><br><span class="line">__ge__,__hash__,这几个方法</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line"></span><br><span class="line">@attrs</span><br><span class="line">class Point():</span><br><span class="line">    x = attrib()</span><br><span class="line">    y = attrib()</span><br><span class="line"></span><br><span class="line">p1 = Point(1,2)</span><br><span class="line">p2 = Point(y=3,x=4)</span><br><span class="line">print(p1,p2)  # Point(x=1, y=2) Point(x=4, y=3)</span><br></pre></td></tr></table></figure>
+<h2 id="使用python3-7-的内置库"><a href="#使用python3-7-的内置库" class="headerlink" title="使用python3.7 的内置库"></a>使用python3.7 的内置库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from dataclasses import dataclass</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class Point():</span><br><span class="line">    x:int = 0</span><br><span class="line">    y:int = 0</span><br><span class="line"></span><br><span class="line">p1 = Point(1,2)</span><br><span class="line">p2 = Point(y=3,x=4)</span><br><span class="line">print(p1,p2)  # Point(x=1, y=2) Point(x=4, y=3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 默认init,repr,eq 为True， 其余为False</span><br><span class="line">@dataclass(init=1,repr=1,eq=1,order=1,unsafe_hash=0,frozen=0)</span><br><span class="line">class Point():</span><br><span class="line">    x:int = 0</span><br><span class="line">    y:int = 0</span><br><span class="line"></span><br><span class="line">p1 = Point(1,2)</span><br><span class="line">p2 = Point(y=3,x=4)</span><br><span class="line">p3 = Point(x=1,y=2)</span><br><span class="line">print(p1&gt;p2)  # fasle</span><br><span class="line">print(p1==p3)  # True</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from dataclasses import dataclass</span><br><span class="line"></span><br><span class="line">@dataclass(frozen=1)</span><br><span class="line">class Point():</span><br><span class="line">    x:int = 0</span><br><span class="line">    y:int = 0</span><br><span class="line"></span><br><span class="line">p1 = Point(1,2)</span><br><span class="line">print(p1)  </span><br><span class="line"># 当实例化一个frozen 对象时，任何企图修改对象属性的行为都会引发 FrozenInstanceError</span><br><span class="line">#p1.x = 10  # dataclasses.FrozenInstanceError: cannot assign to field &apos;x&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from dataclasses import dataclass</span><br><span class="line"></span><br><span class="line">@dataclass()</span><br><span class="line">class Point():</span><br><span class="line">    x:int = 0</span><br><span class="line">    y:int = 0</span><br><span class="line"></span><br><span class="line">    def x_add_1(self):</span><br><span class="line">        self.x += 1</span><br><span class="line"></span><br><span class="line">p1 = Point(1,2)</span><br><span class="line">print(p1)  # Point(x=1, y=2)</span><br><span class="line">p1.x_add_1()</span><br><span class="line">print(p1)  # Point(x=2, y=2)</span><br></pre></td></tr></table></figure>
+<p><code>__init__</code>方法在返回前会调用<code>__post_init__</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from dataclasses import dataclass</span><br><span class="line"></span><br><span class="line">@dataclass()</span><br><span class="line">class Point():</span><br><span class="line">    x:int = 0</span><br><span class="line">    y:int = 0</span><br><span class="line"></span><br><span class="line">    def __post_init__(self):</span><br><span class="line">        self.x += 1</span><br><span class="line">        </span><br><span class="line">p1 = Point(1,2)</span><br><span class="line">print(p1)  # Point(x=2, y=2)</span><br></pre></td></tr></table></figure></p>
+<h3 id="有关继承"><a href="#有关继承" class="headerlink" title="有关继承"></a>有关继承</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from dataclasses import dataclass</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class Point:</span><br><span class="line">    x:int = 0</span><br><span class="line">    y:int = 0</span><br><span class="line"></span><br><span class="line">    def __post_init__(self):</span><br><span class="line">        self.x += 1</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class ThirdPonit(Point):</span><br><span class="line">    z:int =0</span><br><span class="line"></span><br><span class="line">ppp = ThirdPonit(1,3,4)</span><br><span class="line">print(ppp)   # ThirdPonit(x=2, y=3, z=4)</span><br></pre></td></tr></table></figure>
+<p><strong>super</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">from dataclasses import dataclass</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class Point:</span><br><span class="line">    x:int = 0</span><br><span class="line">    y:int = 0</span><br><span class="line"></span><br><span class="line">    def __post_init__(self):</span><br><span class="line">        self.x += 1</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class ThirdPonit(Point):</span><br><span class="line">    z:int =0</span><br><span class="line"></span><br><span class="line">    def __post_init__(self):</span><br><span class="line">        super().__post_init__()  # 调用 父类的__post_init__()</span><br><span class="line">        self.x += 10</span><br><span class="line"></span><br><span class="line">ppp = ThirdPonit(1,3,4)</span><br><span class="line">print(ppp)   # ThirdPonit(x=12, y=3, z=4)</span><br></pre></td></tr></table></figure></p>
+<h2 id="复合初始化"><a href="#复合初始化" class="headerlink" title="复合初始化"></a>复合初始化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line">from dataclasses import dataclass</span><br><span class="line"></span><br><span class="line">def get_random_marks():</span><br><span class="line">    return [random.randint(1,10) for _ in range(5)]</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class Student:</span><br><span class="line">    marks:list = list</span><br><span class="line"></span><br><span class="line">    def __post_init__(self):  # 额外的工作</span><br><span class="line">        self.marks = get_random_marks()</span><br><span class="line"></span><br><span class="line">a = Student()</span><br><span class="line">print(a)  # Student(marks=[2, 9, 8, 8, 2])</span><br><span class="line">print(a.marks)  # [2, 9, 8, 8, 2]</span><br></pre></td></tr></table></figure>
+<p><strong>修改</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line">from dataclasses import dataclass, field</span><br><span class="line"></span><br><span class="line">def get_random_marks():</span><br><span class="line">    return [random.randint(1,10) for _ in range(5)]</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class Student:</span><br><span class="line">    marks:int = field(default_factory= get_random_marks)  # int 不建议，建议使用数据类型</span><br><span class="line">    # default_factory ：如果在创建对象时没赋值，则使用该方法初始化该字段 （必须是可以调用的无参数方法）</span><br><span class="line">    # 使用 get_random_marks 方法 初始化 marks</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">a = Student()</span><br><span class="line">print(a)  # Student(marks=[7, 2, 4, 7, 4])</span><br><span class="line">print(a.marks)  # [7, 2, 4, 7, 4]</span><br><span class="line">print(type(a.marks))  # &lt;class &apos;list&apos;&gt;</span><br><span class="line">b = Student(&apos;b&apos;)  # 传参则不影响</span><br><span class="line">print(b)  # Student(marks=&apos;b&apos;)</span><br><span class="line">print(b.marks)  # b</span><br><span class="line">print(type(b.marks))  # &lt;class &apos;str&apos;&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="filed-更多操作"><a href="#filed-更多操作" class="headerlink" title="filed 更多操作"></a>filed 更多操作</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from dataclasses import dataclass, field</span><br><span class="line"></span><br><span class="line">@dataclass(order=1)</span><br><span class="line">class Number:</span><br><span class="line">    number:int = field(compare= False,repr= False)  # number 不进行比较,不打印</span><br><span class="line">    val:int</span><br><span class="line">    verified:1 = field(default=0,init=0) # 默认为 1，不进行初始化</span><br><span class="line"></span><br><span class="line">a = Number(3,4)</span><br><span class="line">b = Number(4,3)</span><br><span class="line">print(a &lt; b) # False</span><br><span class="line">print(a) # Number(val=4, verified=0)</span><br><span class="line">print(b) # Number(val=3, verified=0)</span><br><span class="line">b.verified = 1</span><br><span class="line">print(b) # Number(val=3, verified=1)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/python练习/多进程/" rel="next" title="多进程">
+                <i class="fa fa-chevron-left"></i> 多进程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python练习/面向对象/上下文管理器/" rel="prev" title="上下文管理器">
+                上下文管理器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#待解决"><span class="nav-number">1.</span> <span class="nav-text">待解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">1.1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用第三方插件修改一下"><span class="nav-number">1.2.</span> <span class="nav-text">使用第三方插件修改一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明和比较"><span class="nav-number">1.3.</span> <span class="nav-text">声明和比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用python3-7-的内置库"><span class="nav-number">1.4.</span> <span class="nav-text">使用python3.7 的内置库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有关继承"><span class="nav-number">1.4.1.</span> <span class="nav-text">有关继承</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复合初始化"><span class="nav-number">1.5.</span> <span class="nav-text">复合初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#filed-更多操作"><span class="nav-number">1.5.1.</span> <span class="nav-text">filed 更多操作</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

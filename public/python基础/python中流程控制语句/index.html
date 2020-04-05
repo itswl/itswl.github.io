@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="条件语句if elif else都是关键字，需要能读和写 基本格式：123456if 条件语句1：  执行语句块1elif 条件语句2：  执行语句块2else：  执行语句块3 执行过程：12a.先判断条件语句1是否为True，如果为True就执行冒号后边的执行语句块1，整个条件结构就执行完了;如果是False，就去判断条件语句2是否为True。b.如果是True就执行执行语句块2，再执行其他语">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(4) python中流程控制语句">
+<meta property="og:url" content="http://imwl.ml/python基础/python中流程控制语句/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="条件语句if elif else都是关键字，需要能读和写 基本格式：123456if 条件语句1：  执行语句块1elif 条件语句2：  执行语句块2else：  执行语句块3 执行过程：12a.先判断条件语句1是否为True，如果为True就执行冒号后边的执行语句块1，整个条件结构就执行完了;如果是False，就去判断条件语句2是否为True。b.如果是True就执行执行语句块2，再执行其他语">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-01T09:23:43.685Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(4) python中流程控制语句">
+<meta name="twitter:description" content="条件语句if elif else都是关键字，需要能读和写 基本格式：123456if 条件语句1：  执行语句块1elif 条件语句2：  执行语句块2else：  执行语句块3 执行过程：12a.先判断条件语句1是否为True，如果为True就执行冒号后边的执行语句块1，整个条件结构就执行完了;如果是False，就去判断条件语句2是否为True。b.如果是True就执行执行语句块2，再执行其他语">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/python基础/python中流程控制语句/">
+
+
+
+
+
+  <title>(4) python中流程控制语句 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python基础/python中流程控制语句/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">(4) python中流程控制语句</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T21:58:54+08:00">
+                2018-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/python基础/" itemprop="url" rel="index">
+                    <span itemprop="name">python基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>条件语句</strong><br>if elif else都是关键字，需要能读和写</p>
+<p>基本格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if 条件语句1：</span><br><span class="line">  执行语句块1</span><br><span class="line">elif 条件语句2：</span><br><span class="line">  执行语句块2</span><br><span class="line">else：</span><br><span class="line">  执行语句块3</span><br></pre></td></tr></table></figure></p>
+<p>执行过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a.先判断条件语句1是否为True，如果为True就执行冒号后边的执行语句块1，整个条件结构就执行完了;如果是False，就去判断条件语句2是否为True。</span><br><span class="line">b.如果是True就执行执行语句块2，再执行其他语句;如果是False,就直接执行语句块3，再执行其他语句。</span><br></pre></td></tr></table></figure></p>
+<p>注意：冒号后边语句块和冒号所在得语句要保持一个缩进。</p>
+<p><strong>if</strong><br>判断条件语句的值是否为True，如果为True，就只执行执行语句块。否则就直接执行if语句后面的其他语句。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if 条件语句：</span><br><span class="line">    执行语句块</span><br><span class="line"></span><br><span class="line">age=20</span><br><span class="line">要求判断年龄是否大于18，如果大于18就输出&apos;成年人&apos;</span><br><span class="line">if age&gt;18:</span><br><span class="line">    print(&apos;成年人&apos;)</span><br><span class="line"></span><br><span class="line">练习：判断一个数是否是偶数，如果是就打印&apos;xxx是偶数&apos;</span><br><span class="line">n=18</span><br><span class="line">if n%2==0:</span><br><span class="line">    print(&apos;%d是偶数&apos;%(n))</span><br></pre></td></tr></table></figure></p>
+<p>2.if-else<br>判断条件语句是否为True，如果为True，就执行语句块1;否则就执行语句块2.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">if 条件语句：</span><br><span class="line">    执行语句块1</span><br><span class="line">else：</span><br><span class="line">    执行语句块2</span><br><span class="line">n=17</span><br><span class="line">if n%2==0:</span><br><span class="line">    print(&apos;%d是偶数&apos;%(n))</span><br><span class="line">else:</span><br><span class="line">    print(&apos;%d是奇数&apos;%(n))</span><br><span class="line">练习：输入一个数，如果这个数大于10，就输出他的2倍值。否  则输出这个数的2次幂。</span><br><span class="line">input():从控制台获取键盘输入的一个字符串，以回车结束。</span><br><span class="line"></span><br><span class="line">inputvalue=input(&apos;请输入一个数：&apos;)</span><br><span class="line">print(inputvalue)</span><br><span class="line">n=int(inputvalue)</span><br><span class="line">比较运算符和+以及*，在运算的时候，两边可以都是字符串，也可以都是数字，但是不可以一样一个。</span><br><span class="line">if n&gt;10:</span><br><span class="line">num=n*2</span><br><span class="line">    print(num)</span><br><span class="line">else:</span><br><span class="line">num=n**2</span><br><span class="line">    print(num)</span><br></pre></td></tr></table></figure></p>
+<p>3.if-elif-elif-else<br>总结:</p>
+<p>a.如果要求中需要多个判断，可以使用多个elif的if语句。<br>b.一个if/elif/else语句中可以嵌套其他的if语句。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">（1）给一个成绩，判断成绩是优秀(90-100)、良好(80-89)、        中等(60-79)、不及格(60以下)</span><br><span class="line">方法一：</span><br><span class="line">grade=96</span><br><span class="line">if grade&gt;=90:</span><br><span class="line">    if grade&gt;100:</span><br><span class="line">        print(&apos;成绩有误&apos;)</span><br><span class="line">    else:</span><br><span class="line">        print(&apos;优秀&apos;)</span><br><span class="line">elif grade&gt;=80:</span><br><span class="line">    print(&apos;良好&apos;)</span><br><span class="line">elif grade&gt;=60:</span><br><span class="line">      print(&apos;中等&apos;)</span><br><span class="line">elif grade&gt;=0:</span><br><span class="line">      print(&apos;不及格&apos;)</span><br><span class="line">else:</span><br><span class="line">      print(&apos;成绩有误&apos;)</span><br><span class="line">方法二：</span><br><span class="line">grade=67</span><br><span class="line">if 100&gt;=grade&gt;=90:</span><br><span class="line">  print(&apos;优秀&apos;)</span><br><span class="line">elif 90&gt;grade&gt;=80:</span><br><span class="line">  print(&apos;良好&apos;)</span><br><span class="line">elif 80&gt;grade&gt;=60:</span><br><span class="line">  print(&apos;中等&apos;)</span><br><span class="line">elif 60&gt;grade&gt;=0:</span><br><span class="line">  print(&apos;不及格&apos;)</span><br><span class="line">else:</span><br><span class="line">  print(&apos;成绩有误&apos;)</span><br><span class="line">  </span><br><span class="line">（2）给个年龄，判断年龄处于：婴儿（0-1岁）、儿童（2-4         岁）、少年（5-12岁）、青年（13-18岁）、成年（19-40）、       中年（41-60）、老年（60以上）</span><br><span class="line">age=1</span><br><span class="line">if age&lt;2:</span><br><span class="line">  if age&lt;=0:</span><br><span class="line">      print(&apos;年龄输入错误&apos;)</span><br><span class="line">  else:</span><br><span class="line">      print(&apos;婴儿&apos;)</span><br><span class="line">elif age&lt;5:</span><br><span class="line">  print(&apos;儿童&apos;)</span><br><span class="line">elif age&lt;13:</span><br><span class="line">  print(&apos;少年&apos;)</span><br><span class="line">elif age&lt;19:</span><br><span class="line">  print(&apos;青年&apos;)</span><br><span class="line">elif age&lt;41:</span><br><span class="line">  print(&apos;成年&apos;)</span><br><span class="line">elif age&lt;61:</span><br><span class="line">  print(&apos;中年&apos;)</span><br><span class="line">else:</span><br><span class="line">  print(&apos;老年&apos;)</span><br><span class="line">说明：Python中没有switch语法。</span><br><span class="line"></span><br><span class="line">pass：占位，防止因为没有写块结构而出现语法错误。</span><br><span class="line"></span><br><span class="line">if n==10:</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure></p>
+<p><strong>转换函数</strong></p>
+<p>1.int()<br>int():将其他的数据转换成int类型的数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">num=12.56</span><br><span class="line">print(int(num))    # 12 将浮点数转换成整数（直接去掉小数部分）</span><br><span class="line">bool1=True</span><br><span class="line">print(int(bool1))  # 1 将布尔值转换成整数，True-&gt;1  False-&gt;0</span><br><span class="line">str1=&apos;123&apos;</span><br><span class="line">print(int(str1))   # 123 只有纯数字字符串或者纯数字字符串前有正负号的字符串才能转换成相应的整数。</span><br></pre></td></tr></table></figure></p>
+<p>2.flot()<br>flot():将其他数据转换成浮点型<br>3.bool()<br>bool()：将其他的数据转换成布尔值</p>
+<p>数字转换成布尔，非0是True，0是False。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(bool(12))     # True</span><br><span class="line">print(bool(-12.3))  # True</span><br><span class="line">print(bool(0))      # False</span><br><span class="line">字符串转换成布尔，除了空串是False，其他的都是True。</span><br><span class="line"></span><br><span class="line">print(bool(&apos;abc&apos;))  # True</span><br><span class="line">print(bool(&apos;&apos;))     # False</span><br></pre></td></tr></table></figure></p>
+<p>注意：在if或者while循环后的条件语句，可以不是结果为True/False的表达式，也可以是值是其他类型的表达式.判断的是时候就看这个值转换成bool后的结果是True还是False。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if 10:</span><br><span class="line">  print(&apos;aaa&apos;)   # aaa （10转换成bool后是True) </span><br><span class="line">if 0:</span><br><span class="line">  print(&apos;aaa&apos;)   #  （0转换成bool后是False）</span><br></pre></td></tr></table></figure></p>
+<p>练习：判断一个字符串是否是空串，如果不是就直接打印这个字符       串，否则打印“空串”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">方法1：</span><br><span class="line">str1=&apos;&apos;</span><br><span class="line">if str1:</span><br><span class="line">  print(str1)</span><br><span class="line">else:</span><br><span class="line">  print(&apos;空串&apos;)</span><br><span class="line">方法2：</span><br><span class="line">str1=&apos;abc&apos;</span><br><span class="line">if str1!=&apos;&apos;:</span><br><span class="line">  print(str1)</span><br><span class="line">else:</span><br><span class="line">  print(&apos;空串&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>4.str()<br>str()：将其他的数据转换成字符串。所有的数据类型都可以转换成字符串。<br><strong>循环</strong><br>python中循环：for循环、while循环（一个操作需要重复执行多次，这个时候就要考虑使用循环）<br><strong>for循环</strong><br>python中的for循环只有for-in循环：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">格式：</span><br><span class="line">for 变量名 in 列表：</span><br><span class="line">  循环体</span><br><span class="line">执行过程：使用变量去依次获取列表中的数据直到获取完为止;没获取一个数据，执行一次循环体。</span><br><span class="line"></span><br><span class="line">循环次数：由列表中的数据的个数决定。</span><br><span class="line"></span><br><span class="line">去获取字符串中的每一个字符</span><br><span class="line">str1=&apos;abcdef&apos;</span><br><span class="line">for char in str1:</span><br><span class="line">  print(char)</span><br><span class="line"></span><br><span class="line">去统计字符串中&apos;a&apos;出现的次数</span><br><span class="line">str1=&apos;avaadafvaavafaaa&apos;</span><br><span class="line">n=0</span><br><span class="line">for char in str1:</span><br><span class="line">  if char==&apos;a&apos;:</span><br><span class="line">      n=n+1       </span><br><span class="line">print(n)</span><br><span class="line">range（）函数：可以生成一个数值范围</span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">打印1-100</span><br><span class="line">for n in range(1,101):</span><br><span class="line">  print(n)</span><br><span class="line">用法1：range(n),生成0~n-1的值</span><br><span class="line">for x in range(9):</span><br><span class="line">  print(x)</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+<p>用法2：range(m,n),生成m~n-1的数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for n in range(5,9):</span><br><span class="line">  print(n)</span><br><span class="line">打印0-100之间所有的偶数</span><br><span class="line">for x in range(101):</span><br><span class="line">  if x%2==0:</span><br><span class="line">      print(x)</span><br></pre></td></tr></table></figure></p>
+<p>用法3：range(m,n,step):从m开始每step取一个数，取到n前       一个数为止。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for x in range(1,8,2):</span><br><span class="line">  print(x)   # 1,3,5,7 </span><br><span class="line"></span><br><span class="line">不通过字符串相乘，打印10次“=”,并且打印在同一行。</span><br><span class="line">for _ in range(10):</span><br><span class="line">  print(&apos;=&apos;,end=&apos; &apos;)</span><br></pre></td></tr></table></figure></p>
+<p>求1+2+3…+100<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">n=0</span><br><span class="line">for x in range(1,101):</span><br><span class="line">  n=n+x</span><br><span class="line">print(n)</span><br></pre></td></tr></table></figure></p>
+<p>注意：如果循环中的变量取到的值没有意义，循环只是单纯的控制次数，这个时候for后面的变量名一般用“_”代替。</p>
+<p><strong>while循环</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">格式：</span><br><span class="line"> while 条件语句：</span><br><span class="line">    循环体</span><br></pre></td></tr></table></figure></p>
+<p>执行过程：判断条件语句结果是否为True，如果为True就执行一次循环体。执行完循环体后再判断条件语句是否为True，如果为True继续执行循环体。重复这个过程，直到条件语句结果为False</p>
+<p>for循环可以实现的操作，while循环都可以</p>
+<p>打印1-100<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">方法1：</span><br><span class="line">x=0</span><br><span class="line">while x&lt;100:</span><br><span class="line">  x+=1</span><br><span class="line">  print(x) </span><br><span class="line">方法2：</span><br><span class="line">x=1</span><br><span class="line">while x&lt;=100:</span><br><span class="line">  print(x)</span><br><span class="line">  x+=1</span><br></pre></td></tr></table></figure></p>
+<p>计算1+2+3+…+100<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x=0</span><br><span class="line">n=0</span><br><span class="line">while n&lt;100:</span><br><span class="line">  n+=1</span><br><span class="line">  x+=n</span><br><span class="line">  print(x)</span><br></pre></td></tr></table></figure></p>
+<p>求1-100中所有偶数的和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">方法1：</span><br><span class="line">n=0</span><br><span class="line">x=0</span><br><span class="line">while n&lt;=100:</span><br><span class="line">  if n%2==0:</span><br><span class="line">      x=x+n</span><br><span class="line">      n=n+1</span><br><span class="line">  print(x)</span><br><span class="line">方法2：</span><br><span class="line">n=0</span><br><span class="line">x=0</span><br><span class="line">while n&lt;100:</span><br><span class="line">  n+=2</span><br><span class="line">  x=x+n</span><br><span class="line">print(x)</span><br></pre></td></tr></table></figure></p>
+<p><strong>break和continue</strong><br>1、break<br>break是一个让循环提前结束的关键字</p>
+<p>如果在for循环或者while循环中遇到了break，那么循环就在break的位置直接结束。结束后程序执行循环后边的代码。</p>
+<p>练习:找到1000~9999中第一个能够被13整除的数，打印出来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for x in range(1000,10000):</span><br><span class="line">  if x%13==0:</span><br><span class="line">      print(x)</span><br><span class="line">      break    </span><br><span class="line">  </span><br><span class="line">for x in range(1,100):</span><br><span class="line">  if x==50:</span><br><span class="line">      break</span><br><span class="line">      print(x)     # 1 2 3 ...  49</span><br></pre></td></tr></table></figure></p>
+<p>用while循环实现：不断的让用户去输入数字，直到用户输入的数字是0为止。最后在打印之前输入的数的和。</p>
+<p>input()函数：程序执行到input()函数的时候，程序就会停下来，等待用户从键盘输入并且以回车结束，然后才会往下执行。</p>
+<p>注意：break只能写在循环中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sum1=0</span><br><span class="line">while True:</span><br><span class="line">num=int(input(&quot;&gt;&gt;&gt;&quot;))   # 获取键盘输入的内容，并且转换成int类型</span><br><span class="line">    sum1+=num   # 将当次输入的数字加起来</span><br><span class="line">    if num==0:   #  判断输入的数字是否是0，如果是就让循环结束</span><br><span class="line">        break   </span><br><span class="line">    print(num)</span><br><span class="line">print(sum1)</span><br></pre></td></tr></table></figure></p>
+<p>for循环的特点：次数确定，可以在序列中取数据</p>
+<p>while循环：循环次数不确定的（while True + break）</p>
+<p>randint(m,n):产生一个m到n的随机整数</p>
+<p>产生随机数：random模块是python内置用来产生随机数的模块，里面提供了很多产生随机数的函数。</p>
+<p>  猜数字：随机生成一个整数。用户输入数字。如果用户输入的数字大于这个随机数就提示：“大了”;如果用户输入的数小于随机数就提示：“小了”。直到用户输入的数和这个随机数大小一样游戏结束。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line">num=random.randint(0,100)   # 产生一个0到100的随机数</span><br><span class="line">n=0</span><br><span class="line">while True:</span><br><span class="line">num1=int(input(&quot;请输入你猜的数字：&quot;))</span><br><span class="line">n=n+1</span><br><span class="line">if num1&gt;num:</span><br><span class="line">    print(&apos;大了&apos;)</span><br><span class="line">elif num1&lt;num:</span><br><span class="line">    print(&apos;小了&apos;)</span><br><span class="line">else:</span><br><span class="line">    print(&apos;恭喜你，猜对了！&apos;)       </span><br><span class="line">    print(&apos;一共猜了：%d次&apos;%(n),end=&apos;  &apos;)</span><br><span class="line">    if n&lt;=5:</span><br><span class="line">        print(&apos;你太棒了，只猜了%d次就猜对了&apos;%(n))</span><br><span class="line">    else:</span><br><span class="line">        print(&apos;下次加油！&apos;)</span><br><span class="line">    break</span><br></pre></td></tr></table></figure></p>
+<p>2、continue<br>continue:结束当次循环，进入下次循环<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for x in range(1,10):</span><br><span class="line">    print(&apos;=&apos;)</span><br><span class="line">    continue   # 遇到continue就不再执行循环体后面的内容，直接进入下一次循环的判断</span><br><span class="line">    print(x)</span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
+<p>  求1~100中所有奇数的和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sum=0</span><br><span class="line">for x in range(1,100):</span><br><span class="line">    if x%2==0:</span><br><span class="line">        continue</span><br><span class="line">    sum=sum+x</span><br><span class="line">print(sum)</span><br></pre></td></tr></table></figure></p>
+<p>  打印100~999中十位数上不是3的所有数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> for x in range(100,1000):</span><br><span class="line">     if x//10%10==3:</span><br><span class="line">         continue</span><br><span class="line">     print(x)   </span><br><span class="line">``` </span><br><span class="line"> 统计输入的数字中，偶数的个数。如果输入0，就结束。（必须使用continue）</span><br></pre></td></tr></table></figure></p>
+<p>  flag=True<br>  n=0<br>  while True:<br>      num=int(input(‘请输入一个数：’))  # 输入数据<br>      if num%2==1:  # 判断是否是奇数<br>          continue<br>      if num==0:<br>          flag=False<br>      n=n+1<br>  print(n)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">**else**</span><br><span class="line">python中循环语句后面可以加else语句。这个else语句会在循环结束后执行。</span><br></pre></td></tr></table></figure></p>
+<p> for 变量 in 序列：<br>  循环体<br> else：<br>  循环结束后会执行的语句块<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"> 1*2*3...*10</span><br><span class="line"> sum1=1</span><br><span class="line"> for x in range(1,11):</span><br><span class="line">  sum1*=x</span><br><span class="line"> else:</span><br><span class="line">  print(sum1)</span><br></pre></td></tr></table></figure></p>
+<p>注意：如果再循环语句中使用break，那么else语句不会执行。（continue不存在这个问题）</p>
+<p>  1<em>2</em>3…*10，当乘积大于10000就不在执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sum1=1</span><br><span class="line">for x in range(1,11):</span><br><span class="line">    if sum1*x&gt;10000:    </span><br><span class="line">        break</span><br><span class="line">    sum1*=x</span><br><span class="line">print(sum1)</span><br><span class="line">else:</span><br><span class="line">    print(sum1)  # 如果在循环中执行了break，那么else中的语句不会执行</span><br></pre></td></tr></table></figure></p>
+<p><strong>多重循环</strong><br>在循环体里面可以有其他的循环语句，结构为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">for 变量 in 序列：</span><br><span class="line">    for 变量1 in 序列2：</span><br><span class="line">     循环体2</span><br><span class="line"> 其它的循环语句</span><br><span class="line"></span><br><span class="line">for 变量 in 序列：</span><br><span class="line"> 其他的循环语句1</span><br><span class="line"> while 条件语句：</span><br><span class="line">     循环体2</span><br><span class="line"> 其他的循环语句2</span><br><span class="line"></span><br><span class="line">while 条件语句1：</span><br><span class="line"> while 条件语句2：</span><br><span class="line">     循环体2</span><br><span class="line"> 其他的循环语句2</span><br></pre></td></tr></table></figure></p>
+<p>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">如果n=5 打印</span><br><span class="line">1</span><br><span class="line">12</span><br><span class="line">123</span><br><span class="line">1234</span><br><span class="line">12345</span><br><span class="line"></span><br><span class="line">n=5</span><br><span class="line">for x in range(1,n+1):   # 控制行数</span><br><span class="line">    for b in range(1,x+1):  # 控制当前行的数值</span><br><span class="line">        print(b,end=&apos;&apos;)</span><br><span class="line">    print()   # 一行结束换行</span><br><span class="line"></span><br><span class="line">*****</span><br><span class="line">****</span><br><span class="line">***</span><br><span class="line">**</span><br><span class="line">*</span><br><span class="line">n=5</span><br><span class="line">for x in range(1,n+1):</span><br><span class="line">    for b in range(x,n+1):</span><br><span class="line">        print(&apos;*&apos;,end=&apos;&apos;)</span><br><span class="line">    print()</span><br><span class="line"></span><br><span class="line">n=10</span><br><span class="line">for x in range(1,n+1):</span><br><span class="line">    for b in range(x,n+1):</span><br><span class="line">        print(&apos;*&apos;,end=&apos;&apos;)</span><br><span class="line">    print()</span><br></pre></td></tr></table></figure></p>
+<p>参考了简书中某人的记录，但找不到具体是谁了。侵删。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/python基础/python中变量与运算符/" rel="next" title="(3) python中变量与运算符">
+                <i class="fa fa-chevron-left"></i> (3) python中变量与运算符
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python基础/python项目的组织结构/" rel="prev" title="(5) python项目的组织结构">
+                (5) python项目的组织结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

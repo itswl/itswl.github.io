@@ -1,0 +1,1496 @@
+INFO  Deleted database.
+INFO  Deleted public folder.
+INFO  Start processing
+WARN  ===============================================================
+WARN  ========================= ATTENTION! ==========================
+WARN  ===============================================================
+WARN   NexT repository is moving here: https://github.com/theme-next 
+WARN  ===============================================================
+WARN   It's rebase to v6.0.0 and future maintenance will resume there
+WARN  ===============================================================
+INFO  Files loaded in 3.55 s
+INFO  Generated: search.xml
+INFO  Generated: index.html
+INFO  Generated: book/index.html
+INFO  Generated: archives/index.html
+INFO  Generated: about/index.html
+INFO  Generated: categories/index.html
+INFO  Generated: resume/index.html
+INFO  Generated: categories/linux学习/index.html
+INFO  Generated: categories/VPS/index.html
+INFO  Generated: categories/python基础/index.html
+INFO  Generated: categories/python练习/index.html
+INFO  Generated: categories/数据库/index.html
+INFO  Generated: images/favicon-16x16.ico
+INFO  Generated: images/favicon-32x32.ico
+INFO  Generated: images/cc-by-nc-sa.svg
+INFO  Generated: images/cc-by-nd.svg
+INFO  Generated: images/algolia_logo.svg
+INFO  Generated: images/cc-by.svg
+INFO  Generated: images/cc-by-nc.svg
+INFO  Generated: images/cc-by-nc-nd.svg
+INFO  Generated: images/apple-touch-icon-next.png
+INFO  Generated: images/loading.gif
+INFO  Generated: images/cc-zero.svg
+INFO  Generated: images/logo.svg
+INFO  Generated: images/placeholder.gif
+INFO  Generated: images/favicon-32x32-next.png
+INFO  Generated: images/favicon-16x16-next.png
+INFO  Generated: images/quote-r.svg
+INFO  Generated: images/avatar.gif
+INFO  Generated: images/quote-l.svg
+INFO  Generated: images/searchicon.png
+INFO  Generated: python练习/多进程/index.html
+INFO  Generated: java/java基础语法/index.html
+INFO  Generated: linux学习/安装Chrome浏览器和ChromeDriver/index.html
+INFO  Generated: golang/基础语法/index.html
+INFO  Generated: docker/readme/index.html
+INFO  Generated: work/自动部署/index.html
+INFO  Generated: python操作数据库/mysql基础(1)/index.html
+INFO  Generated: 随笔/2017-2018 总结(初版)/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-1--起步与红图/index.html
+INFO  Generated: flask框架学习/flask初识/index.html
+INFO  Generated: python基础/python异常/index.html
+INFO  Generated: git/git分支管理-多人协作/index.html
+INFO  Generated: vps/GitHub+Hexo搭建个人网站/index.html
+INFO  Generated: archives/page/2/index.html
+INFO  Generated: archives/2018/10/index.html
+INFO  Generated: archives/2019/01/index.html
+INFO  Generated: python练习/多线程/index.html
+INFO  Generated: python练习/is_json/index.html
+INFO  Generated: python练习/python的一些函数/index.html
+INFO  Generated: python练习/python里的特殊方法/index.html
+INFO  Generated: python练习/装饰器/index.html
+INFO  Generated: python练习/python拾遗_函数/index.html
+INFO  Generated: java/readme/index.html
+INFO  Generated: java/修饰符/index.html
+INFO  Generated: java/分支结构/index.html
+INFO  Generated: java/变量类型/index.html
+INFO  Generated: java/基本数据类型/index.html
+INFO  Generated: java/运算符/index.html
+INFO  Generated: golang/package与import/index.html
+INFO  Generated: golang/readme/index.html
+INFO  Generated: golang/指针/index.html
+INFO  Generated: golang/规范/index.html
+INFO  Generated: linux学习/计算机组成原理/index.html
+INFO  Generated: python练习/面向对象/index.html
+INFO  Generated: python练习/迭代对象，迭代器，生成器/index.html
+INFO  Generated: python练习/网络请求/index.html
+INFO  Generated: python练习/多线程的鸡肋/index.html
+INFO  Generated: python练习/优雅的python写法/index.html
+INFO  Generated: python练习/python日志模块/index.html
+INFO  Generated: python练习/psutil获取系统运行的进程和系统利用率/index.html
+INFO  Generated: python练习/python一些规则/index.html
+INFO  Generated: python练习/pathlib有关文件路径/index.html
+INFO  Generated: python练习/关于import路径/index.html
+INFO  Generated: linux学习/linux使用者管理/index.html
+INFO  Generated: linux学习/部分/index.html
+INFO  Generated: linux学习/计算机概论/index.html
+INFO  Generated: linux学习/进程与线程/index.html
+INFO  Generated: linux学习/权限，目录/index.html
+INFO  Generated: linux学习/日志文件/index.html
+INFO  Generated: linux学习/文件，目录/index.html
+INFO  Generated: linux学习/关于vi/index.html
+INFO  Generated: linux学习/ip地址/index.html
+INFO  Generated: linux学习/HTTP的基本原理/index.html
+INFO  Generated: linux学习/readme/index.html
+INFO  Generated: linux学习/个人计算机/index.html
+INFO  Generated: python练习/HTTP的基本原理/index.html
+INFO  Generated: python练习/给博客加日期/index.html
+INFO  Generated: python操作数据库/mysql基础(3)/index.html
+INFO  Generated: python操作数据库/python操作mysql(ORM)/index.html
+INFO  Generated: python操作数据库/mysql基础(2)/index.html
+INFO  Generated: python操作数据库/python操作mysql(增删改查)/index.html
+INFO  Generated: python操作数据库/使用MySQL/index.html
+INFO  Generated: python操作数据库/数据库/index.html
+INFO  Generated: python练习/爬虫整理-(四)-多进程分布式与异步/index.html
+INFO  Generated: linux学习/linux基础思维导图/index.html
+INFO  Generated: python练习/爬取百度百科词条写入数据库/index.html
+INFO  Generated: python练习/读取TXT_PDF/index.html
+INFO  Generated: python练习/爬虫整理-(五)--slenium/index.html
+INFO  Generated: python练习/PandaTV爬取主播人气并排序/index.html
+INFO  Generated: python练习/慕课网数据采集总结/index.html
+INFO  Generated: python练习/爬虫整理（一）使用re和urllib/index.html
+INFO  Generated: python练习/爬虫整理（三）Requests/index.html
+INFO  Generated: python练习/爬虫整理（二）BeautifulSoup/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-2--REST基本特征/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-3--自定义异常对象/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-6--模型对象的序列化/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-7--权限控制/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-4--理解WTForms并灵活改造她/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-8--补充完善/index.html
+INFO  Generated: flask-api/图片/index.html
+INFO  Generated: flask框架学习/flask高级编程_鱼书项目_填坑记/index.html
+INFO  Generated: flask框架学习/初识鱼书项目/index.html
+INFO  Generated: flask框架学习/windows下mysql的安装/index.html
+INFO  Generated: python基础/python网络编程/index.html
+INFO  Generated: python基础/python文件操作/index.html
+INFO  Generated: python基础/python中用字典代替switch/index.html
+INFO  Generated: python基础/python中的列表推导式/index.html
+INFO  Generated: python基础/python中的None/index.html
+INFO  Generated: python基础/python补充/index.html
+INFO  Generated: python基础/python中的枚举/index.html
+INFO  Generated: python基础/python之函数式编程/index.html
+INFO  Generated: python基础/python之闭包/index.html
+INFO  Generated: python基础/python中的装饰器/index.html
+INFO  Generated: python基础/python之初识JSON/index.html
+INFO  Generated: python基础/python正则表达式的学习过程/index.html
+INFO  Generated: python基础/python中面向对象/index.html
+INFO  Generated: python基础/python项目的组织结构/index.html
+INFO  Generated: python基础/python中流程控制语句/index.html
+INFO  Generated: python基础/python中变量与运算符/index.html
+INFO  Generated: python基础/python基本数据类型总结/index.html
+INFO  Generated: python基础/python/index.html
+INFO  Generated: git/git之使用github/index.html
+INFO  Generated: git/git中的工作区与暂存区/index.html
+INFO  Generated: git/git之自定义/index.html
+INFO  Generated: git/git中分支管理-创建合并/index.html
+INFO  Generated: git/git分支管理-Bug分支/index.html
+INFO  Generated: git/git分支管理-feature分支/index.html
+INFO  Generated: git/git分支管理-rebase/index.html
+INFO  Generated: git/git分支管理-分支管理政策/index.html
+INFO  Generated: git/git初识/index.html
+INFO  Generated: git/git标签管理/index.html
+INFO  Generated: git/git分支管理-解决冲突/index.html
+INFO  Generated: git/git远程仓库/index.html
+INFO  Generated: vps/VPS搭建SSR过程/index.html
+INFO  Generated: archives/page/3/index.html
+INFO  Generated: archives/page/4/index.html
+INFO  Generated: archives/page/5/index.html
+INFO  Generated: archives/page/6/index.html
+INFO  Generated: archives/page/7/index.html
+INFO  Generated: archives/page/8/index.html
+INFO  Generated: archives/page/9/index.html
+INFO  Generated: archives/page/10/index.html
+INFO  Generated: archives/page/11/index.html
+INFO  Generated: archives/page/12/index.html
+INFO  Generated: archives/page/13/index.html
+INFO  Generated: archives/page/14/index.html
+INFO  Generated: archives/2019/02/index.html
+INFO  Generated: archives/2019/05/index.html
+INFO  Generated: archives/2019/06/index.html
+INFO  Generated: categories/flask/index.html
+INFO  Generated: categories/docker/index.html
+INFO  Generated: categories/mysql学习/index.html
+INFO  Generated: categories/java/index.html
+INFO  Generated: categories/golang/index.html
+INFO  Generated: categories/work/index.html
+INFO  Generated: categories/随笔/index.html
+INFO  Generated: categories/flask-api/index.html
+INFO  Generated: categories/linux/index.html
+INFO  Generated: images/cc-by-sa.svg
+INFO  Generated: archives/2018/index.html
+INFO  Generated: archives/2018/11/index.html
+INFO  Generated: archives/2018/12/index.html
+INFO  Generated: archives/2019/index.html
+INFO  Generated: archives/2019/07/index.html
+INFO  Generated: archives/2019/08/index.html
+INFO  Generated: archives/2019/09/index.html
+INFO  Generated: archives/2019/10/index.html
+INFO  Generated: categories/git/index.html
+INFO  Generated: categories/python基础/page/2/index.html
+INFO  Generated: categories/python练习/page/2/index.html
+INFO  Generated: categories/数据库/page/2/index.html
+INFO  Generated: page/2/index.html
+INFO  Generated: tags/mongodb/index.html
+INFO  Generated: lib/fastclick/LICENSE
+INFO  Generated: lib/canvas-nest/canvas-nest.min.js
+INFO  Generated: lib/font-awesome/bower.json
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.css
+INFO  Generated: lib/needsharebutton/needsharebutton.css
+INFO  Generated: lib/jquery_lazyload/bower.json
+INFO  Generated: lib/velocity/bower.json
+INFO  Generated: lib/canvas-ribbon/canvas-ribbon.js
+INFO  Generated: lib/pace/pace-theme-big-counter.min.css
+INFO  Generated: css/main.css
+INFO  Generated: lib/three/canvas_sphere.min.js
+INFO  Generated: lib/jquery/index.js
+INFO  Generated: categories/python练习/page/3/index.html
+INFO  Generated: categories/python练习/page/4/index.html
+INFO  Generated: page/3/index.html
+INFO  Generated: page/4/index.html
+INFO  Generated: page/5/index.html
+INFO  Generated: page/6/index.html
+INFO  Generated: page/7/index.html
+INFO  Generated: page/8/index.html
+INFO  Generated: page/9/index.html
+INFO  Generated: page/10/index.html
+INFO  Generated: page/11/index.html
+INFO  Generated: page/12/index.html
+INFO  Generated: page/13/index.html
+INFO  Generated: page/14/index.html
+INFO  Generated: tags/redis/index.html
+INFO  Generated: 数据库/redis/docker安装redis/index.html
+INFO  Generated: archives/2018/11/page/2/index.html
+INFO  Generated: archives/2018/12/page/2/index.html
+INFO  Generated: archives/2019/07/page/2/index.html
+INFO  Generated: archives/2019/08/page/2/index.html
+INFO  Generated: archives/2019/09/page/2/index.html
+INFO  Generated: archives/2019/10/page/2/index.html
+INFO  Generated: categories/git/page/2/index.html
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff2
+INFO  Generated: lib/jquery_lazyload/jquery.lazyload.js
+INFO  Generated: lib/jquery_lazyload/jquery.scrollstop.js
+INFO  Generated: lib/velocity/velocity.ui.min.js
+INFO  Generated: lib/fastclick/bower.json
+INFO  Generated: lib/pace/pace-theme-bounce.min.css
+INFO  Generated: lib/pace/pace-theme-center-atom.min.css
+INFO  Generated: lib/pace/pace-theme-barber-shop.min.css
+INFO  Generated: lib/pace/pace-theme-center-circle.min.css
+INFO  Generated: lib/pace/pace-theme-center-radar.min.css
+INFO  Generated: lib/pace/pace-theme-center-simple.min.css
+INFO  Generated: lib/pace/pace-theme-corner-indicator.min.css
+INFO  Generated: lib/pace/pace-theme-flash.min.css
+INFO  Generated: lib/pace/pace-theme-loading-bar.min.css
+INFO  Generated: lib/pace/pace-theme-mac-osx.min.css
+INFO  Generated: lib/pace/pace.min.js
+INFO  Generated: lib/pace/pace-theme-minimal.min.css
+INFO  Generated: lib/pace/pace-theme-fill-left.min.css
+INFO  Generated: lib/jquery_lazyload/CONTRIBUTING.html
+INFO  Generated: lib/jquery_lazyload/README.html
+INFO  Generated: lib/fastclick/README.html
+INFO  Generated: lib/needsharebutton/needsharebutton.js
+INFO  Generated: lib/three/three-waves.min.js
+INFO  Generated: lib/needsharebutton/font-embedded.css
+INFO  Generated: lib/velocity/velocity.ui.js
+INFO  Generated: lib/three/canvas_lines.min.js
+INFO  Generated: lib/velocity/velocity.min.js
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.js
+INFO  Generated: lib/velocity/velocity.js
+INFO  Generated: lib/three/three.min.js
+INFO  Generated: lib/font-awesome/HELP-US-OUT.txt
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff
+INFO  Generated: 数据库/mongodb/mongodb常用命令/index.html
+INFO  Generated: archives/2018/page/2/index.html
+INFO  Generated: archives/2019/page/2/index.html
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.ttf
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.eot
+INFO  Generated: categories/linux/page/2/index.html
+INFO  Generated: lib/fancybox/source/blank.gif
+INFO  Generated: python练习/面向对象/有关于@property/index.html
+INFO  Generated: python练习/面向对象/上下文管理器/index.html
+INFO  Generated: python练习/面向对象/面向对象/index.html
+INFO  Generated: python练习/面向对象/格式化字符串/index.html
+INFO  Generated: python练习/面向对象/调用父类方法/index.html
+INFO  Generated: python练习/面向对象/@staticmethod和@classmethod/index.html
+INFO  Generated: 数据库/redis/命令/index.html
+INFO  Generated: 数据库/redis/python操作redis/index.html
+INFO  Generated: 数据库/redis/安全性能测试客户端连接管道技术/index.html
+INFO  Generated: 数据库/redis/数据备份与恢复/index.html
+INFO  Generated: 数据库/redis/简介与安装/index.html
+INFO  Generated: 数据库/redis/数据类型/index.html
+INFO  Generated: 数据库/mongodb/odm/index.html
+INFO  Generated: 数据库/mongodb/python操作MongoDB/index.html
+INFO  Generated: 数据库/mongodb/入门补充/index.html
+INFO  Generated: 数据库/mongodb/test_odm/index.html
+INFO  Generated: 数据库/mongodb/入门/index.html
+INFO  Generated: 数据库/mongodb/入门补充生成数据/index.html
+INFO  Generated: archives/2018/page/3/index.html
+INFO  Generated: archives/2018/page/4/index.html
+INFO  Generated: archives/2018/page/5/index.html
+INFO  Generated: archives/2018/page/6/index.html
+INFO  Generated: archives/2018/11/page/3/index.html
+INFO  Generated: archives/2018/11/page/4/index.html
+INFO  Generated: archives/2019/page/3/index.html
+INFO  Generated: archives/2019/page/4/index.html
+INFO  Generated: archives/2019/page/5/index.html
+INFO  Generated: archives/2019/page/6/index.html
+INFO  Generated: archives/2019/page/7/index.html
+INFO  Generated: archives/2019/page/8/index.html
+INFO  Generated: lib/font-awesome/css/font-awesome.css.map
+INFO  Generated: images/avatar.png
+INFO  Generated: lib/fancybox/source/fancybox_loading@2x.gif
+INFO  Generated: lib/fancybox/source/fancybox_overlay.png
+INFO  Generated: lib/fancybox/source/fancybox_loading.gif
+INFO  Generated: lib/fancybox/source/fancybox_sprite@2x.png
+INFO  Generated: lib/fancybox/source/fancybox_sprite.png
+INFO  Generated: js/src/affix.js
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.min.js
+INFO  Generated: lib/fastclick/lib/fastclick.min.js
+INFO  Generated: js/src/algolia-search.js
+INFO  Generated: js/src/bootstrap.js
+INFO  Generated: js/src/exturl.js
+INFO  Generated: js/src/scroll-cookie.js
+INFO  Generated: js/src/js.cookie.js
+INFO  Generated: js/src/scrollspy.js
+INFO  Generated: js/src/hook-duoshuo.js
+INFO  Generated: js/src/motion.js
+INFO  Generated: js/src/post-details.js
+INFO  Generated: js/src/utils.js
+INFO  Generated: lib/fancybox/source/jquery.fancybox.css
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.pack.js
+INFO  Generated: lib/Han/dist/han.min.css
+INFO  Generated: lib/Han/dist/han.min.js
+INFO  Generated: lib/fancybox/source/jquery.fancybox.pack.js
+INFO  Generated: lib/font-awesome/css/font-awesome.css
+INFO  Generated: lib/font-awesome/css/font-awesome.min.css
+INFO  Generated: lib/fastclick/lib/fastclick.js
+INFO  Generated: lib/Han/dist/han.css
+INFO  Generated: lib/Han/dist/han.js
+INFO  Generated: lib/fancybox/source/jquery.fancybox.js
+INFO  Generated: lib/font-awesome/fonts/FontAwesome.otf
+INFO  Generated: lib/Han/dist/font/han.otf
+INFO  Generated: lib/fancybox/source/helpers/fancybox_buttons.png
+INFO  Generated: lib/Han/dist/font/han-space.otf
+INFO  Generated: lib/Han/dist/font/han-space.woff
+INFO  Generated: lib/Han/dist/font/han.woff
+INFO  Generated: lib/Han/dist/font/han.woff2
+INFO  Generated: js/src/schemes/pisces.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.css
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.css
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-media.js
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.svg
+INFO  334 files generated in 13 s
+INFO  Deploying: git
+INFO  Clearing .deploy_git folder...
+INFO  Copying files from public folder...
+INFO  Copying files from extend dirs...
+[master 2c7df60] Site updated: 2020-04-03 12:20:22
+ Committer: root <root@tj.imwl.ml>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 92 files changed, 586 insertions(+), 586 deletions(-)
+To git@github.com:itswl/itswl.github.io.git
+   70709c4..2c7df60  HEAD -> master
+Branch master set up to track remote branch master from git@github.com:itswl/itswl.github.io.git.
+INFO  Deploy done: git
+INFO  Deleted database.
+INFO  Deleted public folder.
+INFO  Start processing
+WARN  ===============================================================
+WARN  ========================= ATTENTION! ==========================
+WARN  ===============================================================
+WARN   NexT repository is moving here: https://github.com/theme-next 
+WARN  ===============================================================
+WARN   It's rebase to v6.0.0 and future maintenance will resume there
+WARN  ===============================================================
+INFO  Files loaded in 3.78 s
+INFO  Generated: search.xml
+INFO  Generated: index.html
+INFO  Generated: categories/index.html
+INFO  Generated: archives/index.html
+INFO  Generated: images/algolia_logo.svg
+INFO  Generated: book/index.html
+INFO  Generated: about/index.html
+INFO  Generated: resume/index.html
+INFO  Generated: images/apple-touch-icon-next.png
+INFO  Generated: images/favicon-32x32.ico
+INFO  Generated: images/cc-by-nd.svg
+INFO  Generated: images/cc-by-nc.svg
+INFO  Generated: images/cc-by-sa.svg
+INFO  Generated: images/cc-by.svg
+INFO  Generated: images/cc-zero.svg
+INFO  Generated: images/cc-by-nc-sa.svg
+INFO  Generated: images/favicon-32x32-next.png
+INFO  Generated: images/loading.gif
+INFO  Generated: images/favicon-16x16-next.png
+INFO  Generated: images/logo.svg
+INFO  Generated: images/placeholder.gif
+INFO  Generated: images/quote-l.svg
+INFO  Generated: images/cc-by-nc-nd.svg
+INFO  Generated: images/searchicon.png
+INFO  Generated: images/favicon-16x16.ico
+INFO  Generated: images/quote-r.svg
+INFO  Generated: images/avatar.gif
+INFO  Generated: python练习/多进程/index.html
+INFO  Generated: java/java基础语法/index.html
+INFO  Generated: linux学习/安装Chrome浏览器和ChromeDriver/index.html
+INFO  Generated: golang/package与import/index.html
+INFO  Generated: docker/readme/index.html
+INFO  Generated: work/自动部署/index.html
+INFO  Generated: python操作数据库/mysql基础(1)/index.html
+INFO  Generated: 随笔/2017-2018 总结(初版)/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-1--起步与红图/index.html
+INFO  Generated: flask框架学习/flask高级编程_鱼书项目_填坑记/index.html
+INFO  Generated: python基础/python异常/index.html
+INFO  Generated: git/git分支管理-多人协作/index.html
+INFO  Generated: vps/GitHub+Hexo搭建个人网站/index.html
+INFO  Generated: page/4/index.html
+INFO  Generated: archives/page/2/index.html
+INFO  Generated: archives/2018/10/index.html
+INFO  Generated: archives/2019/01/index.html
+INFO  Generated: tags/mongodb/index.html
+INFO  Generated: lib/fastclick/LICENSE
+INFO  Generated: python练习/多线程/index.html
+INFO  Generated: python练习/is_json/index.html
+INFO  Generated: python练习/python的一些函数/index.html
+INFO  Generated: python练习/python里的特殊方法/index.html
+INFO  Generated: python练习/装饰器/index.html
+INFO  Generated: python练习/python拾遗_函数/index.html
+INFO  Generated: java/readme/index.html
+INFO  Generated: java/修饰符/index.html
+INFO  Generated: java/分支结构/index.html
+INFO  Generated: java/变量类型/index.html
+INFO  Generated: java/基本数据类型/index.html
+INFO  Generated: java/运算符/index.html
+INFO  Generated: golang/基础语法/index.html
+INFO  Generated: golang/readme/index.html
+INFO  Generated: golang/指针/index.html
+INFO  Generated: golang/规范/index.html
+INFO  Generated: linux学习/计算机组成原理/index.html
+INFO  Generated: python练习/面向对象/index.html
+INFO  Generated: python练习/网络请求/index.html
+INFO  Generated: python练习/多线程的鸡肋/index.html
+INFO  Generated: python练习/优雅的python写法/index.html
+INFO  Generated: python练习/迭代对象，迭代器，生成器/index.html
+INFO  Generated: python练习/psutil获取系统运行的进程和系统利用率/index.html
+INFO  Generated: python练习/python一些规则/index.html
+INFO  Generated: python练习/pathlib有关文件路径/index.html
+INFO  Generated: linux学习/linux使用者管理/index.html
+INFO  Generated: linux学习/部分/index.html
+INFO  Generated: linux学习/计算机概论/index.html
+INFO  Generated: linux学习/权限，目录/index.html
+INFO  Generated: linux学习/日志文件/index.html
+INFO  Generated: linux学习/文件，目录/index.html
+INFO  Generated: python练习/python日志模块/index.html
+INFO  Generated: linux学习/ip地址/index.html
+INFO  Generated: linux学习/HTTP的基本原理/index.html
+INFO  Generated: linux学习/个人计算机/index.html
+INFO  Generated: python练习/关于import路径/index.html
+INFO  Generated: python练习/HTTP的基本原理/index.html
+INFO  Generated: python练习/给博客加日期/index.html
+INFO  Generated: python操作数据库/mysql基础(2)/index.html
+INFO  Generated: linux学习/进程与线程/index.html
+INFO  Generated: python操作数据库/python操作mysql(增删改查)/index.html
+INFO  Generated: python操作数据库/python操作mysql(ORM)/index.html
+INFO  Generated: python操作数据库/使用MySQL/index.html
+INFO  Generated: linux学习/关于vi/index.html
+INFO  Generated: python练习/爬虫整理-(四)-多进程分布式与异步/index.html
+INFO  Generated: python练习/爬取百度百科词条写入数据库/index.html
+INFO  Generated: linux学习/readme/index.html
+INFO  Generated: python练习/爬虫整理-(五)--slenium/index.html
+INFO  Generated: linux学习/linux基础思维导图/index.html
+INFO  Generated: python练习/PandaTV爬取主播人气并排序/index.html
+INFO  Generated: python练习/爬虫整理（二）BeautifulSoup/index.html
+INFO  Generated: python操作数据库/mysql基础(3)/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-2--REST基本特征/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-6--模型对象的序列化/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户/index.html
+INFO  Generated: python操作数据库/数据库/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-4--理解WTForms并灵活改造她/index.html
+INFO  Generated: flask-api/图片/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-8--补充完善/index.html
+INFO  Generated: python练习/读取TXT_PDF/index.html
+INFO  Generated: flask框架学习/初识鱼书项目/index.html
+INFO  Generated: flask框架学习/windows下mysql的安装/index.html
+INFO  Generated: python基础/python网络编程/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-3--自定义异常对象/index.html
+INFO  Generated: python基础/python中用字典代替switch/index.html
+INFO  Generated: python基础/python中的None/index.html
+INFO  Generated: python基础/python中的列表推导式/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-7--权限控制/index.html
+INFO  Generated: python基础/python中的枚举/index.html
+INFO  Generated: python基础/python之函数式编程/index.html
+INFO  Generated: python基础/python之闭包/index.html
+INFO  Generated: flask框架学习/flask初识/index.html
+INFO  Generated: python基础/python之初识JSON/index.html
+INFO  Generated: python基础/python正则表达式的学习过程/index.html
+INFO  Generated: python基础/python中面向对象/index.html
+INFO  Generated: python基础/python文件操作/index.html
+INFO  Generated: python基础/python中流程控制语句/index.html
+INFO  Generated: python基础/python中变量与运算符/index.html
+INFO  Generated: python基础/python基本数据类型总结/index.html
+INFO  Generated: python基础/python补充/index.html
+INFO  Generated: git/git中分支管理-创建合并/index.html
+INFO  Generated: git/git中的工作区与暂存区/index.html
+INFO  Generated: git/git分支管理-Bug分支/index.html
+INFO  Generated: python练习/慕课网数据采集总结/index.html
+INFO  Generated: python练习/爬虫整理（三）Requests/index.html
+INFO  Generated: python练习/爬虫整理（一）使用re和urllib/index.html
+INFO  Generated: python基础/python中的装饰器/index.html
+INFO  Generated: python基础/python项目的组织结构/index.html
+INFO  Generated: git/git分支管理-解决冲突/index.html
+INFO  Generated: git/git远程仓库/index.html
+INFO  Generated: git/git标签管理/index.html
+INFO  Generated: python基础/python/index.html
+INFO  Generated: page/5/index.html
+INFO  Generated: page/6/index.html
+INFO  Generated: page/7/index.html
+INFO  Generated: git/git之使用github/index.html
+INFO  Generated: page/9/index.html
+INFO  Generated: page/10/index.html
+INFO  Generated: page/11/index.html
+INFO  Generated: git/git分支管理-分支管理政策/index.html
+INFO  Generated: page/13/index.html
+INFO  Generated: page/14/index.html
+INFO  Generated: categories/flask/index.html
+INFO  Generated: git/git初识/index.html
+INFO  Generated: categories/mysql学习/index.html
+INFO  Generated: categories/flask-api/index.html
+INFO  Generated: categories/docker/index.html
+INFO  Generated: page/8/index.html
+INFO  Generated: categories/随笔/index.html
+INFO  Generated: categories/git/index.html
+INFO  Generated: categories/linux/index.html
+INFO  Generated: page/12/index.html
+INFO  Generated: categories/python练习/index.html
+INFO  Generated: categories/python基础/index.html
+INFO  Generated: categories/golang/index.html
+INFO  Generated: categories/java/index.html
+INFO  Generated: categories/数据库/index.html
+INFO  Generated: archives/page/3/index.html
+INFO  Generated: archives/page/4/index.html
+INFO  Generated: categories/work/index.html
+INFO  Generated: archives/page/6/index.html
+INFO  Generated: archives/page/7/index.html
+INFO  Generated: archives/page/8/index.html
+INFO  Generated: categories/linux学习/index.html
+INFO  Generated: archives/page/10/index.html
+INFO  Generated: archives/page/11/index.html
+INFO  Generated: archives/page/12/index.html
+INFO  Generated: categories/VPS/index.html
+INFO  Generated: archives/page/14/index.html
+INFO  Generated: archives/2018/11/index.html
+INFO  Generated: archives/2018/12/index.html
+INFO  Generated: archives/page/5/index.html
+INFO  Generated: archives/2019/05/index.html
+INFO  Generated: archives/2019/06/index.html
+INFO  Generated: archives/2019/07/index.html
+INFO  Generated: archives/page/9/index.html
+INFO  Generated: archives/2019/09/index.html
+INFO  Generated: archives/2019/10/index.html
+INFO  Generated: tags/redis/index.html
+INFO  Generated: archives/page/13/index.html
+INFO  Generated: vps/VPS搭建SSR过程/index.html
+INFO  Generated: page/2/index.html
+INFO  Generated: page/3/index.html
+INFO  Generated: archives/2019/02/index.html
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.css
+INFO  Generated: lib/canvas-nest/canvas-nest.min.js
+INFO  Generated: archives/2019/08/index.html
+INFO  Generated: lib/jquery_lazyload/bower.json
+INFO  Generated: lib/needsharebutton/needsharebutton.css
+INFO  Generated: lib/velocity/bower.json
+INFO  Generated: lib/font-awesome/HELP-US-OUT.txt
+INFO  Generated: css/main.css
+INFO  Generated: lib/three/canvas_lines.min.js
+INFO  Generated: lib/jquery/index.js
+INFO  Generated: archives/2018/index.html
+INFO  Generated: lib/canvas-ribbon/canvas-ribbon.js
+INFO  Generated: lib/pace/pace-theme-big-counter.min.css
+INFO  Generated: archives/2019/index.html
+INFO  Generated: lib/jquery_lazyload/jquery.lazyload.js
+INFO  Generated: lib/jquery_lazyload/jquery.scrollstop.js
+INFO  Generated: lib/fastclick/bower.json
+INFO  Generated: lib/velocity/velocity.ui.min.js
+INFO  Generated: lib/pace/pace-theme-barber-shop.min.css
+INFO  Generated: lib/font-awesome/bower.json
+INFO  Generated: lib/pace/pace-theme-center-circle.min.css
+INFO  Generated: lib/pace/pace-theme-center-simple.min.css
+INFO  Generated: lib/pace/pace-theme-corner-indicator.min.css
+INFO  Generated: lib/pace/pace-theme-flash.min.css
+INFO  Generated: lib/pace/pace-theme-fill-left.min.css
+INFO  Generated: lib/pace/pace-theme-loading-bar.min.css
+INFO  Generated: lib/pace/pace-theme-mac-osx.min.css
+INFO  Generated: lib/pace/pace-theme-minimal.min.css
+INFO  Generated: lib/pace/pace.min.js
+INFO  Generated: lib/jquery_lazyload/CONTRIBUTING.html
+INFO  Generated: lib/jquery_lazyload/README.html
+INFO  Generated: lib/fastclick/README.html
+INFO  Generated: lib/three/canvas_sphere.min.js
+INFO  Generated: lib/three/three-waves.min.js
+INFO  Generated: lib/velocity/velocity.ui.js
+INFO  Generated: lib/velocity/velocity.min.js
+INFO  Generated: lib/needsharebutton/needsharebutton.js
+INFO  Generated: lib/needsharebutton/font-embedded.css
+INFO  Generated: lib/velocity/velocity.js
+INFO  Generated: lib/three/three.min.js
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.js
+INFO  Generated: lib/pace/pace-theme-bounce.min.css
+INFO  Generated: lib/pace/pace-theme-center-atom.min.css
+INFO  Generated: lib/pace/pace-theme-center-radar.min.css
+INFO  Generated: git/git之自定义/index.html
+INFO  Generated: git/git分支管理-feature分支/index.html
+INFO  Generated: git/git分支管理-rebase/index.html
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff2
+INFO  Generated: images/avatar.png
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff
+INFO  Generated: 数据库/redis/docker安装redis/index.html
+INFO  Generated: lib/Han/dist/font/han.woff
+INFO  Generated: 数据库/mongodb/odm/index.html
+INFO  Generated: categories/git/page/2/index.html
+INFO  Generated: categories/linux/page/2/index.html
+INFO  Generated: categories/python基础/page/2/index.html
+INFO  Generated: categories/数据库/page/2/index.html
+INFO  Generated: archives/2018/page/2/index.html
+INFO  Generated: categories/python练习/page/2/index.html
+INFO  Generated: archives/2018/12/page/2/index.html
+INFO  Generated: archives/2019/page/2/index.html
+INFO  Generated: archives/2019/07/page/2/index.html
+INFO  Generated: archives/2018/11/page/2/index.html
+INFO  Generated: archives/2019/09/page/2/index.html
+INFO  Generated: archives/2019/10/page/2/index.html
+INFO  Generated: lib/fancybox/source/fancybox_loading.gif
+INFO  Generated: archives/2019/08/page/2/index.html
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.ttf
+INFO  Generated: python练习/面向对象/有关于@property/index.html
+INFO  Generated: python练习/面向对象/上下文管理器/index.html
+INFO  Generated: python练习/面向对象/面向对象/index.html
+INFO  Generated: python练习/面向对象/格式化字符串/index.html
+INFO  Generated: python练习/面向对象/调用父类方法/index.html
+INFO  Generated: python练习/面向对象/@staticmethod和@classmethod/index.html
+INFO  Generated: 数据库/redis/python操作redis/index.html
+INFO  Generated: 数据库/redis/数据类型/index.html
+INFO  Generated: 数据库/redis/数据备份与恢复/index.html
+INFO  Generated: 数据库/redis/命令/index.html
+INFO  Generated: 数据库/redis/简介与安装/index.html
+INFO  Generated: 数据库/redis/安全性能测试客户端连接管道技术/index.html
+INFO  Generated: 数据库/mongodb/python操作MongoDB/index.html
+INFO  Generated: 数据库/mongodb/mongodb常用命令/index.html
+INFO  Generated: 数据库/mongodb/入门/index.html
+INFO  Generated: 数据库/mongodb/入门补充/index.html
+INFO  Generated: 数据库/mongodb/入门补充生成数据/index.html
+INFO  Generated: 数据库/mongodb/test_odm/index.html
+INFO  Generated: archives/2018/page/3/index.html
+INFO  Generated: archives/2018/page/4/index.html
+INFO  Generated: archives/2018/page/5/index.html
+INFO  Generated: archives/2018/page/6/index.html
+INFO  Generated: categories/python练习/page/3/index.html
+INFO  Generated: categories/python练习/page/4/index.html
+INFO  Generated: archives/2019/page/3/index.html
+INFO  Generated: archives/2019/page/4/index.html
+INFO  Generated: archives/2019/page/5/index.html
+INFO  Generated: archives/2019/page/6/index.html
+INFO  Generated: archives/2019/page/7/index.html
+INFO  Generated: archives/2019/page/8/index.html
+INFO  Generated: lib/font-awesome/css/font-awesome.css.map
+INFO  Generated: archives/2018/11/page/3/index.html
+INFO  Generated: archives/2018/11/page/4/index.html
+INFO  Generated: js/src/exturl.js
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.pack.js
+INFO  Generated: lib/fancybox/source/blank.gif
+INFO  Generated: lib/fancybox/source/fancybox_loading@2x.gif
+INFO  Generated: lib/fancybox/source/fancybox_overlay.png
+INFO  Generated: lib/fancybox/source/fancybox_sprite.png
+INFO  Generated: lib/fancybox/source/fancybox_sprite@2x.png
+INFO  Generated: lib/Han/dist/font/han-space.otf
+INFO  Generated: lib/Han/dist/font/han-space.woff
+INFO  Generated: lib/fastclick/lib/fastclick.min.js
+INFO  Generated: js/src/affix.js
+INFO  Generated: js/src/algolia-search.js
+INFO  Generated: js/src/bootstrap.js
+INFO  Generated: js/src/hook-duoshuo.js
+INFO  Generated: js/src/js.cookie.js
+INFO  Generated: js/src/motion.js
+INFO  Generated: js/src/post-details.js
+INFO  Generated: js/src/scrollspy.js
+INFO  Generated: js/src/utils.js
+INFO  Generated: js/src/scroll-cookie.js
+INFO  Generated: lib/fancybox/source/jquery.fancybox.css
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.min.js
+INFO  Generated: lib/Han/dist/han.min.js
+INFO  Generated: lib/Han/dist/han.min.css
+INFO  Generated: lib/font-awesome/css/font-awesome.css
+INFO  Generated: lib/fancybox/source/jquery.fancybox.js
+INFO  Generated: lib/fancybox/source/jquery.fancybox.pack.js
+INFO  Generated: lib/font-awesome/css/font-awesome.min.css
+INFO  Generated: lib/fastclick/lib/fastclick.js
+INFO  Generated: lib/Han/dist/han.css
+INFO  Generated: lib/Han/dist/han.js
+INFO  Generated: lib/font-awesome/fonts/FontAwesome.otf
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.eot
+INFO  Generated: lib/fancybox/source/helpers/fancybox_buttons.png
+INFO  Generated: lib/Han/dist/font/han.otf
+INFO  Generated: lib/Han/dist/font/han.woff2
+INFO  Generated: js/src/schemes/pisces.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.css
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.css
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-media.js
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.svg
+INFO  334 files generated in 13 s
+INFO  Deploying: git
+INFO  Clearing .deploy_git folder...
+INFO  Copying files from public folder...
+INFO  Copying files from extend dirs...
+[master d6d4ad7] Site updated: 2020-04-03 21:42:35
+ Committer: root <root@tj.imwl.ml>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 119 files changed, 953 insertions(+), 950 deletions(-)
+To git@github.com:itswl/itswl.github.io.git
+   2c7df60..d6d4ad7  HEAD -> master
+Branch master set up to track remote branch master from git@github.com:itswl/itswl.github.io.git.
+INFO  Deploy done: git
+INFO  Deleted database.
+INFO  Deleted public folder.
+INFO  Start processing
+WARN  ===============================================================
+WARN  ========================= ATTENTION! ==========================
+WARN  ===============================================================
+WARN   NexT repository is moving here: https://github.com/theme-next 
+WARN  ===============================================================
+WARN   It's rebase to v6.0.0 and future maintenance will resume there
+WARN  ===============================================================
+INFO  Files loaded in 3.15 s
+INFO  Generated: search.xml
+INFO  Generated: index.html
+INFO  Generated: categories/index.html
+INFO  Generated: archives/index.html
+INFO  Generated: book/index.html
+INFO  Generated: about/index.html
+INFO  Generated: resume/index.html
+INFO  Generated: archives/2018/index.html
+INFO  Generated: archives/2019/index.html
+INFO  Generated: categories/flask/index.html
+INFO  Generated: categories/java/index.html
+INFO  Generated: categories/flask-api/index.html
+INFO  Generated: categories/mysql学习/index.html
+INFO  Generated: categories/docker/index.html
+INFO  Generated: categories/linux/index.html
+INFO  Generated: categories/随笔/index.html
+INFO  Generated: categories/work/index.html
+INFO  Generated: categories/linux学习/index.html
+INFO  Generated: categories/golang/index.html
+INFO  Generated: categories/VPS/index.html
+INFO  Generated: categories/git/index.html
+INFO  Generated: categories/python基础/index.html
+INFO  Generated: categories/python练习/index.html
+INFO  Generated: categories/数据库/index.html
+INFO  Generated: images/apple-touch-icon-next.png
+INFO  Generated: python练习/多进程/index.html
+INFO  Generated: java/分支结构/index.html
+INFO  Generated: linux学习/安装Chrome浏览器和ChromeDriver/index.html
+INFO  Generated: golang/基础语法/index.html
+INFO  Generated: docker/readme/index.html
+INFO  Generated: work/自动部署/index.html
+INFO  Generated: python操作数据库/mysql基础(1)/index.html
+INFO  Generated: 随笔/2017-2018 总结(初版)/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-1--起步与红图/index.html
+INFO  Generated: flask框架学习/flask初识/index.html
+INFO  Generated: python基础/python异常/index.html
+INFO  Generated: git/git分支管理-多人协作/index.html
+INFO  Generated: vps/GitHub+Hexo搭建个人网站/index.html
+INFO  Generated: archives/page/2/index.html
+INFO  Generated: python练习/多线程/index.html
+INFO  Generated: python练习/is_json/index.html
+INFO  Generated: python练习/python里的特殊方法/index.html
+INFO  Generated: python练习/python的一些函数/index.html
+INFO  Generated: python练习/装饰器/index.html
+INFO  Generated: python练习/python拾遗_函数/index.html
+INFO  Generated: java/readme/index.html
+INFO  Generated: java/修饰符/index.html
+INFO  Generated: java/java基础语法/index.html
+INFO  Generated: java/变量类型/index.html
+INFO  Generated: java/基本数据类型/index.html
+INFO  Generated: java/运算符/index.html
+INFO  Generated: golang/package与import/index.html
+INFO  Generated: golang/readme/index.html
+INFO  Generated: golang/规范/index.html
+INFO  Generated: golang/指针/index.html
+INFO  Generated: linux学习/计算机组成原理/index.html
+INFO  Generated: python练习/面向对象/index.html
+INFO  Generated: python练习/迭代对象，迭代器，生成器/index.html
+INFO  Generated: python练习/网络请求/index.html
+INFO  Generated: python练习/多线程的鸡肋/index.html
+INFO  Generated: python练习/优雅的python写法/index.html
+INFO  Generated: python练习/python日志模块/index.html
+INFO  Generated: images/avatar.gif
+INFO  Generated: images/algolia_logo.svg
+INFO  Generated: images/cc-by-nc-nd.svg
+INFO  Generated: images/cc-by-nd.svg
+INFO  Generated: images/cc-by.svg
+INFO  Generated: images/cc-zero.svg
+INFO  Generated: images/favicon-16x16-next.png
+INFO  Generated: images/favicon-32x32-next.png
+INFO  Generated: images/loading.gif
+INFO  Generated: images/cc-by-sa.svg
+INFO  Generated: images/cc-by-nc-sa.svg
+INFO  Generated: images/quote-r.svg
+INFO  Generated: images/searchicon.png
+INFO  Generated: images/placeholder.gif
+INFO  Generated: images/quote-l.svg
+INFO  Generated: images/logo.svg
+INFO  Generated: images/favicon-16x16.ico
+INFO  Generated: images/favicon-32x32.ico
+INFO  Generated: images/cc-by-nc.svg
+INFO  Generated: python练习/psutil获取系统运行的进程和系统利用率/index.html
+INFO  Generated: linux学习/linux使用者管理/index.html
+INFO  Generated: linux学习/部分/index.html
+INFO  Generated: linux学习/计算机概论/index.html
+INFO  Generated: linux学习/进程与线程/index.html
+INFO  Generated: linux学习/权限，目录/index.html
+INFO  Generated: linux学习/日志文件/index.html
+INFO  Generated: linux学习/文件，目录/index.html
+INFO  Generated: linux学习/关于vi/index.html
+INFO  Generated: linux学习/ip地址/index.html
+INFO  Generated: linux学习/HTTP的基本原理/index.html
+INFO  Generated: python练习/python一些规则/index.html
+INFO  Generated: python练习/pathlib有关文件路径/index.html
+INFO  Generated: python练习/HTTP的基本原理/index.html
+INFO  Generated: linux学习/个人计算机/index.html
+INFO  Generated: python操作数据库/mysql基础(2)/index.html
+INFO  Generated: python操作数据库/mysql基础(3)/index.html
+INFO  Generated: python操作数据库/python操作mysql(ORM)/index.html
+INFO  Generated: python练习/给博客加日期/index.html
+INFO  Generated: linux学习/readme/index.html
+INFO  Generated: python练习/关于import路径/index.html
+INFO  Generated: python练习/爬虫整理-(四)-多进程分布式与异步/index.html
+INFO  Generated: python操作数据库/python操作mysql(增删改查)/index.html
+INFO  Generated: python练习/爬取百度百科词条写入数据库/index.html
+INFO  Generated: python练习/读取TXT_PDF/index.html
+INFO  Generated: python练习/爬虫整理-(五)--slenium/index.html
+INFO  Generated: python操作数据库/使用MySQL/index.html
+INFO  Generated: python操作数据库/数据库/index.html
+INFO  Generated: linux学习/linux基础思维导图/index.html
+INFO  Generated: python练习/PandaTV爬取主播人气并排序/index.html
+INFO  Generated: python练习/爬虫整理（二）BeautifulSoup/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-2--REST基本特征/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-4--理解WTForms并灵活改造她/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-3--自定义异常对象/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户/index.html
+INFO  Generated: flask-api/图片/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-8--补充完善/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-7--权限控制/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-6--模型对象的序列化/index.html
+INFO  Generated: flask框架学习/初识鱼书项目/index.html
+INFO  Generated: flask框架学习/flask高级编程_鱼书项目_填坑记/index.html
+INFO  Generated: flask框架学习/windows下mysql的安装/index.html
+INFO  Generated: python基础/python网络编程/index.html
+INFO  Generated: python基础/python文件操作/index.html
+INFO  Generated: python基础/python中用字典代替switch/index.html
+INFO  Generated: python基础/python中的列表推导式/index.html
+INFO  Generated: python基础/python中的None/index.html
+INFO  Generated: python基础/python补充/index.html
+INFO  Generated: python基础/python中的枚举/index.html
+INFO  Generated: python基础/python之函数式编程/index.html
+INFO  Generated: python基础/python之闭包/index.html
+INFO  Generated: python基础/python中的装饰器/index.html
+INFO  Generated: python基础/python之初识JSON/index.html
+INFO  Generated: python基础/python正则表达式的学习过程/index.html
+INFO  Generated: python基础/python中面向对象/index.html
+INFO  Generated: python基础/python项目的组织结构/index.html
+INFO  Generated: python基础/python中流程控制语句/index.html
+INFO  Generated: python基础/python中变量与运算符/index.html
+INFO  Generated: python基础/python基本数据类型总结/index.html
+INFO  Generated: python基础/python/index.html
+INFO  Generated: git/git中分支管理-创建合并/index.html
+INFO  Generated: git/git中的工作区与暂存区/index.html
+INFO  Generated: git/git之使用github/index.html
+INFO  Generated: git/git之自定义/index.html
+INFO  Generated: git/git分支管理-Bug分支/index.html
+INFO  Generated: git/git分支管理-feature分支/index.html
+INFO  Generated: git/git分支管理-rebase/index.html
+INFO  Generated: git/git分支管理-分支管理政策/index.html
+INFO  Generated: python练习/慕课网数据采集总结/index.html
+INFO  Generated: python练习/爬虫整理（一）使用re和urllib/index.html
+INFO  Generated: python练习/爬虫整理（三）Requests/index.html
+INFO  Generated: git/git分支管理-解决冲突/index.html
+INFO  Generated: vps/VPS搭建SSR过程/index.html
+INFO  Generated: archives/page/3/index.html
+INFO  Generated: archives/2018/page/2/index.html
+INFO  Generated: archives/2019/page/2/index.html
+INFO  Generated: categories/linux/page/2/index.html
+INFO  Generated: categories/git/page/2/index.html
+INFO  Generated: categories/python基础/page/2/index.html
+INFO  Generated: categories/python练习/page/2/index.html
+INFO  Generated: categories/数据库/page/2/index.html
+INFO  Generated: page/2/index.html
+INFO  Generated: tags/mongodb/index.html
+INFO  Generated: git/git初识/index.html
+INFO  Generated: archives/page/4/index.html
+INFO  Generated: archives/page/5/index.html
+INFO  Generated: git/git标签管理/index.html
+INFO  Generated: archives/page/6/index.html
+INFO  Generated: archives/page/9/index.html
+INFO  Generated: archives/page/10/index.html
+INFO  Generated: archives/page/11/index.html
+INFO  Generated: archives/page/12/index.html
+INFO  Generated: archives/page/13/index.html
+INFO  Generated: archives/page/14/index.html
+INFO  Generated: archives/2018/page/3/index.html
+INFO  Generated: archives/2018/page/4/index.html
+INFO  Generated: archives/2018/page/5/index.html
+INFO  Generated: archives/2018/page/6/index.html
+INFO  Generated: archives/2018/10/index.html
+INFO  Generated: archives/2018/11/index.html
+INFO  Generated: archives/2018/12/index.html
+INFO  Generated: archives/2019/page/3/index.html
+INFO  Generated: archives/2019/page/4/index.html
+INFO  Generated: archives/2019/page/5/index.html
+INFO  Generated: archives/2019/page/6/index.html
+INFO  Generated: archives/2019/page/7/index.html
+INFO  Generated: archives/2019/page/8/index.html
+INFO  Generated: archives/2019/01/index.html
+INFO  Generated: archives/2019/02/index.html
+INFO  Generated: archives/2019/05/index.html
+INFO  Generated: archives/2019/06/index.html
+INFO  Generated: archives/2019/07/index.html
+INFO  Generated: archives/2019/08/index.html
+INFO  Generated: archives/2019/09/index.html
+INFO  Generated: archives/2019/10/index.html
+INFO  Generated: categories/python练习/page/3/index.html
+INFO  Generated: categories/python练习/page/4/index.html
+INFO  Generated: page/3/index.html
+INFO  Generated: page/4/index.html
+INFO  Generated: page/5/index.html
+INFO  Generated: page/6/index.html
+INFO  Generated: page/7/index.html
+INFO  Generated: page/8/index.html
+INFO  Generated: page/9/index.html
+INFO  Generated: page/10/index.html
+INFO  Generated: page/11/index.html
+INFO  Generated: page/12/index.html
+INFO  Generated: page/13/index.html
+INFO  Generated: page/14/index.html
+INFO  Generated: tags/redis/index.html
+INFO  Generated: 数据库/redis/docker安装redis/index.html
+INFO  Generated: css/main.css
+INFO  Generated: 数据库/mongodb/mongodb常用命令/index.html
+INFO  Generated: python练习/面向对象/有关于@property/index.html
+INFO  Generated: python练习/面向对象/上下文管理器/index.html
+INFO  Generated: python练习/面向对象/面向对象/index.html
+INFO  Generated: python练习/面向对象/格式化字符串/index.html
+INFO  Generated: python练习/面向对象/调用父类方法/index.html
+INFO  Generated: python练习/面向对象/@staticmethod和@classmethod/index.html
+INFO  Generated: 数据库/redis/python操作redis/index.html
+INFO  Generated: 数据库/redis/命令/index.html
+INFO  Generated: 数据库/redis/安全性能测试客户端连接管道技术/index.html
+INFO  Generated: 数据库/redis/数据备份与恢复/index.html
+INFO  Generated: 数据库/redis/简介与安装/index.html
+INFO  Generated: 数据库/redis/数据类型/index.html
+INFO  Generated: 数据库/mongodb/odm/index.html
+INFO  Generated: 数据库/mongodb/python操作MongoDB/index.html
+INFO  Generated: 数据库/mongodb/test_odm/index.html
+INFO  Generated: 数据库/mongodb/入门补充生成数据/index.html
+INFO  Generated: 数据库/mongodb/入门补充/index.html
+INFO  Generated: 数据库/mongodb/入门/index.html
+INFO  Generated: git/git远程仓库/index.html
+INFO  Generated: archives/page/7/index.html
+INFO  Generated: archives/page/8/index.html
+INFO  Generated: lib/font-awesome/HELP-US-OUT.txt
+INFO  Generated: lib/fastclick/LICENSE
+INFO  Generated: images/avatar.png
+INFO  Generated: js/src/exturl.js
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.pack.js
+INFO  Generated: lib/fastclick/lib/fastclick.min.js
+INFO  Generated: lib/font-awesome/fonts/FontAwesome.otf
+INFO  Generated: archives/2018/11/page/2/index.html
+INFO  Generated: archives/2018/12/page/2/index.html
+INFO  Generated: archives/2019/07/page/2/index.html
+INFO  Generated: archives/2019/08/page/2/index.html
+INFO  Generated: archives/2019/09/page/2/index.html
+INFO  Generated: archives/2019/10/page/2/index.html
+INFO  Generated: lib/canvas-nest/canvas-nest.min.js
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.css
+INFO  Generated: lib/jquery_lazyload/jquery.lazyload.js
+INFO  Generated: lib/needsharebutton/needsharebutton.css
+INFO  Generated: lib/velocity/bower.json
+INFO  Generated: lib/canvas-ribbon/canvas-ribbon.js
+INFO  Generated: lib/pace/pace-theme-big-counter.min.css
+INFO  Generated: lib/three/canvas_lines.min.js
+INFO  Generated: lib/jquery/index.js
+INFO  Generated: lib/font-awesome/css/font-awesome.min.css
+INFO  Generated: archives/2018/11/page/3/index.html
+INFO  Generated: archives/2018/11/page/4/index.html
+INFO  Generated: js/src/hook-duoshuo.js
+INFO  Generated: js/src/post-details.js
+INFO  Generated: js/src/motion.js
+INFO  Generated: js/src/js.cookie.js
+INFO  Generated: js/src/scrollspy.js
+INFO  Generated: js/src/utils.js
+INFO  Generated: lib/font-awesome/bower.json
+INFO  Generated: js/src/scroll-cookie.js
+INFO  Generated: lib/jquery_lazyload/jquery.scrollstop.js
+INFO  Generated: lib/jquery_lazyload/bower.json
+INFO  Generated: lib/velocity/velocity.ui.min.js
+INFO  Generated: lib/fastclick/bower.json
+INFO  Generated: lib/pace/pace-theme-barber-shop.min.css
+INFO  Generated: lib/pace/pace-theme-center-circle.min.css
+INFO  Generated: lib/pace/pace-theme-bounce.min.css
+INFO  Generated: lib/pace/pace-theme-corner-indicator.min.css
+INFO  Generated: lib/pace/pace-theme-fill-left.min.css
+INFO  Generated: lib/pace/pace-theme-center-atom.min.css
+INFO  Generated: lib/pace/pace-theme-center-radar.min.css
+INFO  Generated: lib/pace/pace-theme-center-simple.min.css
+INFO  Generated: lib/pace/pace-theme-mac-osx.min.css
+INFO  Generated: lib/pace/pace-theme-minimal.min.css
+INFO  Generated: lib/pace/pace-theme-loading-bar.min.css
+INFO  Generated: lib/pace/pace.min.js
+INFO  Generated: lib/pace/pace-theme-flash.min.css
+INFO  Generated: lib/fancybox/source/jquery.fancybox.css
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.min.js
+INFO  Generated: lib/jquery_lazyload/CONTRIBUTING.html
+INFO  Generated: lib/jquery_lazyload/README.html
+INFO  Generated: lib/fastclick/README.html
+INFO  Generated: lib/needsharebutton/font-embedded.css
+INFO  Generated: lib/needsharebutton/needsharebutton.js
+INFO  Generated: lib/three/canvas_sphere.min.js
+INFO  Generated: lib/three/three-waves.min.js
+INFO  Generated: lib/velocity/velocity.ui.js
+INFO  Generated: lib/velocity/velocity.min.js
+INFO  Generated: lib/Han/dist/han.min.css
+INFO  Generated: lib/fancybox/source/jquery.fancybox.pack.js
+INFO  Generated: lib/Han/dist/han.css
+INFO  Generated: lib/Han/dist/han.min.js
+INFO  Generated: lib/fancybox/source/jquery.fancybox.js
+INFO  Generated: lib/font-awesome/css/font-awesome.css
+INFO  Generated: lib/Han/dist/han.js
+INFO  Generated: lib/fastclick/lib/fastclick.js
+INFO  Generated: lib/velocity/velocity.js
+INFO  Generated: lib/three/three.min.js
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.js
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.eot
+INFO  Generated: js/src/affix.js
+INFO  Generated: js/src/algolia-search.js
+INFO  Generated: js/src/bootstrap.js
+INFO  Generated: lib/Han/dist/font/han-space.woff
+INFO  Generated: lib/fancybox/source/helpers/fancybox_buttons.png
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.ttf
+INFO  Generated: lib/fancybox/source/fancybox_loading.gif
+INFO  Generated: lib/fancybox/source/blank.gif
+INFO  Generated: lib/fancybox/source/fancybox_loading@2x.gif
+INFO  Generated: lib/fancybox/source/fancybox_overlay.png
+INFO  Generated: lib/fancybox/source/fancybox_sprite@2x.png
+INFO  Generated: lib/fancybox/source/fancybox_sprite.png
+INFO  Generated: lib/Han/dist/font/han-space.otf
+INFO  Generated: lib/Han/dist/font/han.woff2
+INFO  Generated: lib/Han/dist/font/han.otf
+INFO  Generated: lib/Han/dist/font/han.woff
+INFO  Generated: lib/font-awesome/css/font-awesome.css.map
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff2
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff
+INFO  Generated: js/src/schemes/pisces.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.css
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-media.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.css
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.svg
+INFO  334 files generated in 12 s
+INFO  Deploying: git
+INFO  Clearing .deploy_git folder...
+INFO  Copying files from public folder...
+INFO  Copying files from extend dirs...
+[master 1e64eb0] Site updated: 2020-04-03 22:50:52
+ Committer: root <root@tj.imwl.ml>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 134 files changed, 1015 insertions(+), 1015 deletions(-)
+To git@github.com:itswl/itswl.github.io.git
+   d6d4ad7..1e64eb0  HEAD -> master
+Branch master set up to track remote branch master from git@github.com:itswl/itswl.github.io.git.
+INFO  Deploy done: git
+INFO  Deleted database.
+INFO  Deleted public folder.
+INFO  Start processing
+ERROR Process failed: layout/_scripts/vendors.swig
+Error: SyntaxError: Unexpected token '-' in file /root/blog/themes/next/layout/_scripts/vendors.swig.
+    at Object.exports.throwError (/root/blog/node_modules/swig-templates/lib/utils.js:188:9)
+    at exports.Swig.precompile (/root/blog/node_modules/swig-templates/lib/swig.js:550:13)
+    at Object.compile (/root/blog/node_modules/swig-templates/lib/swig.js:651:16)
+    at Function.swigRenderer.compile (/root/blog/node_modules/hexo/lib/plugins/renderer/swig.js:41:47)
+    at Theme._View.View.View._precompile (/root/blog/node_modules/hexo/lib/theme/view.js:118:31)
+    at Theme._View.View.View (/root/blog/node_modules/hexo/lib/theme/view.js:14:8)
+    at new Theme._View.View (/root/blog/node_modules/hexo/lib/theme/index.js:37:10)
+    at Theme.setView (/root/blog/node_modules/hexo/lib/theme/index.js:71:20)
+    at /root/blog/node_modules/hexo/lib/theme/processors/view.js:14:14
+    at tryCatcher (/root/blog/node_modules/bluebird/js/release/util.js:16:23)
+    at Promise._settlePromiseFromHandler (/root/blog/node_modules/bluebird/js/release/promise.js:512:31)
+    at Promise._settlePromise (/root/blog/node_modules/bluebird/js/release/promise.js:569:18)
+    at Promise._settlePromise0 (/root/blog/node_modules/bluebird/js/release/promise.js:614:10)
+    at Promise._settlePromises (/root/blog/node_modules/bluebird/js/release/promise.js:694:18)
+    at Promise._fulfill (/root/blog/node_modules/bluebird/js/release/promise.js:638:18)
+    at Promise._resolveCallback (/root/blog/node_modules/bluebird/js/release/promise.js:432:57)
+    at Promise._settlePromiseFromHandler (/root/blog/node_modules/bluebird/js/release/promise.js:524:17)
+    at Promise._settlePromise (/root/blog/node_modules/bluebird/js/release/promise.js:569:18)
+    at Promise._settlePromise0 (/root/blog/node_modules/bluebird/js/release/promise.js:614:10)
+    at Promise._settlePromises (/root/blog/node_modules/bluebird/js/release/promise.js:694:18)
+    at Promise._fulfill (/root/blog/node_modules/bluebird/js/release/promise.js:638:18)
+    at /root/blog/node_modules/bluebird/js/release/nodeback.js:42:21
+WARN  ===============================================================
+WARN  ========================= ATTENTION! ==========================
+WARN  ===============================================================
+WARN   NexT repository is moving here: https://github.com/theme-next 
+WARN  ===============================================================
+WARN   It's rebase to v6.0.0 and future maintenance will resume there
+WARN  ===============================================================
+INFO  Files loaded in 3.03 s
+INFO  Generated: search.xml
+INFO  Generated: index.html
+INFO  Generated: book/index.html
+INFO  Generated: resume/index.html
+INFO  Generated: categories/index.html
+INFO  Generated: about/index.html
+INFO  Generated: archives/index.html
+INFO  Generated: categories/flask/index.html
+INFO  Generated: categories/java/index.html
+INFO  Generated: categories/mysql学习/index.html
+INFO  Generated: categories/docker/index.html
+INFO  Generated: categories/flask-api/index.html
+INFO  Generated: categories/work/index.html
+INFO  Generated: categories/随笔/index.html
+INFO  Generated: categories/golang/index.html
+INFO  Generated: categories/VPS/index.html
+INFO  Generated: categories/git/index.html
+INFO  Generated: categories/linux/index.html
+INFO  Generated: categories/linux学习/index.html
+INFO  Generated: categories/python基础/index.html
+INFO  Generated: categories/python练习/index.html
+INFO  Generated: categories/数据库/index.html
+INFO  Generated: python练习/多进程/index.html
+INFO  Generated: java/readme/index.html
+INFO  Generated: linux学习/安装Chrome浏览器和ChromeDriver/index.html
+INFO  Generated: golang/package与import/index.html
+INFO  Generated: docker/readme/index.html
+INFO  Generated: work/自动部署/index.html
+INFO  Generated: python操作数据库/python操作mysql(ORM)/index.html
+INFO  Generated: 随笔/2017-2018 总结(初版)/index.html
+INFO  Generated: images/favicon-16x16.ico
+INFO  Generated: images/favicon-32x32.ico
+INFO  Generated: images/apple-touch-icon-next.png
+INFO  Generated: images/algolia_logo.svg
+INFO  Generated: images/avatar.gif
+INFO  Generated: images/cc-by-nc-nd.svg
+INFO  Generated: images/cc-by-nc-sa.svg
+INFO  Generated: images/cc-by-nc.svg
+INFO  Generated: images/cc-by.svg
+INFO  Generated: images/cc-zero.svg
+INFO  Generated: images/cc-by-sa.svg
+INFO  Generated: images/cc-by-nd.svg
+INFO  Generated: images/loading.gif
+INFO  Generated: images/placeholder.gif
+INFO  Generated: images/quote-l.svg
+INFO  Generated: images/quote-r.svg
+INFO  Generated: images/searchicon.png
+INFO  Generated: images/logo.svg
+INFO  Generated: images/favicon-16x16-next.png
+INFO  Generated: images/favicon-32x32-next.png
+INFO  Generated: python练习/多线程/index.html
+INFO  Generated: python练习/is_json/index.html
+INFO  Generated: python练习/python里的特殊方法/index.html
+INFO  Generated: python练习/python的一些函数/index.html
+INFO  Generated: python练习/装饰器/index.html
+INFO  Generated: python练习/python拾遗_函数/index.html
+INFO  Generated: java/java基础语法/index.html
+INFO  Generated: java/修饰符/index.html
+INFO  Generated: java/变量类型/index.html
+INFO  Generated: java/基本数据类型/index.html
+INFO  Generated: java/分支结构/index.html
+INFO  Generated: java/运算符/index.html
+INFO  Generated: golang/基础语法/index.html
+INFO  Generated: golang/readme/index.html
+INFO  Generated: golang/指针/index.html
+INFO  Generated: golang/规范/index.html
+INFO  Generated: linux学习/计算机组成原理/index.html
+INFO  Generated: python练习/面向对象/index.html
+INFO  Generated: python练习/迭代对象，迭代器，生成器/index.html
+INFO  Generated: python练习/网络请求/index.html
+INFO  Generated: python练习/多线程的鸡肋/index.html
+INFO  Generated: python练习/优雅的python写法/index.html
+INFO  Generated: python练习/python日志模块/index.html
+INFO  Generated: python练习/psutil获取系统运行的进程和系统利用率/index.html
+INFO  Generated: linux学习/linux使用者管理/index.html
+INFO  Generated: linux学习/部分/index.html
+INFO  Generated: linux学习/计算机概论/index.html
+INFO  Generated: linux学习/进程与线程/index.html
+INFO  Generated: linux学习/权限，目录/index.html
+INFO  Generated: linux学习/日志文件/index.html
+INFO  Generated: linux学习/文件，目录/index.html
+INFO  Generated: linux学习/关于vi/index.html
+INFO  Generated: linux学习/ip地址/index.html
+INFO  Generated: linux学习/HTTP的基本原理/index.html
+INFO  Generated: linux学习/readme/index.html
+INFO  Generated: linux学习/个人计算机/index.html
+INFO  Generated: python练习/HTTP的基本原理/index.html
+INFO  Generated: python练习/给博客加日期/index.html
+INFO  Generated: python操作数据库/mysql基础(1)/index.html
+INFO  Generated: python操作数据库/mysql基础(2)/index.html
+INFO  Generated: python操作数据库/mysql基础(3)/index.html
+INFO  Generated: python操作数据库/数据库/index.html
+INFO  Generated: python操作数据库/使用MySQL/index.html
+INFO  Generated: python操作数据库/python操作mysql(增删改查)/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-1--起步与红图/index.html
+INFO  Generated: flask框架学习/flask高级编程_鱼书项目_填坑记/index.html
+INFO  Generated: python练习/爬虫整理-(四)-多进程分布式与异步/index.html
+INFO  Generated: python练习/python一些规则/index.html
+INFO  Generated: python练习/爬取百度百科词条写入数据库/index.html
+INFO  Generated: python练习/读取TXT_PDF/index.html
+INFO  Generated: linux学习/linux基础思维导图/index.html
+INFO  Generated: python练习/爬虫整理-(五)--slenium/index.html
+INFO  Generated: python练习/慕课网数据采集总结/index.html
+INFO  Generated: python练习/爬虫整理（一）使用re和urllib/index.html
+INFO  Generated: python练习/爬虫整理（二）BeautifulSoup/index.html
+INFO  Generated: python练习/爬虫整理（三）Requests/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-2--REST基本特征/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-3--自定义异常对象/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-4--理解WTForms并灵活改造她/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-5--Token与HTTPBasic验证-——-用令牌来管理用户/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-6--模型对象的序列化/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-7--权限控制/index.html
+INFO  Generated: flask-api/Flask构建可扩展的RESTful-API-8--补充完善/index.html
+INFO  Generated: flask-api/图片/index.html
+INFO  Generated: flask框架学习/flask初识/index.html
+INFO  Generated: flask框架学习/初识鱼书项目/index.html
+INFO  Generated: flask框架学习/windows下mysql的安装/index.html
+INFO  Generated: python基础/python异常/index.html
+INFO  Generated: git/git分支管理-多人协作/index.html
+INFO  Generated: vps/GitHub+Hexo搭建个人网站/index.html
+INFO  Generated: archives/page/2/index.html
+INFO  Generated: archives/2018/10/index.html
+INFO  Generated: archives/2019/01/index.html
+INFO  Generated: categories/git/page/2/index.html
+INFO  Generated: categories/linux/page/2/index.html
+INFO  Generated: categories/python基础/page/2/index.html
+INFO  Generated: categories/python练习/page/2/index.html
+INFO  Generated: categories/数据库/page/2/index.html
+INFO  Generated: page/2/index.html
+INFO  Generated: python基础/python中的None/index.html
+INFO  Generated: python基础/python中的列表推导式/index.html
+INFO  Generated: python基础/python补充/index.html
+INFO  Generated: python基础/python中的枚举/index.html
+INFO  Generated: python基础/python之闭包/index.html
+INFO  Generated: python基础/python之函数式编程/index.html
+INFO  Generated: python基础/python中的装饰器/index.html
+INFO  Generated: python基础/python之初识JSON/index.html
+INFO  Generated: python基础/python正则表达式的学习过程/index.html
+INFO  Generated: python基础/python中面向对象/index.html
+INFO  Generated: python基础/python项目的组织结构/index.html
+INFO  Generated: python基础/python中流程控制语句/index.html
+INFO  Generated: python基础/python中变量与运算符/index.html
+INFO  Generated: python基础/python基本数据类型总结/index.html
+INFO  Generated: python基础/python/index.html
+INFO  Generated: git/git中分支管理-创建合并/index.html
+INFO  Generated: git/git之自定义/index.html
+INFO  Generated: git/git之使用github/index.html
+INFO  Generated: git/git中的工作区与暂存区/index.html
+INFO  Generated: git/git分支管理-Bug分支/index.html
+INFO  Generated: git/git分支管理-feature分支/index.html
+INFO  Generated: git/git分支管理-rebase/index.html
+INFO  Generated: git/git分支管理-分支管理政策/index.html
+INFO  Generated: git/git初识/index.html
+INFO  Generated: python练习/pathlib有关文件路径/index.html
+INFO  Generated: python练习/关于import路径/index.html
+INFO  Generated: python练习/PandaTV爬取主播人气并排序/index.html
+INFO  Generated: git/git标签管理/index.html
+INFO  Generated: archives/page/3/index.html
+INFO  Generated: archives/page/4/index.html
+INFO  Generated: archives/page/5/index.html
+INFO  Generated: vps/VPS搭建SSR过程/index.html
+INFO  Generated: git/git分支管理-解决冲突/index.html
+INFO  Generated: git/git远程仓库/index.html
+INFO  Generated: archives/page/6/index.html
+INFO  Generated: archives/page/10/index.html
+INFO  Generated: archives/page/11/index.html
+INFO  Generated: archives/page/12/index.html
+INFO  Generated: archives/page/13/index.html
+INFO  Generated: archives/page/14/index.html
+INFO  Generated: archives/2018/11/index.html
+INFO  Generated: archives/2018/12/index.html
+INFO  Generated: archives/2019/02/index.html
+INFO  Generated: archives/2019/05/index.html
+INFO  Generated: archives/2019/06/index.html
+INFO  Generated: archives/2019/07/index.html
+INFO  Generated: archives/2019/08/index.html
+INFO  Generated: archives/2019/09/index.html
+INFO  Generated: archives/2019/10/index.html
+INFO  Generated: categories/python练习/page/3/index.html
+INFO  Generated: categories/python练习/page/4/index.html
+INFO  Generated: page/3/index.html
+INFO  Generated: page/4/index.html
+INFO  Generated: page/5/index.html
+INFO  Generated: page/6/index.html
+INFO  Generated: page/7/index.html
+INFO  Generated: page/8/index.html
+INFO  Generated: page/9/index.html
+INFO  Generated: page/10/index.html
+INFO  Generated: page/11/index.html
+INFO  Generated: page/12/index.html
+INFO  Generated: python基础/python网络编程/index.html
+INFO  Generated: python基础/python文件操作/index.html
+INFO  Generated: python基础/python中用字典代替switch/index.html
+INFO  Generated: css/main.css
+INFO  Generated: 数据库/redis/python操作redis/index.html
+INFO  Generated: 数据库/mongodb/mongodb常用命令/index.html
+INFO  Generated: python练习/面向对象/有关于@property/index.html
+INFO  Generated: python练习/面向对象/上下文管理器/index.html
+INFO  Generated: python练习/面向对象/面向对象/index.html
+INFO  Generated: python练习/面向对象/调用父类方法/index.html
+INFO  Generated: python练习/面向对象/格式化字符串/index.html
+INFO  Generated: python练习/面向对象/@staticmethod和@classmethod/index.html
+INFO  Generated: 数据库/redis/docker安装redis/index.html
+INFO  Generated: 数据库/redis/命令/index.html
+INFO  Generated: 数据库/redis/数据类型/index.html
+INFO  Generated: 数据库/redis/简介与安装/index.html
+INFO  Generated: 数据库/redis/安全性能测试客户端连接管道技术/index.html
+INFO  Generated: 数据库/redis/数据备份与恢复/index.html
+INFO  Generated: 数据库/mongodb/odm/index.html
+INFO  Generated: 数据库/mongodb/入门/index.html
+INFO  Generated: 数据库/mongodb/test_odm/index.html
+INFO  Generated: 数据库/mongodb/python操作MongoDB/index.html
+INFO  Generated: 数据库/mongodb/入门补充/index.html
+INFO  Generated: 数据库/mongodb/入门补充生成数据/index.html
+INFO  Generated: archives/page/7/index.html
+INFO  Generated: archives/page/8/index.html
+INFO  Generated: archives/page/9/index.html
+INFO  Generated: archives/2018/index.html
+INFO  Generated: archives/2019/index.html
+INFO  Generated: tags/mongodb/index.html
+INFO  Generated: lib/font-awesome/HELP-US-OUT.txt
+INFO  Generated: page/13/index.html
+INFO  Generated: page/14/index.html
+INFO  Generated: tags/redis/index.html
+INFO  Generated: js/src/affix.js
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.pack.js
+INFO  Generated: lib/fastclick/lib/fastclick.min.js
+INFO  Generated: lib/fastclick/LICENSE
+INFO  Generated: js/src/algolia-search.js
+INFO  Generated: js/src/bootstrap.js
+INFO  Generated: js/src/exturl.js
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.css
+INFO  Generated: lib/canvas-nest/canvas-nest.min.js
+INFO  Generated: lib/jquery_lazyload/jquery.scrollstop.js
+INFO  Generated: lib/needsharebutton/needsharebutton.css
+INFO  Generated: lib/velocity/bower.json
+INFO  Generated: lib/canvas-ribbon/canvas-ribbon.js
+INFO  Generated: lib/pace/pace-theme-big-counter.min.css
+INFO  Generated: lib/three/canvas_lines.min.js
+INFO  Generated: lib/jquery/index.js
+INFO  Generated: lib/font-awesome/css/font-awesome.css
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.eot
+INFO  Generated: images/avatar.png
+INFO  Generated: archives/2018/page/2/index.html
+INFO  Generated: archives/2018/11/page/2/index.html
+INFO  Generated: archives/2018/12/page/2/index.html
+INFO  Generated: archives/2019/page/2/index.html
+INFO  Generated: archives/2019/07/page/2/index.html
+INFO  Generated: archives/2019/08/page/2/index.html
+INFO  Generated: archives/2019/09/page/2/index.html
+INFO  Generated: archives/2019/10/page/2/index.html
+INFO  Generated: lib/Han/dist/font/han-space.woff
+INFO  Generated: lib/fancybox/source/helpers/fancybox_buttons.png
+INFO  Generated: js/src/hook-duoshuo.js
+INFO  Generated: js/src/js.cookie.js
+INFO  Generated: js/src/motion.js
+INFO  Generated: js/src/scrollspy.js
+INFO  Generated: js/src/utils.js
+INFO  Generated: js/src/scroll-cookie.js
+INFO  Generated: js/src/post-details.js
+INFO  Generated: lib/font-awesome/bower.json
+INFO  Generated: lib/jquery_lazyload/bower.json
+INFO  Generated: lib/jquery_lazyload/jquery.lazyload.js
+INFO  Generated: lib/velocity/velocity.ui.min.js
+INFO  Generated: lib/fastclick/bower.json
+INFO  Generated: lib/pace/pace-theme-barber-shop.min.css
+INFO  Generated: lib/pace/pace-theme-bounce.min.css
+INFO  Generated: lib/pace/pace-theme-center-atom.min.css
+INFO  Generated: lib/pace/pace-theme-center-circle.min.css
+INFO  Generated: lib/pace/pace-theme-center-radar.min.css
+INFO  Generated: lib/pace/pace-theme-center-simple.min.css
+INFO  Generated: lib/pace/pace-theme-loading-bar.min.css
+INFO  Generated: lib/pace/pace-theme-mac-osx.min.css
+INFO  Generated: lib/pace/pace-theme-minimal.min.css
+INFO  Generated: lib/pace/pace.min.js
+INFO  Generated: lib/pace/pace-theme-corner-indicator.min.css
+INFO  Generated: lib/pace/pace-theme-fill-left.min.css
+INFO  Generated: lib/pace/pace-theme-flash.min.css
+INFO  Generated: lib/fancybox/source/jquery.fancybox.css
+INFO  Generated: lib/ua-parser-js/dist/ua-parser.min.js
+INFO  Generated: lib/jquery_lazyload/CONTRIBUTING.html
+INFO  Generated: lib/jquery_lazyload/README.html
+INFO  Generated: lib/fastclick/README.html
+INFO  Generated: lib/needsharebutton/font-embedded.css
+INFO  Generated: lib/needsharebutton/needsharebutton.js
+INFO  Generated: lib/three/canvas_sphere.min.js
+INFO  Generated: lib/three/three-waves.min.js
+INFO  Generated: lib/velocity/velocity.min.js
+INFO  Generated: lib/velocity/velocity.ui.js
+INFO  Generated: lib/Han/dist/han.min.js
+INFO  Generated: lib/Han/dist/han.css
+INFO  Generated: lib/fancybox/source/jquery.fancybox.pack.js
+INFO  Generated: lib/font-awesome/css/font-awesome.min.css
+INFO  Generated: lib/fastclick/lib/fastclick.js
+INFO  Generated: lib/Han/dist/han.min.css
+INFO  Generated: lib/Han/dist/han.js
+INFO  Generated: lib/fancybox/source/jquery.fancybox.js
+INFO  Generated: lib/velocity/velocity.js
+INFO  Generated: lib/algolia-instant-search/instantsearch.min.js
+INFO  Generated: lib/three/three.min.js
+INFO  Generated: lib/font-awesome/fonts/FontAwesome.otf
+INFO  Generated: archives/2018/page/3/index.html
+INFO  Generated: archives/2018/page/4/index.html
+INFO  Generated: archives/2018/page/5/index.html
+INFO  Generated: archives/2018/page/6/index.html
+INFO  Generated: archives/2018/11/page/3/index.html
+INFO  Generated: archives/2018/11/page/4/index.html
+INFO  Generated: archives/2019/page/3/index.html
+INFO  Generated: archives/2019/page/4/index.html
+INFO  Generated: archives/2019/page/5/index.html
+INFO  Generated: archives/2019/page/6/index.html
+INFO  Generated: archives/2019/page/7/index.html
+INFO  Generated: archives/2019/page/8/index.html
+INFO  Generated: lib/fancybox/source/fancybox_loading.gif
+INFO  Generated: lib/fancybox/source/fancybox_loading@2x.gif
+INFO  Generated: lib/fancybox/source/fancybox_overlay.png
+INFO  Generated: lib/fancybox/source/fancybox_sprite.png
+INFO  Generated: lib/fancybox/source/fancybox_sprite@2x.png
+INFO  Generated: lib/fancybox/source/blank.gif
+INFO  Generated: lib/font-awesome/css/font-awesome.css.map
+INFO  Generated: lib/Han/dist/font/han.otf
+INFO  Generated: lib/Han/dist/font/han.woff2
+INFO  Generated: lib/Han/dist/font/han.woff
+INFO  Generated: lib/Han/dist/font/han-space.otf
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.woff2
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.ttf
+INFO  Generated: js/src/schemes/pisces.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.css
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-buttons.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.css
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-media.js
+INFO  Generated: lib/fancybox/source/helpers/jquery.fancybox-thumbs.js
+INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.svg
+INFO  334 files generated in 12 s
+INFO  Deploying: git
+INFO  Clearing .deploy_git folder...
+INFO  Copying files from public folder...
+INFO  Copying files from extend dirs...
+[master b9e2f61] Site updated: 2020-04-03 22:52:53
+ Committer: root <root@tj.imwl.ml>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 146 files changed, 1130 insertions(+), 1130 deletions(-)
+To git@github.com:itswl/itswl.github.io.git
+   1e64eb0..b9e2f61  HEAD -> master
+Branch master set up to track remote branch master from git@github.com:itswl/itswl.github.io.git.
+INFO  Deploy done: git
