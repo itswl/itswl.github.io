@@ -1,13 +1,8 @@
 ---
-
-title: Go简介
-
-date: 2019-9-17 11:51:16
-
-tags: 
-
+title: go简介
+date: 2019-07-14 11:05:31
+tags:
 categories: golang
-
 ---
 
 ## 简介

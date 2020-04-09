@@ -10,6 +10,7 @@ categories: golang
 
 ---
 
+
 # package
 1. package 是最基本的分发单位 和 工程管理中依赖关系的体现
 2. 每个 GO 语言源代码文件开头  都拥有一个 package 声明，表示源代码所属的代码包
