@@ -38,7 +38,7 @@ CREATE TABLE `students`(
 	`sex` CHAR(1) NULL,
 	`in_time` DATETIME NULL
 ) DEFAULT CHARSET 'UTF8MB4';
--- PRIMARY KEY 主键是用来唯一定位记录的
+-- PRIMARY KEY 主键是用来唯一定位记录的,特殊索引
 -- 建议不使用任何业务相关的字段作为主键
 
 -- 在students表中添加一个class id
