@@ -20,7 +20,7 @@ https://www.jianshu.com/p/e35185ec3294
 #### 使用查询语句建表
 ```
 -- 新建数据库
-CREATE DATABASE`school`;
+CREATE DATABASE `school`;
 
 -- 使用数据库
 USE `school`;
