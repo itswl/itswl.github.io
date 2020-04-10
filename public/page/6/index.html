@@ -308,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python练习/pathlib有关文件路径/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/DesignPattern/原型模式/python中的浅拷贝与深拷贝的对比/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -327,7 +327,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/python练习/pathlib有关文件路径/" itemprop="url">pathlib模块</a></h1>
+                <a class="post-title-link" href="/python/DesignPattern/原型模式/python中的浅拷贝与深拷贝的对比/" itemprop="url">python 浅拷贝与深拷贝</a></h1>
         
 
         <div class="post-meta">
@@ -339,8 +339,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T11:05:31+08:00">
-                2019-07-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-14T11:05:31+08:00">
+                2019-07-14
               </time>
             
 
@@ -401,13 +401,15 @@
       
         
           
-          面向对象的文件系统路径
-pathlib 提供表示文件系统路径的类，适用于不同的操作系统
-纯路径提供纯粹的计算操作，具体路径继承纯路径且可以进行 I/O 操作12345678910import pathlibprint(pathlib.PurePath(__file__)) # 文件路径print(p
+          python 浅拷贝与深拷贝python的引用计数
+int float str tuple 为不可变对象
+list dict set  为可变对象
+
+python 内不可变对象的内存管理方式是引用计数，python 不会对值相同的不可变对象，申请单独的内存空间。只会记录它的引用次数。12345678
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/python练习/pathlib有关文件路径/#more" rel="contents">
+            <a class="btn" href="/python/DesignPattern/原型模式/python中的浅拷贝与深拷贝的对比/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -458,7 +460,7 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python练习/关于import路径/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/DesignPattern/原型模式/readme/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -477,7 +479,7 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/python练习/关于import路径/" itemprop="url">关于import</a></h1>
+                <a class="post-title-link" href="/python/DesignPattern/原型模式/readme/" itemprop="url">原型模式</a></h1>
         
 
         <div class="post-meta">
@@ -489,8 +491,8 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T11:05:31+08:00">
-                2019-07-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-14T11:05:31+08:00">
+                2019-07-14
               </time>
             
 
@@ -551,11 +553,13 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
       
         
           
-          12345678import syssys.path.append(&quot;..&quot;) # 将上层目录加入路径.sys.path.append(&quot;/home&quot;) # 将/home 加入路径.## 一个模块只能被导入一次from imp import *reload(s
+          在原型模式中，优先使用组合而非继承。组成的类使我们可以在运行时替换那些组成部分，从而彻底改善系统的可测试性和可维护性。
+原型模式在一般情况下的样子声明一个抽象基类
+prototype_1.py123456from abc import ABCMeta, abstractmethodclass Pro
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/python练习/关于import路径/#more" rel="contents">
+            <a class="btn" href="/python/DesignPattern/原型模式/readme/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -606,7 +610,7 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/linux使用者管理/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/DesignPattern/建造者模式/readme/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -625,7 +629,7 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/linux使用者管理/" itemprop="url">linux使用者管理</a></h1>
+                <a class="post-title-link" href="/python/DesignPattern/建造者模式/readme/" itemprop="url">建造者模式</a></h1>
         
 
         <div class="post-meta">
@@ -637,8 +641,8 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-07T11:05:31+08:00">
-                2019-07-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-14T11:05:31+08:00">
+                2019-07-14
               </time>
             
 
@@ -660,8 +664,8 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
                   </a>
                 </span>
 
@@ -699,15 +703,13 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
       
         
           
-          新建用户12345root 权限下：useradd testpasswd testuserdel -r test # 连同文件夹一起删掉
-例行工作12atcron
-程序管理与selinux初探
-程序一般放在磁盘中，通过用户的执行来触发，触发后会加载到内存中成为一个个体，就是进程。
-&amp;   后
+          建造者模式，将复杂对象的构造从其表示形式中分离了出来，因此可用相同的构造过程来创建不同形式的表单。
+其最大的缺点在于，我们要为希望创建的每一种产品类型创建ConcreteBuilder建造者
+原始代码12345678910111213141516def generator_webform(text_
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/linux使用者管理/#more" rel="contents">
+            <a class="btn" href="/python/DesignPattern/建造者模式/readme/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -758,7 +760,7 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/部分/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/DesignPattern/工厂模式/readme/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -777,7 +779,7 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/部分/" itemprop="url">部分命令</a></h1>
+                <a class="post-title-link" href="/python/DesignPattern/工厂模式/readme/" itemprop="url">工厂模式</a></h1>
         
 
         <div class="post-meta">
@@ -789,8 +791,8 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-06T11:05:31+08:00">
-                2019-07-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-14T11:05:31+08:00">
+                2019-07-14
               </time>
             
 
@@ -812,8 +814,8 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
                   </a>
                 </span>
 
@@ -851,20 +853,14 @@ pathlib 提供表示文件系统路径的类，适用于不同的操作系统
       
         
           
-          基础
-.bash_history 历史记录
-Tab 补全
-alias 命令别名， alias lm = ‘ls -al’ , unalias lm (临时)  vi /root/.bashrc （永久）
-type cd 命令类型 
-\ 转义
-
-变量
-变量未设置时，默认为空
-PATH=$PATH:/h
+          当希望通过一个通用接口来创建对象，而不是让创建代码分散在整个系统中
+创建一个集中式的系统来进行对象创建的一种方式就是使用工厂模式
+原型模式不需要子类化，不过需要一个初始化操作，而工厂模式需要子类化，但不需要初始化
+工厂模式一个简单的实现原始代码1234567891011121314151617181
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/部分/#more" rel="contents">
+            <a class="btn" href="/python/DesignPattern/工厂模式/readme/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -915,7 +911,7 @@ PATH=$PATH:/h
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/计算机概论/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/DesignPattern/适配器模式/readme/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -934,7 +930,7 @@ PATH=$PATH:/h
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/计算机概论/" itemprop="url">计算机概论</a></h1>
+                <a class="post-title-link" href="/python/DesignPattern/适配器模式/readme/" itemprop="url">适配器模式</a></h1>
         
 
         <div class="post-meta">
@@ -946,8 +942,8 @@ PATH=$PATH:/h
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-05T11:05:31+08:00">
-                2019-07-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-14T11:05:31+08:00">
+                2019-07-14
               </time>
             
 
@@ -969,8 +965,8 @@ PATH=$PATH:/h
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
                   </a>
                 </span>
 
@@ -1008,22 +1004,17 @@ PATH=$PATH:/h
       
         
           
-          计算机概论计算机五大部分
-输入单元
-中央处理器 （控制器，运算器）
-内存
-输出单元
+          适配器模式具有以下要素：
+目标  –定义客户端所使用的特定于 领域的接口
+客户端  – 使用遵从于 目标接口的对象
+适配者类  –由于对象不遵从目标而必须修改的接口
+适配器  – 将适配者类中所具有的接口 修改为我们想要在客户端中 使用的接口的代码
 
-cpu 种类
-精简指令集 （RISC）
-复杂指令集 （CISC）
-
-CPU内部已经含有一小的指令集，我们所使用的软件都要经过 CPU 内部的微指令集来完成
-精简指令集RISC比较精简，每个指令执行时间短，完成的操作
+1.定义我们希望适应的组成部分是什么2.识别出客
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/计算机概论/#more" rel="contents">
+            <a class="btn" href="/python/DesignPattern/适配器模式/readme/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1074,7 +1065,7 @@ CPU内部已经含有一小的指令集，我们所使用的软件都要经过 C
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/进程与线程/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/网络请求/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -1093,7 +1084,7 @@ CPU内部已经含有一小的指令集，我们所使用的软件都要经过 C
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/进程与线程/" itemprop="url">进程与线程</a></h1>
+                <a class="post-title-link" href="/python/网络请求/" itemprop="url">网络请求</a></h1>
         
 
         <div class="post-meta">
@@ -1105,8 +1096,8 @@ CPU内部已经含有一小的指令集，我们所使用的软件都要经过 C
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-05T11:05:31+08:00">
-                2019-07-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-13T11:05:31+08:00">
+                2019-07-13
               </time>
             
 
@@ -1128,8 +1119,8 @@ CPU内部已经含有一小的指令集，我们所使用的软件都要经过 C
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/flask/" itemprop="url" rel="index">
+                    <span itemprop="name">flask</span>
                   </a>
                 </span>
 
@@ -1167,14 +1158,18 @@ CPU内部已经含有一小的指令集，我们所使用的软件都要经过 C
       
         
           
-          
-CPU，它承担了所有的计算任务，进程是指程序的一次执行，线程是CPU的基本调度单位。
-进程的内存空间是共享的，每个线程都可以使用这些共享内存,
-一个线程使用某些共享内存时，其他线程必须等它结束，才能使用这一块内存,”互斥锁”（Mutual exclusion，缩写 Mutex），防止多个线程同时读
+          url 与 ipip : Internet Protocol
+
+如果 ‘域名-ip’ 已被记录，则直接访问目标ip浏览器缓存，系统缓存，路由缓存
+
+没有被记录，则 依靠 DNSDNS : Domain Name System  是一个将域名和 IP 相互映射的分布式数据库。
+
+
+网卡上，有 ‘DNS
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/进程与线程/#more" rel="contents">
+            <a class="btn" href="/python/网络请求/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1225,7 +1220,7 @@ CPU，它承担了所有的计算任务，进程是指程序的一次执行，�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/权限，目录/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/多线程的鸡肋/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -1244,7 +1239,7 @@ CPU，它承担了所有的计算任务，进程是指程序的一次执行，�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/权限，目录/" itemprop="url">权限目录</a></h1>
+                <a class="post-title-link" href="/python/多线程的鸡肋/" itemprop="url">多线程的鸡肋</a></h1>
         
 
         <div class="post-meta">
@@ -1256,8 +1251,8 @@ CPU，它承担了所有的计算任务，进程是指程序的一次执行，�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-04T11:05:31+08:00">
-                2019-07-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-12T11:05:31+08:00">
+                2019-07-12
               </time>
             
 
@@ -1279,8 +1274,8 @@ CPU，它承担了所有的计算任务，进程是指程序的一次执行，�
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
                   </a>
                 </span>
 
@@ -1318,16 +1313,11 @@ CPU，它承担了所有的计算任务，进程是指程序的一次执行，�
       
         
           
-          用户与用户组
-u g o a (user group other all)
-r:4 w:2 x:1
-chgrp chown chmod 
-
-目录1234567891011121314151617181920# 一般情况下lrwxrwxrwx.   1 root root      7 Feb  2 
+          123456789101112131415161718192021222324252627282930313233343536from contextlib import contextmanagerimport time##  因为GIL锁的原因，多线程并没有多少用## 不适合计算密集型@cont
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/权限，目录/#more" rel="contents">
+            <a class="btn" href="/python/多线程的鸡肋/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1378,7 +1368,7 @@ chgrp chown chmod
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/日志文件/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/优雅的python写法/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -1397,7 +1387,7 @@ chgrp chown chmod
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/日志文件/" itemprop="url">日志文件</a></h1>
+                <a class="post-title-link" href="/python/优雅的python写法/" itemprop="url">优雅的python写法</a></h1>
         
 
         <div class="post-meta">
@@ -1409,8 +1399,8 @@ chgrp chown chmod
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-03T11:05:31+08:00">
-                2019-07-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-11T11:05:31+08:00">
+                2019-07-11
               </time>
             
 
@@ -1432,8 +1422,8 @@ chgrp chown chmod
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
                   </a>
                 </span>
 
@@ -1471,17 +1461,13 @@ chgrp chown chmod
       
         
           
-          日志文件日志文件记录系统在什么时候由哪个进程做了什么样的行为，发生了何种事件等。
-
-syslogd: 主要登录系统与网络等服务的信息。
-klogd: 主要登录内核产生的各项信息。
-logrotate: 主要进行日志文件的轮替功能。
-
-
-          
+          学习python cook book 有感1. 交换变量1a, b = b, a
+2. 循环遍历区间1234for i in range(6):    print (i)```    ## 3. 带有索引位置的集合遍历
+for i, color in enumerate(colors):    pr
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/日志文件/#more" rel="contents">
+            <a class="btn" href="/python/优雅的python写法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1532,7 +1518,7 @@ logrotate: 主要进行日志文件的轮替功能。
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/文件，目录/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/python列表操作/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -1551,7 +1537,7 @@ logrotate: 主要进行日志文件的轮替功能。
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/文件，目录/" itemprop="url">文件，目录</a></h1>
+                <a class="post-title-link" href="/python/python列表操作/" itemprop="url">python列表操作</a></h1>
         
 
         <div class="post-meta">
@@ -1563,8 +1549,8 @@ logrotate: 主要进行日志文件的轮替功能。
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-02T11:05:31+08:00">
-                2019-07-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-10T11:05:31+08:00">
+                2019-07-10
               </time>
             
 
@@ -1586,8 +1572,8 @@ logrotate: 主要进行日志文件的轮替功能。
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
                   </a>
                 </span>
 
@@ -1625,16 +1611,11 @@ logrotate: 主要进行日志文件的轮替功能。
       
         
           
-          目录与路径
-cd pwd mkdir rmdir
-mkdir -m 711 test , mkdir  -p -m mkdir -m 711 test/test/test/test1  (仅test1 为711)
-rmdir -p test/test/test/test1 （递归删除空目录）
-
-查询
+          1、迭代列表，如何访问列表下标索引普通版：12345678items = [8, 23, 45]for index in range(len(items)):    print(index, &quot;--&gt;&quot;, items[index])&gt;&gt;&gt;0 --&gt; 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/文件，目录/#more" rel="contents">
+            <a class="btn" href="/python/python列表操作/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1685,7 +1666,7 @@ rmdir -p test/test/test/test1 （递归删除空目录）
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/linux学习/关于vi/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/python日志模块/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -1704,7 +1685,7 @@ rmdir -p test/test/test/test1 （递归删除空目录）
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/linux学习/关于vi/" itemprop="url">关于vi</a></h1>
+                <a class="post-title-link" href="/python/python日志模块/" itemprop="url">python的日志模块</a></h1>
         
 
         <div class="post-meta">
@@ -1716,8 +1697,8 @@ rmdir -p test/test/test/test1 （递归删除空目录）
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-01T11:05:31+08:00">
-                2019-07-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-10T11:05:31+08:00">
+                2019-07-10
               </time>
             
 
@@ -1739,8 +1720,8 @@ rmdir -p test/test/test/test1 （递归删除空目录）
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python练习/" itemprop="url" rel="index">
+                    <span itemprop="name">python练习</span>
                   </a>
                 </span>
 
@@ -1778,14 +1759,16 @@ rmdir -p test/test/test/test1 （递归删除空目录）
       
         
           
-          vivi的使用
-一般模式   
-编辑模式 （i,I，o,O,a,A,r,R）(Ii aA 插入)（oO 插入一行）(Rr 替换)
-命令行模式 (: / ?)123dos2unix filenamedos2unix和unix2dos，dos2unix把&quot;\r\n&quot;转化成&quot;
+          日志概述
+日志会记录下操作，运行的一些相关内容
+查看日志是获取信息，排查异常，发现问题的最好途径
+日志可在控制台显示，也可以记录到文件中，或者同时输出
+日志级别 一般指的是： DEBUG, INFO, WARNING, ERROR, CRITICAL 等严重等级进行划分
+python 的 loggi
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/linux学习/关于vi/#more" rel="contents">
+            <a class="btn" href="/python/python日志模块/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1827,7 +1810,7 @@ rmdir -p test/test/test/test1 （递归删除空目录）
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1875,7 +1858,7 @@ rmdir -p test/test/test/test1 （递归删除空目录）
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-count">121</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1886,7 +1869,7 @@ rmdir -p test/test/test/test1 （递归删除空目录）
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

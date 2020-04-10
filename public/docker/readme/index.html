@@ -84,14 +84,14 @@
 
 <meta name="description" content="dockerLinux 容器不是模拟一个完整的操作系统，而是对进程进行隔离。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离 Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口 Docker 将应用程序与该程序的依赖，打包在一个文件(image)里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker">
+<meta property="og:title" content="docker简介">
 <meta property="og:url" content="http://imwl.ml/docker/readme/index.html">
 <meta property="og:site_name" content="Get busy living">
 <meta property="og:description" content="dockerLinux 容器不是模拟一个完整的操作系统，而是对进程进行隔离。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离 Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口 Docker 将应用程序与该程序的依赖，打包在一个文件(image)里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-01T09:23:43.682Z">
+<meta property="og:updated_time" content="2020-04-09T10:47:32.735Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="docker">
+<meta name="twitter:title" content="docker简介">
 <meta name="twitter:description" content="dockerLinux 容器不是模拟一个完整的操作系统，而是对进程进行隔离。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离 Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口 Docker 将应用程序与该程序的依赖，打包在一个文件(image)里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样.">
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>docker | Get busy living</title>
+  <title>docker简介 | Get busy living</title>
   
 
 
@@ -325,7 +325,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">docker</h1>
+          <h1 class="post-title" itemprop="name headline">docker简介</h1>
         
 
         <div class="post-meta">
@@ -337,8 +337,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-21T11:51:16+08:00">
-                2019-08-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-03T11:51:16+08:00">
+                2019-08-03
               </time>
             
 
@@ -397,26 +397,70 @@
       
 
       
-        <h2 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h2><p><strong>Linux 容器</strong>不是模拟一个完整的操作系统，而是对进程进行隔离。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离</p>
+        <h1 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h1><p><strong>Linux 容器</strong>不是模拟一个完整的操作系统，而是对进程进行隔离。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离</p>
 <p>Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口</p>
-<p><strong>Docker</strong> 将应用程序与该程序的依赖，打包在一个文件(<strong>image</strong>)里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样.<br>容器还可以进行版本管理、复制、分享、修改，就像管理普通的代码一样。</p>
+<p><strong>Docker</strong> 将应用程序与该程序的依赖，打包在一个文件(<strong>image</strong>)里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样.</p>
+<p>容器还可以进行版本管理、复制、分享、修改，就像管理普通的代码一样。</p>
 <p><strong>image 文件可以看作是容器的模板。Docker 根据 image 文件生成容器的实例。同一个 image 文件，可以生成多个同时运行的容器实例</strong></p>
-<h2 id="docker-安装"><a href="#docker-安装" class="headerlink" title="docker 安装"></a>docker 安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.docker.com &gt; /tmp/install.sh</span><br><span class="line">chmod +x /tmp/install.sh</span><br><span class="line">/tmp/install.sh</span><br><span class="line">sudo usermod -aG docker root</span><br><span class="line">service docker restart</span><br><span class="line">service docker status</span><br></pre></td></tr></table></figure>
-<h2 id="快速确认"><a href="#快速确认" class="headerlink" title="快速确认"></a>快速确认</h2><p><code>docker version</code></p>
-<h2 id="第一个镜像"><a href="#第一个镜像" class="headerlink" title="第一个镜像"></a>第一个镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run debian echo &quot;hello world&quot;</span><br></pre></td></tr></table></figure>
+<p>容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。</p>
+<p>Docker 从 17.03 版本之后分为 CE（Community Edition: 社区版） 和 EE（Enterprise Edition: 企业版）</p>
+<h3 id="docker-用途"><a href="#docker-用途" class="headerlink" title="docker 用途"></a>docker 用途</h3><ol>
+<li>简化环境搭建</li>
+<li>简化运维工作量</li>
+<li>微服务利器</li>
+</ol>
+<h3 id="docker-安装"><a href="#docker-安装" class="headerlink" title="docker 安装"></a>docker 安装</h3><p><code>uname -r</code> 内核版本大于 <code>3.10</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.docker.com &gt; /tmp/install.sh</span><br><span class="line">chmod +x /tmp/install.sh</span><br><span class="line">/tmp/install.sh</span><br><span class="line">sudo usermod -aG docker root</span><br><span class="line">service docker restart</span><br><span class="line">service docker status</span><br><span class="line">systemctl enable docker   # 开机自启</span><br><span class="line">docker info  #  获取docker信息</span><br><span class="line">docker --help # docker 帮助文档</span><br></pre></td></tr></table></figure>
+<h3 id="快速确认"><a href="#快速确认" class="headerlink" title="快速确认"></a>快速确认</h3><p><code>docker version</code></p>
+<h3 id="换源"><a href="#换源" class="headerlink" title="换源"></a>换源</h3><p><code>vi /etc/docker</code>  目录下找到在<code>daemon.json</code>文件（没有就新建），将下面内容写入(阿里云)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;registry-mirrors&quot;: [&quot;https://xxxxxxx.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="重启daemon"><a href="#重启daemon" class="headerlink" title="重启daemon"></a>重启daemon</h4><p><code>systemctl daemon-reload</code></p>
+<h4 id="重启docker服务"><a href="#重启docker服务" class="headerlink" title="重启docker服务"></a>重启docker服务</h4><p><code>systemctl restart docker</code></p>
+<h3 id="第一个镜像"><a href="#第一个镜像" class="headerlink" title="第一个镜像"></a>第一个镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run debian echo &quot;hello world&quot;</span><br></pre></td></tr></table></figure>
 <ol>
 <li><strong>docker run</strong>  : 启动容器</li>
-<li><strong>debian</strong> : 使用的镜像名称  （在docker hub 进行搜素，并下载最新版）</li>
+<li><strong>debian</strong> : 使用的镜像名称  （本地如果没有镜像，就在docker hub 进行搜素，并下载最新版）</li>
 <li><strong>echo “hello world”</strong> : 执行的命令</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -t debian /bin/bash</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -t debian /bin/bash   </span><br><span class="line">docker run -i -t debian   #  也可以不加  /bin/bash</span><br></pre></td></tr></table></figure>
 <ol>
 <li><strong>-i -t</strong>  : 附有一个 tty 的交互会话     -i 支持stdin , -t 终端或伪终端</li>
 <li><strong>/bin/bash</strong> : 获得一个 bash shell</li>
-<li><strong>退出 shell, 容器就会停止</strong></li>
+<li><strong>退出 shell, 容器就会停止</strong>, <strong>Ctrl+ P + Q 退出而不停止</strong></li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run --name weilai -h docker -i -t debian /bin/bash  # -h 指定hostname --name 指定docker name</span><br><span class="line">docker inspect weilai # 获取 weilai 容器的更多信息</span><br><span class="line">doker diff weilai  # 查看 weilai 文件的更改</span><br><span class="line">docker logs weilai # weilai 容器里曾经发生的事情</span><br><span class="line">docker ps # 正在运行的 docker 容器</span><br><span class="line">docker ps -a # 列出所有容器</span><br><span class="line">docker start weilai # 启动已有容器   docker run 是启动一个新的实例  </span><br><span class="line">docker attach weilai  # 切换到运行交互式容器</span><br><span class="line">docker stop weilai  # 停止容器</span><br><span class="line">docker rm weilai</span><br></pre></td></tr></table></figure>
-<p><code>docker run</code>；创建和启动一个新的容器实例，操作对象是镜像，选项较多，如果你要创建和启动一个容器，只能用run；<br><code>docker exec</code>: 在已运行的容器中，执行命令，操作对象是容器，如果你要进入已运行的容器，并且执行命令，用exec；<br><code>docker attach</code>: 同样操作的是已运行的容器，可以将本机标准输入（键盘输入）输到容器中，也可以将容器的输出显示在本机的屏幕上，如果你想查看容器运行过程中产生的标准输入输出，用attach；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">docker run --name weilai -h docker -it debian /bin/bash  # -h 指定hostname --name 指定docker name</span><br><span class="line">docker inspect weilai # 获取 weilai 容器的更多信息</span><br><span class="line">doker diff weilai  # 查看 weilai 文件的更改</span><br><span class="line">docker logs weilai # weilai 容器日志记录</span><br><span class="line">docker ps # 正在运行的 docker 容器</span><br><span class="line">docker ps -a # 列出所有容器</span><br><span class="line">docker ps -n 2  # 显示最近创建的2个容器</span><br><span class="line">docker ps -f status=exited # 查看停止的容器</span><br><span class="line">docker start weilai # 启动已有容器   docker run 是启动一个新的实例  </span><br><span class="line">docker attach weilai  # 切换到运行交互式容器</span><br><span class="line">docker cp weilai:/tmp /home # 拷贝容器下的/tmp文件夹  到宿主机下的 /home 目录下</span><br><span class="line">docker cp /home/test.sh  weilai:/tmp/weuilai.sh # 宿主机下的 /home 目录的 tets.sh 到容器下的/tmp文件夹 并改名为weilai.sh</span><br><span class="line">docker exec  weilai ls -l # 进入容器 执行 ls -l 并回到宿主机，显示结果</span><br><span class="line">docker start weilai # 查看容器进程</span><br><span class="line">docker stop weilai  # 停止容器</span><br><span class="line">docker kill weilai # 强制停止（不建议）</span><br><span class="line">docker rm weilai # 删除容器</span><br><span class="line">docker rmi -f debian # 删除 debian  -f 强制删除</span><br></pre></td></tr></table></figure>
+<p><code>docker run</code> ：创建和启动一个新的容器实例，操作对象是镜像，选项较多，如果你要创建和启动一个容器，只能用run；<br><code>docker exec</code>: 在已运行的容器中，执行命令，操作对象是容器，如果你要进入已运行的容器，并且执行命令，用exec；<br><code>docker attach</code>: 同样操作的是已运行的容器，可以将本机标准输入（键盘输入）输到容器中，也可以将容器的输出显示在本机的屏幕上，如果你想查看容器运行过程中产生的标准输入输出，用attach；</p>
+<h2 id="docker-镜像"><a href="#docker-镜像" class="headerlink" title="docker 镜像"></a>docker 镜像</h2><p><code>docker images</code> : 列出本机所有镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker images -qa # -a 显示所有镜像（含中间层） -q 只显示镜像id</span><br><span class="line">docker images --digests # 显示镜像的摘要信息</span><br><span class="line">docker images --no-trunc # 显示完整的镜像信息</span><br></pre></td></tr></table></figure></p>
+<p><code>docker search redis</code> : 搜索 <code>redis</code> 镜像<br><code>docker pull redis:latest</code>  :  拉取 <code>redis:latest</code> 镜像 (TAG  默认为 latest</p>
+<p>删除多个镜像：<code>docker rmi -f 镜像名称1:[TAG] 镜像名称2:[TAG]</code><br>中间空格隔开</p>
+<p>删除全部镜像：<code>docker rmi -f $(docker images -qa)</code></p>
+<p>同样的</p>
+<p>强制删除 <code>docker rm -f 容器ID或name</code></p>
+<p>删除多个容器<br><code>docker rm -f 容器ID1  容器ID2</code></p>
+<p>删除所有容器</p>
+<p><code>docker rm -f $(docker ps -qa)</code></p>
+<h2 id="容器目录挂载"><a href="#容器目录挂载" class="headerlink" title="容器目录挂载"></a>容器目录挂载</h2><p>创建容器的时候，将宿主机的目录与容器内的目录进行映射，实现宿主机和容器目录的双向数据自动同步；</p>
+<p>相比前面的 <code>cp</code> 更加简单方便</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p><code>docker run -it -v  /宿主机目录:/容器目录 镜像名</code></p>
+<p><strong>多目录挂载</strong><br><code>docker run -it -v /宿主机目录:/容器目录 -v /宿主机目录2:/容器目录2  镜像名</code></p>
+<p><strong>挂载目录制度</strong><br><code>docker run -it -v  /宿主机目录:/容器目录:ro 镜像名</code></p>
+<p>例如安装<code>redis</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p /opt/data/redis</span><br><span class="line">$ docker run -p 6379:6379 --name myredis -v /opt/data/redis/redis.conf:/etc/redis/redis.conf -v /opt/data/redis:/data -d redis redis-server /etc/redis/redis.conf --appendonly yes --requirepass &quot;passwd&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意</strong><br>同步多级目录，可能会出现权限不足的提示；<br>这是因为selinux把权限禁掉了，我们需要添加  –privileged=true 来解决挂载的目录没有权限的问题；</p>
+<h2 id="docker-网络模式"><a href="#docker-网络模式" class="headerlink" title="docker 网络模式"></a>docker 网络模式</h2><p><strong>docker</strong> 默认使用的是 <strong>bridge桥接网络模式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># docker network ls</span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">d2a8ca970a9c        bridge              bridge              local</span><br><span class="line">e379fa1c8774        host                host                local</span><br><span class="line">3dfff078ede1        none                null                local</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>自定义网络模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># docker network create --subnet=172.20.0.0/16 extnetwork</span><br><span class="line">a2c75e5e49ea2bf16380befd73ac19be54e271f4ad1e39549c47290d1b9fa7f3</span><br><span class="line"># ifconfig</span><br><span class="line">br-a2c75e5e49ea: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 172.20.0.1  netmask 255.255.0.0  broadcast 172.20.255.255</span><br><span class="line">        ether 02:42:43:82:72:6e  txqueuelen 0  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">docker0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255</span><br><span class="line">        inet6 fe80::42:d5ff:fe34:51d4  prefixlen 64  scopeid 0x20&lt;link&gt;</span><br><span class="line">        ether 02:42:d5:34:51:d4  txqueuelen 0  (Ethernet)</span><br><span class="line">        RX packets 10771  bytes 601704 (587.6 KiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 10230  bytes 51101359 (48.7 MiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建容器并指定ip  <code>--net extnetwork --ip 172.20.0.2</code></p>
+</li>
+</ol>
+<p><code>extnetwork</code> 上文指定<br><code>172.20.0.1</code> 是网关,所以从2 分配</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># docker run -p 8066:8066 -it --net extnetwork --ip 172.20.0.2 debian</span><br><span class="line">root@b4246dddf9f5:/#ip address</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">17: eth0@if18: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default</span><br><span class="line">    link/ether 02:42:ac:14:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 172.20.0.2/16 brd 172.20.255.255 scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<p>也可以用 <code>docker inspect 容器id</code> 查看信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># docker inspect b4246dddf9f5</span><br><span class="line">....</span><br><span class="line"> &quot;NetworkID&quot;: &quot;a2c75e5e49ea2bf16380befd73ac19be54e271f4ad1e39549c47290d1b9fa7f3&quot;,</span><br><span class="line">                    &quot;EndpointID&quot;: &quot;efa3cd2ed24010ba37bcf7183fba6cce7bc89f9327375f1148db1a6888005d6f&quot;,</span><br><span class="line">                    &quot;Gateway&quot;: &quot;172.20.0.1&quot;,</span><br><span class="line">                    &quot;IPAddress&quot;: &quot;172.20.0.2&quot;,</span><br><span class="line">                    &quot;IPPrefixLen&quot;: 16,</span><br><span class="line">                    &quot;IPv6Gateway&quot;: &quot;&quot;,</span><br><span class="line"></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>删除网络<br><code>docker network rm extnetwork</code></li>
+</ol>
 
       
     </div>
@@ -441,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/数据库/redis/python操作redis/" rel="next" title="python操作安装redis">
-                <i class="fa fa-chevron-left"></i> python操作安装redis
+              <a href="/golang/readme/" rel="next" title="go简介">
+                <i class="fa fa-chevron-left"></i> go简介
               </a>
             
           </div>
@@ -451,8 +495,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/golang/规范/" rel="prev" title="Go规范">
-                Go规范 <i class="fa fa-chevron-right"></i>
+              <a href="/docker/基础知windows10+docker+wsl+ubuntu/" rel="prev" title="docker_windos10下">
+                docker_windos10下 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -532,7 +576,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-count">121</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -543,7 +587,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -615,7 +659,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker"><span class="nav-number">1.</span> <span class="nav-text">docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-安装"><span class="nav-number">2.</span> <span class="nav-text">docker 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速确认"><span class="nav-number">3.</span> <span class="nav-text">快速确认</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第一个镜像"><span class="nav-number">4.</span> <span class="nav-text">第一个镜像</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#docker"><span class="nav-number">1.</span> <span class="nav-text">docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-用途"><span class="nav-number">1.0.1.</span> <span class="nav-text">docker 用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-安装"><span class="nav-number">1.0.2.</span> <span class="nav-text">docker 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速确认"><span class="nav-number">1.0.3.</span> <span class="nav-text">快速确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换源"><span class="nav-number">1.0.4.</span> <span class="nav-text">换源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重启daemon"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">重启daemon</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重启docker服务"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">重启docker服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一个镜像"><span class="nav-number">1.0.5.</span> <span class="nav-text">第一个镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-镜像"><span class="nav-number">1.1.</span> <span class="nav-text">docker 镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器目录挂载"><span class="nav-number">1.2.</span> <span class="nav-text">容器目录挂载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">1.2.1.</span> <span class="nav-text">语法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-网络模式"><span class="nav-number">1.3.</span> <span class="nav-text">docker 网络模式</span></a></li></ol></div>
             
 
           </div>

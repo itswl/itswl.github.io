@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="计算机组成原理总结计算机系统简介计算机系统由“软件“及”硬件“组成，软件通常分为系统软件和应用软件。系统软件:用来管理整个计算机系统，监视服务，使系统资源得到合理调度，高效运行。应用软件:根据用户任务需求所编制的各种程序。 计算机系统的层次结构通常用户用高级语言编写程序，然后将它和数据一起送入计算机内，再由计算机将其翻译成机器能识别的机器语言程序，然后交由机器运行。 高级语言机器 → → 汇编语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成原理">
+<meta property="og:url" content="http://imwl.ml/基础知识/learn_linux/计算机组成原理/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="计算机组成原理总结计算机系统简介计算机系统由“软件“及”硬件“组成，软件通常分为系统软件和应用软件。系统软件:用来管理整个计算机系统，监视服务，使系统资源得到合理调度，高效运行。应用软件:根据用户任务需求所编制的各种程序。 计算机系统的层次结构通常用户用高级语言编写程序，然后将它和数据一起送入计算机内，再由计算机将其翻译成机器能识别的机器语言程序，然后交由机器运行。 高级语言机器 → → 汇编语言">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-09T11:44:28.632Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机组成原理">
+<meta name="twitter:description" content="计算机组成原理总结计算机系统简介计算机系统由“软件“及”硬件“组成，软件通常分为系统软件和应用软件。系统软件:用来管理整个计算机系统，监视服务，使系统资源得到合理调度，高效运行。应用软件:根据用户任务需求所编制的各种程序。 计算机系统的层次结构通常用户用高级语言编写程序，然后将它和数据一起送入计算机内，再由计算机将其翻译成机器能识别的机器语言程序，然后交由机器运行。 高级语言机器 → → 汇编语言">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/基础知识/learn_linux/计算机组成原理/">
+
+
+
+
+
+  <title>计算机组成原理 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/基础知识/learn_linux/计算机组成原理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机组成原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-02T11:05:31+08:00">
+                2019-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="计算机组成原理总结"><a href="#计算机组成原理总结" class="headerlink" title="计算机组成原理总结"></a>计算机组成原理总结</h1><h2 id="计算机系统简介"><a href="#计算机系统简介" class="headerlink" title="计算机系统简介"></a>计算机系统简介</h2><p>计算机系统由“软件“及”硬件“组成，软件通常分为系统软件和应用软件。<br><strong>系统软件</strong>:用来管理整个计算机系统，监视服务，使系统资源得到合理调度，高效运行。<br><strong>应用软件</strong>:根据用户任务需求所编制的各种程序。</p>
+<h2 id="计算机系统的层次结构"><a href="#计算机系统的层次结构" class="headerlink" title="计算机系统的层次结构"></a>计算机系统的层次结构</h2><p>通常用户用高级语言编写程序，然后将它和数据一起送入计算机内，再由计算机将其翻译成机器能识别的机器语言程序，然后交由机器运行。</p>
+<p><strong>高级语言机器 → → 汇编语言机器 → →机器语言机器 </strong><br>或 <strong>高级语言机器 → → 机器语言机器 </strong></p>
+<p>通常，将高级语言程序翻译成机器语言程序的软件成为翻译程序。翻译程序分为：编译程序，解释程序。<br><strong>编译程序</strong>：一次全部翻译成机器语言程序，然后交由机器执行。<br><strong>解释程序</strong>：边翻译，边执行。</p>
+<p><strong>高级语言机器 → → 汇编语言机器 → →机器语言机器 → →微指令系统</strong></p>
+<p><strong>高级语言机器 → → 汇编语言机器 → →操作系统机器→ →机器语言机器 → →微指令系统</strong></p>
+<h2 id="第1章：计算机系统概论"><a href="#第1章：计算机系统概论" class="headerlink" title="第1章：计算机系统概论"></a>第1章：计算机系统概论</h2><p><strong>1、计算机系统由哪两部分组成？计算机系统性能取决于什么？</strong></p>
+<p>计算机系统是由“硬件”和“软件”组成。衡量一台计算机性能的优劣是根据多项技术指标综合确定的，既包括硬件的各种性能指标，又包括软件的各种功能。<br>1）计算机系统由硬件和软件两部分组成。<br>2）计算机系统性能由硬件和软件共同决定。</p>
+<p><strong>2、计算机系统5层层次结构从下到上由哪五层组成？哪些是物理机，哪些是虚拟机？</strong></p>
+<p>1）微程序机器、传统机器、操作系统机器、汇编语言机器、高级语言机器<br>2）微程序机器和传统机器是物理机，其他是虚拟机。</p>
+<p><strong>3、在计算机系统结构中，什么是翻译？什么是解释？</strong></p>
+<p>1）翻译：将一种语言编写的程序全部翻译成另一种语言，然后再执行；<br>2）解释：将一种语言编写的程序的一条语句翻译成另一种语言的一条或多条语句，然后执行，执行完这条语言后，再解释下一条。</p>
+<p><strong>4、什么是计算机体系结构？什么是计算机组成？以乘法指令为例说明二者区别。</strong></p>
+<p>1）计算机体系结构是指那些能够被程序员看到的计算机的属性。如指令集、数据类型等；<br>2）计算机组成是指如何实现计算机体系结构所体现出来的属性；<br>3）以乘法指令为例，计算机是否有乘法指令，属于体系结构的问题。乘法指令是采用专用的乘法器，还是使用加法器和移位器构成，属于计算机组成的问题。</p>
+<p><strong>5、冯诺依曼机器的主要特点？</strong></p>
+<p>1）计算机由运算器、存储器、控制器、输入设备和输出设备五大部分组成；<br>2）指令和数据存储在存储器中，并可以按地址访问；<br>3）指令和数据均以二进制表示；<br>4）指令由操作码和地址码构成，操作码指明操作的性质，地址码表示操作数在存储器中的位置；<br>5）指令在存储器内按顺序存放，通常按自动的顺序取出执行；<br>6）机器以运算器为中心，I/O设备与存储器交换数据也要通过运算器。（因此，后来有了以存储器为中心的计算机结构）</p>
+<p><strong>7、什么是存储单元、存储字、存储字长、存储体？</strong></p>
+<p>存储单元：存储一个存储字并具有特定存储地址的存储单位；<br>存储字：一个存储单元中存放的所有的二进制数据，按照某个地址访问某个存储单元获取的二进制数据。<br>存储字长：存储字中二进制数据的位数，即按照某个地址访问某个存储单元获取的二进制数据的位数；<br>存储体：由多个存储单元构成的存储器件。</p>
+<p><strong>8、主存储器中，什么是MAR，什么是MDR，存储器的最大容量由什么决定？</strong></p>
+<p>1）MAR：存储地址寄存器，保存需要访问的存储单元地址。反映存储单元的个数。<br>2）MDR：存储数据寄存器，缓存读出/写入存储单元的数据。反映存储字长。<br>3）存储器的最大容量由MAR寄存器的位数和MDR寄存器的位数决定。</p>
+<p><strong>9、什么是机器字长，什么是存储字长长？</strong></p>
+<p>机器字长：CPU一次能够处理的二进制数据的位数。<br>存储字长：按照某个地址访问某个存储单元获取的二进制数据的位数。</p>
+<p><strong>10、假设MAR寄存器的位数为16位，MDR寄存器的位数为16位，存储器的最大容量是多少？</strong></p>
+<p>1）MAR寄存器的位数为16位，能表示的地址个数为2的16次方，为64K；<br>2）MDR寄存器的位数为16位，说明存储字长为16位，也即2个字节；<br>3）存储器的最大容量为64K * 2B = 128K Byte</p>
+<h2 id="第三章-系统总线"><a href="#第三章-系统总线" class="headerlink" title="第三章 系统总线"></a>第三章 系统总线</h2><p><strong>1、为什么要使用总线？</strong></p>
+<p>在冯诺依曼结构中，各个部件之间均有单独连线，不仅线多，而且导致扩展I/O设备很不容易。即扩展一个I/O设备，需要连接很多线。<br>因此，引入了总线连接方式，将多个设备连接在同一组总线上，构成设备之间的公共传输通道。</p>
+<p><strong>2、总线的两大基本特征是什么？</strong></p>
+<p>1）共享：多个部件连接在同一组总线上，各个部件之间都通过该总线进行数据交换。<br>2）分时：同一时刻，总线上只能传输一个部件发送的信息；</p>
+<p><strong>3、系统总线按照传输信息的不同，分成哪几类？是单向的，还是双向的？</strong></p>
+<p>1）分成数据总线、地址总线以及控制总线。<br>2）数据总线：各个功能部件之间传送数据信息，双向传输；<br>3）地址总线：用来指明数据总线上，源数据或目的数据所在的主存单元的地址。单向：由CPU发出<br>4）控制总线：用来发送各种控制信号。对于控制总线中的单根线，是单向的，即只能由一个部件发向另一个部件。而一组控制总线中，有输入也有输出，因此，控制总线也可以看成是双向的。</p>
+<p><strong>3、什么是总线宽度、总线带宽、总线复用、信号线数？</strong></p>
+<p>1）总线宽度：数据总线的根数，一般是8的倍数。是衡量计算机系统性能的重要指标；<br>2）总线带宽：即总线数据传输速率，总线上每秒能够传输的最大字节量。<br>3）总线复用：一条信号线上分时传送两种信号。例如数据总线和地址总线的分时复用；<br>4）信号线数：地址总线、数据总线和控制总线三种总线的线数之和。</p>
+<p><strong>4、假设总线的工作频率为33MHz，总线宽度为32位，则它最大的传输速率是多少？</strong></p>
+<p>33 * （32/8） = 132 MB/s</p>
+<p><strong>5、简要说明单总线结构的概念及缺点？（现代计算机为什么要采用多总线结构？）</strong></p>
+<p>在单总线结构中，所有的部件（CPU、主存、I/O设备）都连接在一组总线上。<br>但所有的信息传送都要通过这组总线，同时只能有一个部件向总线上发送信息，导致总线成为系统的瓶颈。<br>因此，发展出来了多总线结构，其基本思想均是将速度相近的设备挂接在同一组总线上，总线之间通过总线控制器相连。<br>例如CPU和Cache之间、I/O设备之间等。</p>
+<p><strong>6、集中式总线判优控制有哪三种方式，哪种方式的优先级不能改变？</strong></p>
+<p>1）链式查询、计数器定时查询、以及独立请求。<br>2）链式查询的优先级不能改变，离控制器最近的优先级最高。</p>
+<p><strong>8、什么是总线周期，分为哪几个阶段？</strong></p>
+<p>1）总线周期：总线上两个部件完成一次完整且可靠的数据传输时间；<br>2）分为四个阶段：<br>申请分配阶段：申请总线<br>寻址阶段：发出地址及有关命令<br>传数阶段：进行数据交换<br>结束：从总线上撤除信号，让出总线</p>
+<p><strong>9、什么是总线通信控制，总线通信控制有哪几种？</strong></p>
+<p>1）总线通信控制：解决通信双方如何获知传输开始和传输结束，以及如何协调配合；<br>2）同步通信、异步通信、半同步通信、分离式通信</p>
+<p><strong>10、什么是同步通信？其优点和缺点？</strong></p>
+<p>１）同步通信：总线上各个部件由统一的时钟信号控制；在总线周期中，每个时钟周期各个部件如何动作都有明确的规定。<br>２）优点：速度快，各个模块间配合简单<br>３）缺点：以总线上最慢的部件来设计公共时钟，影响总线效率。</p>
+<p><strong>11、什么是异步通信？异步通信分为哪几种类型？</strong></p>
+<p>1）异步通信：总线上各部件没有统一的时钟标准，采用应答式通信；（主模块发出请求后，一直等到从模块反馈回来应答信号之后才开始通信）<br>2）不互锁、半互锁、全互锁。（需要了解各种方式的含义）</p>
+<p><strong>12、什么是波特率？什么是比特率？（需要掌握如何计算波特率、比特率）</strong></p>
+<p>波特率：单位时间内传送的二进制数据数据的位数，单位bps<br>比特率：单位时间内传送的有效的二进制位数。</p>
+<p><strong>13、异步通信时，常规需要设置的参数有哪些？</strong></p>
+<p>波特率、停止位（1/2/1.5）、校验位（奇校验、偶校验、无校验）</p>
+<p><strong>14、简述半同步通信的基本原理。</strong></p>
+<p>半同步通信结合同步通信和异步通信。<br>同步通信：采用统一的时钟，规定了在一定的时钟周期干什么事情；<br>异步通信：如果从模块没有准备好，增加一个“等待响应”信号。</p>
+<p><strong>15、简述分离式通信的基本原理。</strong></p>
+<p>主模块发出地址和命令之后，放弃总线，在从模块准备数据期间，使得总线可以被其他设备所用。提高总线利用率。<br>但是，这种方式控制比较复杂。</p>
+<p><strong>16、奇偶校验可以纠错吗？汉明码可以纠错码？</strong></p>
+<p>1）奇偶校验只能检错，不能纠错。<br>2）汉明码可以纠错。</p>
+<h2 id="第四章-存储器"><a href="#第四章-存储器" class="headerlink" title="第四章 存储器"></a>第四章 存储器</h2><p>1、存储器按存取方式，可以分成哪四类？哪些属于随机访问存储器，哪些属于串行访问存储器？</p>
+<p>1）可以分为随机存储器、只读存储器、顺序存储器和直接存储器；<br>2）随机存储器和只读存储器属于随机存储器，即存取时间与物理地址无关；<br>3）顺序存储器（典型的如磁带）和直接存储器（典型的如磁盘）属于串行存储器，即存取时间与物理地址有关。</p>
+<p>2、衡量存储器使用哪三个指标？寄存器、缓存、主存中，哪个速度最快？哪个最便宜？</p>
+<p>1）速度、容量、位价格。<br>2）寄存器速度最快，主存最便宜。</p>
+<p>3、常见的存储系统层次结构有哪两种？透明性如何？各自用来解决什么问题的？</p>
+<p>1）缓存-主存层次：用来缓解CPU和主存速度不匹配的问题，由硬件来完成，对所有的程序员完全透明。<br>2）主存-辅存层次：用来解决主存容量不够的问题，由操作系统和硬件共同完成，对应用程序设计者透明，对系统程序设计者不透明。<br>（现在一般存储器都即能按字访问，也能按照字节访问，因此，存储器编址时，每个字节都有一个独立的地址。）</p>
+<p>4、字在存储单元中有两种存储方式，大端方式和小端方式。各是什么含义？x86采用的是哪种存储方式？</p>
+<p>1）大端方式：字的低位存在内存的高地址中，而字的高位存在内存的低地址中；<br>2）小端方式：字的低位存在内存的低地址中，而字的高位存在内存的高地址中。<br>3）x86CPU采用的是小端方式。</p>
+<p>5、主存的三个主要技术指标</p>
+<p>存储容量、存取速度和存储带宽</p>
+<p>6、什么是存取时间？什么是存取周期？哪个大？</p>
+<p>1）存取时间：启动一次存储器完成本次操作（读或写）所需的时间；<br>2）存取周期：连续两次启动存储器所需要的最小间隔时间；<br>3）存取周期包含存取时间；</p>
+<p>7、什么是存储器带宽？（要了解如何计算存储器带宽）</p>
+<p>单位时间内存储器存取的信息量；</p>
+<p>8、半导体存储芯片译码驱动包含哪两种方式，请简要说明。</p>
+<p>1）线选法：所有的地址芯片通过一个译码器译码，选择一个存储单元的各位，适合于存储容量不大的芯片；<br>2）重合法：将地址分为两组，每组通过一个译码器译码，选择行或列，行、列交叉处就是要访问的存储位。</p>
+<p>9、随机存储器包含哪两大类？哪个需要刷新？请从速度、容量、价格等方面进行简要比较。</p>
+<p>1）静态RAM：采用锁存器原理实现；<br>2）动态RAM：采用电容原理实现，需要刷新。<br>3）相比于动态RAM，静态RAM的速度快、容量小、价格高，一般用于缓存，而动态RAM一般用于内存。</p>
+<p>10、只读存储器有哪几种？</p>
+<p>1）掩模ROM（MROM）：出厂后内容不能被更改。<br>2）PROM：可编程只读存储器，可以进行一次性编程；<br>3）EPROM：可擦除只读ROM，用紫外线照射；<br>4）EEPROM：电可擦除只读ROM。<br>6）FLash Memory：采用EEPROM的非易失性存储器。</p>
+<p>11、单片存储器芯片的容量有限，很难满足实际需要，因此必须将若干存储芯片连接在一起才能组成足够容量的存储器。<br>存储器的扩展通常有位扩展和字扩展，什么是字扩展，什么是位扩展？请举例简要说明</p>
+<p>1）位扩展：增加存储器的字长，例如两个1K <em> 4位的存储芯片构成1个1K</em>8位的存储器；<br>2）字扩展：增加存储器的字数，例如两个1K <em> 8位的存储芯片构成1个2K </em> 8位的存储器；<br>通常字扩展和位扩展两种方式混合使用。</p>
+<p>12、熟虑掌握存储器的扩展，包括地址空间分配、地址线的连接、数据线的连接、片选信号的产生及连接等；<br>参看P94页，例4.1</p>
+<p>13、假设欲检测的二进制代码为n位，为了使其具有1位的纠错能力，需添加K位检测位，组成n+k位的代码。问，应添加多少位检测位？</p>
+<p>应添加的检测位位数：2的k次方大于等于n+k+1。<br>因为要使其有1位的检测能力，必须使用k位来说明n+k位到底哪一位出现了错误，k位能表达的数量为2的k次方，而n+k位到底哪一位<br>出现了错误或者是全部正确，共有n+k+1种状况，因此，k的取值需要满足：2的k次方大于等于n+k+1</p>
+<p>14、对于汉明码，应熟练掌握汉明码的编码方式（按照配偶或配奇的原则），以及给出汉明码，得到要传送的原始信息（包括纠错过程）。</p>
+<p>15、提高访存速度的三种方式。</p>
+<p>1）采用高速元器件；<br>2）采用存储层次结构：cache-主存结构；<br>3）调整主存结构：包括单体多字，多体并行两种方式。</p>
+<p>16、简述单体多字的存储系统的工作原理，及其优点。</p>
+<p>1）单体多字存储系统一次访存取出多个CPU字，即存储字为CPU字的n倍（假设一次访存取出n个cpu字）。<br>2）优点是：显著提高了存储器带宽。</p>
+<p>17、多体并行系统有哪两种编址方式？请简要说明其编址方式及其优点。</p>
+<p>1）高位交叉编址方式：存储体的编址方式为顺序存储，即一个存储体存满后，再存入下一个；存储单元地址的高位为存储体的编号。<br>高位交叉编址并不能提高单次访存速度，但能使多应用并行访存，提高系统的并发性。<br>2）低位交叉编址方式：存储体的编址方式为交叉存储。即程序连续存放在相邻的存储体之中。存储单元地址的低位为存储体的编号。<br>低位交叉编址能显著提高单次访存速度。</p>
+<p>19、在四位低位交叉编址中，假设存取周期为T，总线传输周期为τ，为了实现流水线方式存储，应满足什么条件？如果连续读取四个字，所需要的时间是多少？</p>
+<p>1）T= 4τ<br>2）连续读取四个字，所需要的时间为T + （4-1）τ<br>注意：假设不是低位交叉编址，而是高位交叉编址，连续读取四个字所需要的时间仍然为4T。</p>
+<p>20、需要大家掌握多体并行存储器在高位交叉编址（顺序存储）和低位交叉编址（交叉存储）的情况下，存储器带宽的计算方式。</p>
+<p>21、在CPU和内存之间引入cache的原因。</p>
+<p>1）避免cpu空等I/O访存；<br>2）缓解CPU和主存速度不匹配的问题。</p>
+<p>22、什么是程序的局部性原理。</p>
+<p>CPU从主存取指令或数据，在一定时间内，只是对主存局部地址区域访问。</p>
+<p>23、Cache命中率、平均访问时间以及访问效率的计算。</p>
+<p>24、Cache写操作有哪两种方式？</p>
+<p>1）写直达法：写操作既写入Cache又写入主存；<br>2）写回法：只把数据写入Cache而不写入主存，当Cache中数据被替换出去之后才写入主存。</p>
+<p>25、将主存地址映射到Cache地址称为地址映射，常见的Cache映射方式有哪几种？</p>
+<p>直接映射、全相联映射、组相联映射。</p>
+<p>26、直接映射的优缺点？</p>
+<p>优点：地址变换速度快。缺点：cache利用率不高，块冲突率高；</p>
+<p>27、全相联映射的优缺点？</p>
+<p>优点：cache利用率高，块冲突率低。缺点：地址变换复杂，需要较多的硬件。</p>
+<p>28、需要大家掌握各种映射方式之下，写出主存地址格式、cache地址格式，以及主存地址向cache地址的转换。</p>
+<p>29、Cache常用的替换算法有哪些？哪个命中率最高？</p>
+<p>1）先进先出、近期最少使用算法和随机替换算法；<br>2）命中率最高的是近期最少使用算法；</p>
+<p>30、磁盘的三地址结构包括哪些？</p>
+<p>柱面、磁头号和扇区号</p>
+<h2 id="第五章-输入输出系统"><a href="#第五章-输入输出系统" class="headerlink" title="第五章 输入输出系统"></a>第五章 输入输出系统</h2><p>1、I/O系统的发展大致可以分为哪4个阶段？</p>
+<p>1）早期（分散连接、串行工作、程序查询）<br>2）接口模块和DMA阶段（总线连接、并行工作、中断及DMA）<br>3）通道阶段（通道是具有特殊功能的处理器）<br>4）I/O处理机阶段<br>I/O系统的发展实际上是逐步将CPU从繁重的I/O工作中解放出来的过程；</p>
+<p>2、I/O设备编址有哪两种方式？各有什么优缺点？</p>
+<p>1）统一编址方式：和存储器统一编址，I/O地址作为存储器地址的一部分；无须用专用的I/O指令，但占用存储器空间。<br>2）独立编址方式：和存储地址分开编址，需用专用的I/O指令。</p>
+<p>3、I/O设备与主机的联络方式有哪几种？</p>
+<p>I/O设备与主机间交互信息时必须了解彼此的状态。根据I/O设备工作速度的不同，可以分为3类：<br>1）立即响应：不管其状态（认为其时刻准备好），适用于慢速设备。<br>2）应答信号：通过应答信号来进行交互；<br>3）同步时标：采用统一的时钟信号。</p>
+<p>4、I/O总线包括哪四类？</p>
+<p>数据线、设备选择线、状态线、命令线</p>
+<p>5、I/O设备通常使用D触发器（完成触发器）和B触发器（工作触发器）来标识设备所处的状态。<br>D=0，B=0：暂停状态；<br>D=0，B=1：准备状态<br>D=1，B=0：就绪状态</p>
+<p>6、程序查询的基本工作原理。</p>
+<p>cpu不断去查询I/O设备状态，导致CPU和I/O设备串行工作。</p>
+<p>7、什么是中断？</p>
+<p>计算机在执行程序过程中，当出现异常清空或特殊请求时，计算机停止现行程序的运行，转去处理这些异常清空或特殊请求，处理结束后，再返回现行程序的间断处，继续执行原程序，即为中断。</p>
+<p>8、中断服务程序的基本流程包括哪四部分？</p>
+<p>1）保护现场<br>2）中断服务<br>3）恢复现场<br>4）中断返回</p>
+<p>9、什么是单重中断和多重中断？</p>
+<p>1）单重中断：不允许中断现行的中断服务程序；<br>2）多重中断：允许级别更高的中断源中断现行的中断服务程序，也称为中断嵌套；</p>
+<p>10、CPU响应中断的时机？</p>
+<p>当前指令执行完毕后，cpu发出中断查询信号，也就是说，中断响应一定是在每条指令执行结束之后进行的，不可能在指令执行过程中响应中断。</p>
+<p>11、什么是DMA？</p>
+<p>DMA：直接内存访问。在主存和I/O设备之间建立独立的总线连接。</p>
+<p>12、在DMA方式中，由于DMA接口与CPU共享主存，可能会出现两者争用主存的冲突，为解决冲突，DMA和主存交换数据时，通常采用哪三种工作方式？</p>
+<p>1）停止CPU访问主存：DMA访存优先级高；<br>2）周期挪用（窃取）：DMA挪用存储或窃取总线使用权一个或几个主存存取周期；<br>3）DMA和CPU交替访问：将CPU工作周期分成两部分，一部分供DMA访存，一部分供CPU访存。</p>
+<p>13、DMA工作过程包括哪三部分？</p>
+<p>1）预处理<br>2）数据传输<br>2）后处理</p>
+<h2 id="第六章-计算机的运算方法"><a href="#第六章-计算机的运算方法" class="headerlink" title="第六章 计算机的运算方法"></a>第六章 计算机的运算方法</h2><p>1、掌握有符号数的原码计算方法，以及通过原码求真值；</p>
+<p>2、掌握补码计算的方法，以及通过补码求原码，然后求真值的方法。</p>
+<p>1）通过原码求补码：符号位不变，各位取反，末位加1；<br>2）通过补码求原码：符号位不变，各位取反，末位加1；</p>
+<p>3、原码中0有2种表示方法（正零和负零），补码中0只有一种表示方法（正零和负零的表示方法一致）</p>
+<p>4、假设有符号数的位数为8（包括符号位），补码能表示的真值的范围？</p>
+<p>补码能表示的真值范围为-128~+127（参见补码定义<br>）<br>5、掌握求反码以及移码的方法。</p>
+<p>6、什么是定点表示？什么是浮点表示？</p>
+<p>１）定点表示：小数点固定在某一位置的数为定点数；<br>２）浮点表示：小数点位置可以浮动的数。</p>
+<p>7、浮点数在机器中的表示形式，由哪几部分组成？</p>
+<p>由尾数、数符、阶码、阶符四部分组成。</p>
+<p>8、掌握规格化浮点数的表示范围（最大正数、最小正数、最大负数、最小负数）的计算方法。</p>
+<p>9、IEEE754标准规定的浮点数由哪几部分组成？</p>
+<p>由数符、阶码（含阶符）以及尾数组成。</p>
+<p>10、IEEE754标准规定的浮点数中，阶码和尾数用什么形式表示？</p>
+<p>阶码用移码表示，其偏移量是2^(n-1)，尾数用原码表示。</p>
+<p>11、float占多少位？double占多少位？</p>
+<p>float为短实数，占32位，其中阶码8位，尾数23位。<br>double为长实数，占64位，其中阶码占11位，尾数为52位。</p>
+<p>12、对正数进行算术移位，当正数采用源码、补码、反码时，左移或右移时，低位或高位添补什么代码？</p>
+<p>对于正数，其源码、补码、反码均等于真值，左移时，低位添补0，右移时，高位添补0。</p>
+<p>13、对负数进行算术移位，当负数采用源码、补码、反码时，左移或右移时，低位或高位添补什么代码？</p>
+<p>对于源码，左移或右移时，低位或高位均添补0；<br>对于补码：左移时，低位添补0，右移时高位添补1<br>对于反码：左移或右移时，低位或高位均添补1；</p>
+<p>14、什么是逻辑移位？</p>
+<p>逻辑移位是对无符号数的移位，由于无符号数不存在符号位，左移时，高位移丢，低位补零。右移时，低位移丢，高位补零。</p>
+<p>15、加法和减法时，什么情况下可能发生溢出？如何简单判断发生溢出？</p>
+<p>1）正数加正数，正数减负数，负数加负数，负数减正数时，可能会发生溢出。<br>2）如果参加操作的两个数符号相同（转换成补码的加法），其结果与源操作数符号不同，即为溢出。<br>3）如果补码采用1位符号位，如果最高有效位的进位和符号位的进位不同，则发生溢出。</p>
+<p>16、定点乘法运算可以使用加法和移位来实现吗？</p>
+<p>可以。</p>
+<p>17、浮点加减运算基本按照哪几步来进行？</p>
+<p>1）对阶：使小数点对齐；<br>2）尾数求和：将对阶后的两个尾数按照定点加减运算规则求和；<br>3）规格化：尾数规格化；<br>4）舍入：尾数右规时，丢失数值位；<br>5）溢出判断：判断结果是否溢出。</p>
+<p>18、如何判断浮点运算结果是否溢出？</p>
+<p>阶码是否超出了其表示范围。（使用2个符号位判溢出）</p>
+<h2 id="第七章-指令系统"><a href="#第七章-指令系统" class="headerlink" title="第七章 指令系统"></a>第七章 指令系统</h2><p><strong>1、什么是机器指令？什么是指令系统？</strong><br>1）机器指令：每一条机器语言的语句；<br>2）指令系统：全部机器指令的集合。</p>
+<p><strong>2、一条指令包含哪两个主要部分？请简要说明各部分作用。</strong><br>1）操作码：指明指令要完成的操作；<br>2）地址码：指明指令要操作的数据或数据来源；</p>
+<p><strong>3、操作码长度有固定长度和可变长度两种，各自有什么优点？</strong><br>1）固定长度：便于硬件设计，指令译码时间短；<br>2）可变长度：压缩了操作码平均长度；</p>
+<p><strong>4、指令中地址码中的地址可以是哪些设备的地址？</strong><br>可以是主存地址、寄存器地址或I/O设备的地址；</p>
+<p><strong>5、指令中地址的个数可以有几个？</strong><br>四地址、三地址、二地址、一地址以及零地址。</p>
+<p><strong>6、假设指令中有四个地址、三个地址、两个地址以及一个地址，各自需要访存几次？</strong><br>1）四地址：访存4次；<br>2）三地址：访存4次；<br>3）两地址：访存3次；<br>4）一地址：访存2次；</p>
+<p><strong>7、当使用寄存器代替指令字中的地址码字段后，有哪些优点？</strong><br>1）扩大指令字的寻址范围；<br>2）缩短指令字长；<br>3）减少访存次数</p>
+<p><strong>8、数据在存储器中存储时，为什么要按照边界对齐？</strong><br>减少访存次数。</p>
+<p><strong>9、寻址方式包括哪两类？</strong><br>1）指令寻址：下一条将要执行的指令的指令地址；<br>2）数据寻址：确定本指令的操作数地址。</p>
+<p><strong>10、什么是形式地址？什么是有效地址？</strong><br>1）形式地址：指令的地址码字段通常都不代表操作数的真实地址，成为形式地址，记为A；<br>2）有效地址：操作数的真实地址，记为EA，由寻址特征和形式地址共同决定；</p>
+<p><strong>11、了解各种寻址方式的概念及根据形式地址形成有效地址的方式。</strong><br>立即寻址、直接寻址、隐含寻址、间接寻址、寄存器寻址、寄存器间接寻址、基址寻址（隐式或显式）、变址寻址、相对寻址、堆栈寻址</p>
+<p><strong>12、什么是RISC？什么是CISC？</strong><br>RISC：精简指令集；<br>CISC：复杂指令集；</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/python/DesignPattern/单例模式/readme/" rel="next" title="单例模式">
+                <i class="fa fa-chevron-left"></i> 单例模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/基础知识/learn_linux/计算机概论/" rel="prev" title="计算机概论">
+                计算机概论 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">121</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#计算机组成原理总结"><span class="nav-number">1.</span> <span class="nav-text">计算机组成原理总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机系统简介"><span class="nav-number">1.1.</span> <span class="nav-text">计算机系统简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机系统的层次结构"><span class="nav-number">1.2.</span> <span class="nav-text">计算机系统的层次结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第1章：计算机系统概论"><span class="nav-number">1.3.</span> <span class="nav-text">第1章：计算机系统概论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-系统总线"><span class="nav-number">1.4.</span> <span class="nav-text">第三章 系统总线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章-存储器"><span class="nav-number">1.5.</span> <span class="nav-text">第四章 存储器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章-输入输出系统"><span class="nav-number">1.6.</span> <span class="nav-text">第五章 输入输出系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第六章-计算机的运算方法"><span class="nav-number">1.7.</span> <span class="nav-text">第六章 计算机的运算方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第七章-指令系统"><span class="nav-number">1.8.</span> <span class="nav-text">第七章 指令系统</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
