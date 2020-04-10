@@ -37,7 +37,7 @@ CREATE TABLE `students`(
 	`nickname` VARCHAR(20) NULL,
 	`sex` CHAR(1) NULL,
 	`in_time` DATETIME NULL
-) DEFAULT CHARSET 'UTF8';
+) DEFAULT CHARSET 'UTF8MB4';
 -- PRIMARY KEY 主键是用来唯一定位记录的
 -- 建议不使用任何业务相关的字段作为主键
 
