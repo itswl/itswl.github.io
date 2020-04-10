@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISITS `company`.`customers`(
 `first_name` varchar(20),
 `last_name` varchar(20),
 `country` varchar(20)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
 SHOW TABLES - 查看所有表
 SHOW CREATE TABLE customers\G - 查看表结构
