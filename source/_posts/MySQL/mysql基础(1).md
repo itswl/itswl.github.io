@@ -107,5 +107,6 @@ UPDATE `students` SET `sex`='女' WHERE `id` < 3
 DELETE FROM `students` WHERE `sex` = '女'
 -- 删除students表中全部数据
 DELETE FROM `students`
+TRUNCATE TABLE student
 ```
 444
