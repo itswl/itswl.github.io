@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Get busy living">
 <meta property="og:description" content="示例数据 https://codeload.github.com/datacharmer/test_db/zip/master导入 eg: mysql -u root -p &amp;lt; employees.sql 连接到 MySQL \g 输出水平显示 \G 输出垂直显示 12mysql -h localhost -P 3306 -u root -p  - 连接到mysqlALTER USER `r">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-09T10:26:47.981Z">
+<meta property="og:updated_time" content="2020-04-10T16:46:16.401Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用MySQL">
 <meta name="twitter:description" content="示例数据 https://codeload.github.com/datacharmer/test_db/zip/master导入 eg: mysql -u root -p &amp;lt; employees.sql 连接到 MySQL \g 输出水平显示 \G 输出垂直显示 12mysql -h localhost -P 3306 -u root -p  - 连接到mysqlALTER USER `r">
@@ -408,7 +408,7 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE company;  - 创建数据库 建议都用 ``</span><br><span class="line">CREATE DATABASE `my.contacts`; - 用反标记字符 ``（当数据库和表含特殊字符时） </span><br><span class="line">USE `company`; - 使用 company 数据库</span><br><span class="line">mysql -u root -p company  - 直接连接到 company 数据库</span><br><span class="line">SELECT DATABASE(); - 查找连接到的数据库</span><br><span class="line">SHOW DATABASES; - 查找有权访问的所有数据库</span><br><span class="line">SHOW VARIABLES LIKE &apos;company&apos;; - 获取当前的数据目录</span><br></pre></td></tr></table></figure>
 <p><code>sudo ls -lhtr /usr/lcoal/mysql/data/</code></p>
-<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE IF NOT EXISITS `company`.`customers`(</span><br><span class="line">`id` int unsigned AUTO_INCREMENT PRIMARY KEY,</span><br><span class="line">`first_name` varchar(20),</span><br><span class="line">`last_name` varchar(20),</span><br><span class="line">`country` varchar(20)</span><br><span class="line">) ENGINE=InnoDB  DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line">SHOW TABLES - 查看所有表</span><br><span class="line">SHOW CREATE TABLE customers\G - 查看表结构</span><br><span class="line">DESC customers;</span><br><span class="line">CREATE TABLE new_costomers Like customers - 克隆表结构</span><br></pre></td></tr></table></figure>
+<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE IF NOT EXISITS `company`.`customers`(</span><br><span class="line">`id` int unsigned AUTO_INCREMENT PRIMARY KEY,</span><br><span class="line">`first_name` varchar(20),</span><br><span class="line">`last_name` varchar(20),</span><br><span class="line">`country` varchar(20)</span><br><span class="line">) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;</span><br><span class="line"></span><br><span class="line">SHOW TABLES - 查看所有表</span><br><span class="line">SHOW CREATE TABLE customers\G - 查看表结构</span><br><span class="line">DESC customers;</span><br><span class="line">CREATE TABLE new_costomers Like customers - 克隆表结构</span><br></pre></td></tr></table></figure>
 <h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><p>参考</p>
 <p>删除表的所有行最快的方式 <code>TRUNCATE TABLE customers</code>  DDL操作。</p>
 <h2 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h2><p><strong>除非是localhost的管理任务等，一般不推荐使用root 用户连接到 mysql执行语句</strong></p>
@@ -436,8 +436,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/MySQL/数据库/" rel="next" title="数据库">
-                <i class="fa fa-chevron-left"></i> 数据库
+              <a href="/MySQL/python操作mysql(ORM)/" rel="next" title="python操作mysql(ORM)">
+                <i class="fa fa-chevron-left"></i> python操作mysql(ORM)
               </a>
             
           </div>
@@ -446,8 +446,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/MySQL/python操作mysql(增删改查)/" rel="prev" title="python操作mysql（增删改查）">
-                python操作mysql（增删改查） <i class="fa fa-chevron-right"></i>
+              <a href="/MySQL/mysql基础(3)/" rel="prev" title="mysql基础(3)">
+                mysql基础(3) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -527,7 +527,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">121</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
