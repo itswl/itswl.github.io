@@ -1,6 +1,6 @@
 ---
 title: HTTP基本原理
-date: 2019-07-14 11:05:31
+date: 2020-04-21 11:05:31
 tags:
 categories: 计算机网络
 ---
@@ -39,8 +39,16 @@ HTTPS ： 以安全为目标的 HTTP通道。 HTTP over TLS。
 2. 确认网站的真实性。
 
 ## 4. HTTP 请求过程
+`https://imwl.ml/blog....`
+
+`https:`  访问数组的协议
+`imwl.ml`  服务器域名或  `ip`地址  `DNS` 服务器保存了 `ip`和 `域名` 的对应关系
+`blog...`  数据源路径,后面没有内容时，显示设置的 默认文件
+ 
 浏览器（客户端） 输入 URL ,向服务器发送一个 Request (请求), 服务器收到 Request 后，返回对应的一个 Response (响应), Response 中包含
 页面的源代码等内容，浏览器再进行解析，便将网页呈现出来。
+ 
+客户端 → 本地DNS服务器 → 根域 → eg:com → server.com →  本地DNS服务器 → 客户端
 
 ## 5. Request 
 **Request 可分为四部分**
