@@ -38,6 +38,8 @@ HTTPS ： 以安全为目标的 HTTP通道。 HTTP over TLS。
 1. 建立一个安全信息通道，来保证数据传输的安全。 
 2. 确认网站的真实性。
 
+TLS : 传输安全层
+
 ## 4. HTTP 请求过程
 `https://imwl.ml/blog....`
 
