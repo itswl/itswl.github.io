@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="master主机名错误没有修改主机名就进行了 kubeadm config print init-defaults  &amp;gt; kubeadm_init.yaml 配置文件节选123456nodeRegistration:  criSocket: /var/run/dockershim.sock  name: loaclhost.localdomain  taints:  - effect: No">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s遇到的问题">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/k8s遇到的问题/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="master主机名错误没有修改主机名就进行了 kubeadm config print init-defaults  &amp;gt; kubeadm_init.yaml 配置文件节选123456nodeRegistration:  criSocket: /var/run/dockershim.sock  name: loaclhost.localdomain  taints:  - effect: No">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/master名错误.png">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/path345error1.png">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/path345error2.png">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/path345error3.png">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/path345error4.png">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.344Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="k8s遇到的问题">
+<meta name="twitter:description" content="master主机名错误没有修改主机名就进行了 kubeadm config print init-defaults  &amp;gt; kubeadm_init.yaml 配置文件节选123456nodeRegistration:  criSocket: /var/run/dockershim.sock  name: loaclhost.localdomain  taints:  - effect: No">
+<meta name="twitter:image" content="http://imwl.ml/images/blog_images/k8s/master名错误.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/k8s遇到的问题/">
+
+
+
+
+
+  <title>k8s遇到的问题 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/k8s遇到的问题/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">k8s遇到的问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-19T23:43:31+00:00">
+                2021-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="master主机名错误"><a href="#master主机名错误" class="headerlink" title="master主机名错误"></a>master主机名错误</h3><p>没有修改主机名就进行了 <code>kubeadm config print init-defaults  &gt; kubeadm_init.yaml</code><br><img src="/images/blog_images/k8s/master名错误.png" alt="loaclhost.localdomain"></p>
+<p>配置文件节选<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nodeRegistration:</span><br><span class="line">  criSocket: /var/run/dockershim.sock</span><br><span class="line">  name: loaclhost.localdomain</span><br><span class="line">  taints:</span><br><span class="line">  - effect: NoSchedule</span><br><span class="line">    key: node-role.kubernetes.io/master</span><br></pre></td></tr></table></figure></p>
+<h3 id="Unable-to-connect-to-the-server-x509-certificate-signed-by-unknown-authority"><a href="#Unable-to-connect-to-the-server-x509-certificate-signed-by-unknown-authority" class="headerlink" title="Unable to connect to the server: x509: certificate signed by unknown authority"></a>Unable to connect to the server: x509: certificate signed by unknown authority</h3><p>配置文件没有删除干净</p>
+<p>先执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yes|kubeadm reset  # 所有节点执行，重置</span><br><span class="line">rm -rf $HOME/.kube # master 节点</span><br></pre></td></tr></table></figure></p>
+<p>然后<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --config kubeadm_init.yaml</span><br><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line">source &lt;(kubectl completion bash)  # 自动补充</span><br></pre></td></tr></table></figure></p>
+<h3 id="ImageInspectError"><a href="#ImageInspectError" class="headerlink" title="ImageInspectError"></a>ImageInspectError</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]#  kubectl get pod --all-namespaces</span><br><span class="line">NAMESPACE     NAME                                       READY   STATUS              RESTARTS   AGE</span><br><span class="line">kube-system   calico-kube-controllers-76d4774d89-lwxgd   1/1     Running             0          8m1s</span><br><span class="line">kube-system   calico-node-gc24p                          1/1     Running             0          8m1s</span><br><span class="line">kube-system   calico-node-ttm4x                          1/1     Running             0          8m1s</span><br><span class="line">kube-system   calico-node-zns84                          1/1     Running             0          8m1s</span><br><span class="line">kube-system   coredns-7ff77c879f-k66n8                   0/1     ImageInspectError   0          22m</span><br><span class="line">kube-system   coredns-7ff77c879f-vhbph                   0/1     ImageInspectError   0          22m</span><br><span class="line">kube-system   etcd-k8s01                                 1/1     Running             0          22m</span><br><span class="line">kube-system   kube-apiserver-k8s01                       1/1     Running             0          22m</span><br><span class="line">kube-system   kube-controller-manager-k8s01              1/1     Running             0          22m</span><br><span class="line">kube-system   kube-proxy-fszcx                           1/1     Running             0          9m18s</span><br><span class="line">kube-system   kube-proxy-wssrj                           1/1     Running             0          9m16s</span><br><span class="line">kube-system   kube-proxy-xrk2d                           1/1     Running             0          22m</span><br><span class="line">kube-system   kube-scheduler-k8s01                       1/1     Running             0          22m</span><br><span class="line">[root@k8s01 ~]# kubectl get pods --all-namespaces|grep Inspect</span><br><span class="line">kube-system   coredns-7ff77c879f-k66n8                   0/1     ImageInspectError   0          22m</span><br><span class="line">kube-system   coredns-7ff77c879f-vhbph                   0/1     ImageInspectError   0          22m</span><br></pre></td></tr></table></figure>
+<p>删除重新部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# docker rmi registry.aliyuncs.com/google_containers/coredns:1.6.7</span><br><span class="line">Untagged: registry.aliyuncs.com/google_containers/coredns:1.6.7</span><br><span class="line">Untagged: registry.aliyuncs.com/google_containers/coredns@sha256:695a5e109604331f843d2c435f488bf3f239a88aec49112d452c1cbf87e88405</span><br><span class="line">Deleted: sha256:67da37a9a360e600e74464da48437257b00a754c77c40f60c65e4cb327c34bd5</span><br><span class="line">Deleted: sha256:995fd0f6e0d57be9165b3568d9a9c5de6b0c138d36740727001a2e3cb0401035</span><br><span class="line">Deleted: sha256:225df95e717ceb672de0e45aa49f352eace21512240205972aca0fccc9612722</span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# docker pull registry.aliyuncs.com/google_containers/coredns:1.6.7</span><br><span class="line">1.6.7: Pulling from google_containers/coredns</span><br><span class="line">c6568d217a00: Already exists</span><br><span class="line">ff0415ad7f19: Pull complete</span><br><span class="line">Digest: sha256:695a5e109604331f843d2c435f488bf3f239a88aec49112d452c1cbf87e88405</span><br><span class="line">Status: Image is up to date for registry.aliyuncs.com/google_containers/coredns:1.6.7</span><br><span class="line">registry.aliyuncs.com/google_containers/coredns:1.6.7</span><br></pre></td></tr></table></figure>
+<h3 id="部署-dashboard-时，提示权限问题"><a href="#部署-dashboard-时，提示权限问题" class="headerlink" title="部署 dashboard 时，提示权限问题"></a>部署 dashboard 时，提示权限问题</h3><p>eg：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">customresourcedefinitions.apiextensions.k8s.io is forbidden: User &quot;system:serviceaccount:kubernetes-dashboard:kubernetes-dashboard&quot; cannot list resource &quot;customresourcedefinitions&quot; in API group &quot;apiextensions.k8s.io&quot; at the cluster scope</span><br><span class="line">secrets is forbidden: User &quot;system:serviceaccount:kubernetes-dashboard:kubernetes-dashboard&quot; cannot list resource &quot;secrets&quot; in API group &quot;&quot; in the namespace &quot;default&quot;</span><br><span class="line">services is forbidden: User &quot;system:serviceaccount:kubernetes-dashboard:kubernetes-dashboard&quot; cannot list resource &quot;services&quot; in API group &quot;&quot; in the namespace &quot;default&quot;</span><br></pre></td></tr></table></figure></p>
+<p>需要修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: rbac.authorization.k8s.io/v1beta1</span><br><span class="line">kind: ClusterRoleBinding</span><br><span class="line">metadata:</span><br><span class="line">  name: kubernetes-dashboard</span><br><span class="line">  namespace: kube-system</span><br><span class="line">roleRef:</span><br><span class="line">  apiGroup: rbac.authorization.k8s.io</span><br><span class="line">  kind: ClusterRole</span><br><span class="line">  ## 赋予clusterrole cluster-admin的权限</span><br><span class="line">  name: cluster-admin  # 默认配置 kubernetes-dashboard ,只授予了此 namespaces 的权限权限  </span><br><span class="line">subjects:</span><br><span class="line">- kind: ServiceAccount</span><br><span class="line">  name: kubernetes-dashboard</span><br><span class="line">  namespace: kubernetes-dashboard</span><br></pre></td></tr></table></figure>
+<h3 id="api-版本不对"><a href="#api-版本不对" class="headerlink" title="api 版本不对"></a>api 版本不对</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 stroage]# cat CronJob_test.yaml  # 节选</span><br><span class="line">apiVersion: batch/v1</span><br><span class="line">kind: CronJob</span><br><span class="line"></span><br><span class="line">[root@k8s01 stroage]# kubectl apply -f CronJob_test.yaml</span><br><span class="line">error: unable to recognize &quot;CronJob_test.yaml&quot;: no matches for kind &quot;CronJob&quot; in version &quot;batch/v1&quot;</span><br></pre></td></tr></table></figure>
+<p>排查过程 <code>kubectl api-resources</code>  查看 <code>api</code> 版本信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 stroage]# kubectl api-resources |grep CronJob</span><br><span class="line">cronjobs                          cj           batch/v1beta1                          true         CronJob</span><br><span class="line"></span><br><span class="line"># 修改</span><br><span class="line">[root@k8s01 stroage]# cat CronJob_test.yaml  # 节选</span><br><span class="line">apiVersion: batch/v1beta1 </span><br><span class="line">kind: CronJob</span><br><span class="line"></span><br><span class="line">root@k8s01 stroage]# kubectl apply -f CronJob_test.yaml</span><br><span class="line">cronjob.batch/hello created</span><br></pre></td></tr></table></figure>
+<h3 id="pod-一直处于-pending-状态"><a href="#pod-一直处于-pending-状态" class="headerlink" title="pod 一直处于 pending 状态"></a>pod 一直处于 pending 状态</h3><p><code>kubectl describe</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">QoS Class:       Burstable</span><br><span class="line">Node-Selectors:  application/env=quant</span><br><span class="line">Tolerations:     aps:NoExecute</span><br><span class="line">Events:</span><br><span class="line">  Type     Reason            Age               From               Message</span><br><span class="line">  ----     ------            ----              ----               -------</span><br><span class="line">  Warning  FailedScheduling  9s (x20 over 4m)  default-scheduler  0/4 nodes are available: 3 Insufficient memory, 3 MatchNodeSelector.</span><br></pre></td></tr></table></figure></p>
+<p>打了污点 和 容忍度 发现合适的节点内存不足</p>
+<p>待调度的 <code>pod</code> 信息节选<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Limits:</span><br><span class="line">   cpu: 2</span><br><span class="line">   memory: 10Gi</span><br><span class="line"> Requests:</span><br><span class="line">   cpu: 2</span><br><span class="line">   memory: 5Gi</span><br></pre></td></tr></table></figure></p>
+<p>查看主机的内存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s03 ~]# free -h</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:            15G        1.5G        196M        908M         13G         12G</span><br><span class="line">Swap:            0B          0B          0B</span><br></pre></td></tr></table></figure>
+<p>发现内存是 满足的</p>
+<p>经过定位发现，有多个 <code>pod</code> 都处于 <code>pending</code>, 因为 存在 <code>request</code>  保证之前 <code>pod</code>  的内存使用量，导致新的 <code>pod</code> 无法调度</p>
+<p><strong>待调度 <code>pod</code> 的 <code>request</code> 值总和超过该节点提供的空闲资源, 不会调度到该节点 <code>node</code> 上;</strong></p>
+<h2 id="Error-response-from-daemon-OCI-runtime-create-failed-container-linux-go-345-starting-container-process-caused-”exec-”tini-”-executable-file-not-found-in-PATH-”"><a href="#Error-response-from-daemon-OCI-runtime-create-failed-container-linux-go-345-starting-container-process-caused-”exec-”tini-”-executable-file-not-found-in-PATH-”" class="headerlink" title="Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused \”exec: \\”tini\\”: executable file not found in $PATH\”"></a>Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused \”exec: \\”tini\\”: executable file not found in $PATH\”</h2><p>此问题定位起来很复杂， 此 pod  在 新建用户时，会自动创建一个 pod, 但 pod 会启动失败，随即被删除。</p>
+<p>后来发现有 pod 创建， 需要 的 PATH 缺少 conda文件，补充文件到指定目录下，重启成功</p>
+<p><img src="/images/blog_images/k8s/path345error1.png" alt="path345error1"><br><img src="/images/blog_images/k8s/path345error2.png" alt="path345error2"><br><img src="/images/blog_images/k8s/path345error3.png" alt="path345error3"><br><img src="/images/blog_images/k8s/path345error4.png" alt="path345error4"></p>
+<h2 id="某个node-notReady-describe-node-后提示-Warning-EvictionThresholdMet-Attempting-to-reclaim-nodefs"><a href="#某个node-notReady-describe-node-后提示-Warning-EvictionThresholdMet-Attempting-to-reclaim-nodefs" class="headerlink" title="某个node notReady, describe node 后提示 Warning: EvictionThresholdMet Attempting to reclaim nodefs"></a>某个node notReady, describe node 后提示 Warning: EvictionThresholdMet Attempting to reclaim nodefs</h2><p>资源不足</p>
+<p>在 失败节点 df -Th 发现根目录已满</p>
+<p>du -h / –max-depth=2</p>
+<p>发现有个日志文件 有 300多G , tail -f 发现还在暴增，并且提示 socket too many open  files </p>
+<p>初步定为 是 网络连接问题，查看 ulimit -a  open files 设置的足够大</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@aps173 ~]# ulimit -n</span><br><span class="line">655360</span><br></pre></td></tr></table></figure>
+<p>大概率是代码问题 联系对应开发 进行后续定位</p>
+<h2 id="ns-无法删除，一直处于-termning-状态"><a href="#ns-无法删除，一直处于-termning-状态" class="headerlink" title="ns 无法删除，一直处于 termning 状态"></a>ns 无法删除，一直处于 termning 状态</h2><p><code>ns</code> 为 <code>rook-ceph</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@aps-173 ~]# kubectl get ns |grep Terminating</span><br><span class="line">rook-ceph         Terminating   13h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@aps-249 ~]# kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found -n rook-ceph</span><br><span class="line">NAME                              ACTIVEMDS   AGE</span><br><span class="line">cephfilesystem.ceph.rook.io/aps   1           34m</span><br></pre></td></tr></table></figure></p>
+<p>发现此 crds 无法删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl  patch crds cephfilesystems.ceph.rook.io  -p &apos;&#123;&quot;metadata&quot;:&#123;&quot;finalizers&quot;: []&#125;&#125;&apos; --type=merge</span><br></pre></td></tr></table></figure>
+<p>然后顺利删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-249 ~]# kubectl get ns |grep Terminating</span><br></pre></td></tr></table></figure>
+<h2 id="业务-pod-一直-CrashLoopBackOff，-重启，Liveness-probe-failed"><a href="#业务-pod-一直-CrashLoopBackOff，-重启，Liveness-probe-failed" class="headerlink" title="业务 pod 一直 CrashLoopBackOff， 重启，Liveness probe failed"></a>业务 pod 一直 CrashLoopBackOff， 重启，Liveness probe failed</h2><p>很多 容器 只有最基础的 命令， 可以使用 debug 容器 </p>
+<p>下面是在宿主机上操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Liveness probe failed: dial tcp 100.103.203.89:8887: connect: connection refused</span><br><span class="line"></span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
+<p>能 ping 通<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-175 ~]# ping 100.103.203.89</span><br><span class="line">PING 100.103.203.89 (100.103.203.89) 56(84) bytes of data.</span><br><span class="line">64 bytes from 100.103.203.89: icmp_seq=1 ttl=63 time=0.584 ms</span><br><span class="line">64 bytes from 100.103.203.89: icmp_seq=2 ttl=63 time=0.531 ms</span><br></pre></td></tr></table></figure></p>
+<p>telnet 失败</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-175 ~]# telnet 100.103.203.89 8887</span><br><span class="line">Trying 100.103.203.89...</span><br><span class="line">telnet: connect to address 100.103.203.89: Connection refused</span><br></pre></td></tr></table></figure>
+<p>扫描端口是关闭的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-175 ~]# nmap -p 8881 100.103.203.89</span><br><span class="line"></span><br><span class="line">Starting Nmap 6.40 ( http://nmap.org ) at 2021-04-15 07:57 UTC</span><br><span class="line">Nmap scan report for 100.103.203.89</span><br><span class="line">Host is up (0.00067s latency).</span><br><span class="line">PORT     STATE  SERVICE</span><br><span class="line">8881/tcp closed unknown</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 0.46 seconds</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/基础知识/windows部分技巧/" rel="next" title="windows部分技巧">
+                <i class="fa fa-chevron-left"></i> windows部分技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/运维/k8s/k8s-二进制安装与升级/" rel="prev" title="k8s高可用集群二进制安装与升级">
+                k8s高可用集群二进制安装与升级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#master主机名错误"><span class="nav-number">1.</span> <span class="nav-text">master主机名错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unable-to-connect-to-the-server-x509-certificate-signed-by-unknown-authority"><span class="nav-number">2.</span> <span class="nav-text">Unable to connect to the server: x509: certificate signed by unknown authority</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageInspectError"><span class="nav-number">3.</span> <span class="nav-text">ImageInspectError</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署-dashboard-时，提示权限问题"><span class="nav-number">4.</span> <span class="nav-text">部署 dashboard 时，提示权限问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api-版本不对"><span class="nav-number">5.</span> <span class="nav-text">api 版本不对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pod-一直处于-pending-状态"><span class="nav-number">6.</span> <span class="nav-text">pod 一直处于 pending 状态</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-response-from-daemon-OCI-runtime-create-failed-container-linux-go-345-starting-container-process-caused-”exec-”tini-”-executable-file-not-found-in-PATH-”"><span class="nav-number"></span> <span class="nav-text">Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused \”exec: \\”tini\\”: executable file not found in $PATH\”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#某个node-notReady-describe-node-后提示-Warning-EvictionThresholdMet-Attempting-to-reclaim-nodefs"><span class="nav-number"></span> <span class="nav-text">某个node notReady, describe node 后提示 Warning: EvictionThresholdMet Attempting to reclaim nodefs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ns-无法删除，一直处于-termning-状态"><span class="nav-number"></span> <span class="nav-text">ns 无法删除，一直处于 termning 状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务-pod-一直-CrashLoopBackOff，-重启，Liveness-probe-failed"><span class="nav-number"></span> <span class="nav-text">业务 pod 一直 CrashLoopBackOff， 重启，Liveness probe failed</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

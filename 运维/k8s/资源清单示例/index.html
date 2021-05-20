@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="资源清单格式12# 生成一个 实例文件，然后可以自行修改  --dry-run  不会具体执行kubectl create deploy my-deployment -n demo --image busybox --dry-run server -o yaml &amp;gt; my-deployment.yaml 一般字段123456789apiVersion: group/apiversion #">
+<meta property="og:type" content="article">
+<meta property="og:title" content="资源清单">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/资源清单示例/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="资源清单格式12# 生成一个 实例文件，然后可以自行修改  --dry-run  不会具体执行kubectl create deploy my-deployment -n demo --image busybox --dry-run server -o yaml &amp;gt; my-deployment.yaml 一般字段123456789apiVersion: group/apiversion #">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/Deployment.png">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.417Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="资源清单">
+<meta name="twitter:description" content="资源清单格式12# 生成一个 实例文件，然后可以自行修改  --dry-run  不会具体执行kubectl create deploy my-deployment -n demo --image busybox --dry-run server -o yaml &amp;gt; my-deployment.yaml 一般字段123456789apiVersion: group/apiversion #">
+<meta name="twitter:image" content="http://imwl.ml/images/blog_images/k8s/Deployment.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/资源清单示例/">
+
+
+
+
+
+  <title>资源清单 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/资源清单示例/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">资源清单</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-03T22:43:31+00:00">
+                2020-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="资源清单格式"><a href="#资源清单格式" class="headerlink" title="资源清单格式"></a>资源清单格式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 生成一个 实例文件，然后可以自行修改  --dry-run  不会具体执行</span><br><span class="line">kubectl create deploy my-deployment -n demo --image busybox --dry-run server -o yaml &gt; my-deployment.yaml</span><br></pre></td></tr></table></figure>
+<p>一般字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: group/apiversion # 如果没有给定 group 名称，那么默认为 core，可以使用 kubectl api-versions # 获取当前 k8s 版本上所有apiVersio版本信息( 每个版本可能不同 )</span><br><span class="line">kind:       # 资源类别</span><br><span class="line">metadata： # 资源元数据 </span><br><span class="line">  name  # 名字</span><br><span class="line">  namespace # 命名空间</span><br><span class="line">  lables  # 标签，主要用来表示一些有意义且和对象密切相关的信息</span><br><span class="line">  annotations # 注解，主要用来记录一些非识别的信息，方便用户阅读查找等</span><br><span class="line">spec:  # 期望的状态（disired state）</span><br><span class="line">status： # 当前状态，本字段有 Kubernetes 自身维护，用户不能去定义</span><br></pre></td></tr></table></figure></p>
+<h3 id="pod"><a href="#pod" class="headerlink" title="pod"></a>pod</h3><p>一个<code>pod</code> 启动的第一个容器 <code>pause</code>, <code>pod</code> 中所有 容器都共享 <code>pause</code> 的网络存储卷等。即 <code>Pod</code> 中容器端口不能重复。</p>
+<h4 id="常见"><a href="#常见" class="headerlink" title="常见"></a>常见</h4><p>pod-example.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1  # 指定当前描述文件遵循v1版本的Kubernetes API</span><br><span class="line">kind: Pod  # 我们在描述一个pod</span><br><span class="line">metadata:</span><br><span class="line">  name: twocontainers  # 指定pod的名称</span><br><span class="line">  namespace: default  # 指定当前描述的pod所在的命名空间</span><br><span class="line">  labels:  # 指定pod标签</span><br><span class="line">    app: twocontainers</span><br><span class="line">  annotations:  # 指定pod注释</span><br><span class="line">    version: v1</span><br><span class="line">    releasedBy: weilai</span><br><span class="line">    purpose: demo</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: myapp  # 容器的名称</span><br><span class="line">    image: imwl/myapp:v1  # 创建容器所使用的镜像</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80  # 应用监听的端口</span><br><span class="line">  - name: shell  # 容器的名称</span><br><span class="line">    image: centos:7  # 创建容器所使用的镜像</span><br><span class="line">    command:  # 容器启动命令</span><br><span class="line">      - &quot;bin/bash&quot;</span><br><span class="line">      - &quot;-c&quot;</span><br><span class="line">      - &quot;sleep 10000&quot;</span><br></pre></td></tr></table></figure></p>
+<p>在生产环境中，推荐使用 <code>Deployment</code>、<code>StatefulSet</code>、<code>Job</code> 或者 <code>CronJob</code> 等控制器来创建 <code>Pod</code>，而不推荐直接创建 <code>Pod</code>。</p>
+<ol>
+<li><strong>当使用 name: nginx_pod_example  报错</strong></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The Pod &quot;nginx_pod_example&quot; is invalid: metadata.name: Invalid value: &quot;nginx_pod_example&quot;: a DNS-1123 subdomain must consist of lower case alphanumeric characters, &apos;-&apos; or &apos;.&apos;, and must start and end with an alphanumeric character (e.g. &apos;example.com&apos;, regex used for validation is &apos;[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*&apos;)</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><strong>- containerPort:80</strong> 当格式错误时<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: error validating &quot;pod_duplicate_port_example.yaml&quot;: error validating data: [ValidationError(Pod.spec.containers[0].ports[0]): invalid type for io.k8s.api.core.v1.ContainerPort: got &quot;string&quot;, expected &quot;map&quot;, ValidationError(Pod.spec.containers[1].ports[0]): invalid type for io.k8s.api.core.v1.ContainerPort: got &quot;string&quot;, expected &quot;map&quot;]; if you choose to ignore these errors, turn validation off with --validate=false</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="测试-Pod-中容器端口重复"><a href="#测试-Pod-中容器端口重复" class="headerlink" title="测试 Pod 中容器端口重复"></a>测试 Pod 中容器端口重复</h4><p>pod-duplicate-port-example.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx-pod-example</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">    version: latest</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: app</span><br><span class="line">    image: nginx:latest</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80 </span><br><span class="line">  - name: app-double-port</span><br><span class="line">    image: nginx:latest</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br></pre></td></tr></table></figure></p>
+<p>定位过程如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl get  pods  # 查看 pods 状态</span><br><span class="line">NAME                READY   STATUS    RESTARTS   AGE</span><br><span class="line">my-pod              1/1     Running   0          15m</span><br><span class="line">nginx-pod-example   1/2     Error     3          4m43s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl logs nginx-pod-example</span><br><span class="line">error: a container name must be specified for pod nginx-pod-example, choose one of: [app app-double-port]</span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl logs nginx-pod-example -c app-double-port  # 查看 pods 中容器 app-double-port 日志</span><br><span class="line">/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration</span><br><span class="line">/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/</span><br><span class="line">/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh</span><br><span class="line">10-listen-on-ipv6-by-default.sh: Getting the checksum of /etc/nginx/conf.d/default.conf</span><br><span class="line">10-listen-on-ipv6-by-default.sh: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf</span><br><span class="line">/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh</span><br><span class="line">/docker-entrypoint.sh: Configuration complete; ready for start up</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)</span><br><span class="line">2020/08/09 15:19:30 [emerg] 1#1: still could not bind()</span><br><span class="line">  #  发现 端口 80 被占用</span><br></pre></td></tr></table></figure></p>
+<p>即一个pod 启动的第一个容器 pause,pod 中所有 容器都共享 pause 的网络存储卷等。即Pod 中容器端口不能重复。</p>
+<p>删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl delete -f pod_duplicate_port_example.yaml</span><br><span class="line">pod &quot;nginx-pod-example&quot; deleted</span><br></pre></td></tr></table></figure></p>
+<h4 id="PodPreset"><a href="#PodPreset" class="headerlink" title="PodPreset"></a>PodPreset</h4><p>编写的 Pod 里追加的字段，都可以预先定义好</p>
+<p> preset.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: settings.k8s.io/v1alpha1</span><br><span class="line">kind: PodPreset</span><br><span class="line">metadata:</span><br><span class="line">  name: allow-database</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      role: frontend</span><br><span class="line">  env:</span><br><span class="line">    - name: DB_PORT</span><br><span class="line">      value: &quot;6379&quot;</span><br><span class="line">  volumeMounts:</span><br><span class="line">    - mountPath: /cache</span><br><span class="line">      name: cache-volume</span><br><span class="line">  volumes:</span><br><span class="line">    - name: cache-volume</span><br><span class="line">      emptyDir: &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编写的 pod文件<br>PodPreset_test.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: website</span><br><span class="line">  labels:</span><br><span class="line">    app: website</span><br><span class="line">    role: frontend   # 匹配 PodPreset 标签</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">    - name: website</span><br><span class="line">      image: nginx</span><br><span class="line">      ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure></p>
+<p>结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl create -f preset.yaml</span><br><span class="line">$ kubectl create -f PodPreset_test.yaml</span><br><span class="line"></span><br><span class="line">$ kubectl get pod website -o yaml</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: website</span><br><span class="line">  labels:</span><br><span class="line">    app: website</span><br><span class="line">    role: frontend</span><br><span class="line">  annotations:</span><br><span class="line">    podpreset.admission.kubernetes.io/podpreset-allow-database: &quot;resource version&quot;</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">    - name: website</span><br><span class="line">      image: nginx</span><br><span class="line">      volumeMounts:</span><br><span class="line">        - mountPath: /cache</span><br><span class="line">          name: cache-volume</span><br><span class="line">      ports:</span><br><span class="line">        - containerPort: 80</span><br><span class="line">      env:</span><br><span class="line">        - name: DB_PORT</span><br><span class="line">          value: &quot;6379&quot;</span><br><span class="line">  volumes:</span><br><span class="line">    - name: cache-volume</span><br><span class="line">      emptyDir: &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>PodPreset</code> 里定义的内容，只会在 <code>Pod API</code> 对象被创建之前追加在这个对象本身上，而不会影响任何 <code>Pod</code> 的控制器的定义</p>
+<h3 id="RS示例"><a href="#RS示例" class="headerlink" title="RS示例"></a>RS示例</h3><p>nginx-RS.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: ReplicaSet</span><br><span class="line">metadata:</span><br><span class="line">  name: frontend</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      tier: frontend</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        tier: frontend</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: myapp</span><br><span class="line">        image: nginx:latest</span><br><span class="line">        env:</span><br><span class="line">        - name: GET-HOSTS-FROM</span><br><span class="line">          value: dns</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure></p>
+<p><strong>apiVersion: extensions/v1beta1</strong>  报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: unable to recognize &quot;nginx-RS.yaml&quot;: no matches for kind &quot;ReplicaSet&quot; in version &quot;extensions/v1beta1&quot;</span><br></pre></td></tr></table></figure></p>
+<p>当前的k8s版本是1.18.6, 而目前的extensions/v1beta1 中并没有支持 <code>ReplicaSet</code>, 将配置文件内的 <code>api</code> 接口修改为 <code>apps/v1</code>.</p>
+<p>最好使用 <code>Deployment</code> 而不是 <code>RS</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl get rs</span><br><span class="line">NAME       DESIRED   CURRENT   READY   AGE</span><br><span class="line">frontend   3         3         3       5m41s</span><br><span class="line">[root@k8s01 ~]# kubectl get pods</span><br><span class="line">NAME             READY   STATUS    RESTARTS   AGE</span><br><span class="line">frontend-2w8z4   1/1     Running   0          5m51s</span><br><span class="line">frontend-hwh69   1/1     Running   0          5m51s</span><br><span class="line">frontend-j2pwv   1/1     Running   0          5m51s</span><br><span class="line">my-pod           1/1     Running   0          39m</span><br></pre></td></tr></table></figure>
+<h3 id="Deployment示例"><a href="#Deployment示例" class="headerlink" title="Deployment示例"></a>Deployment示例</h3><p>nginx-Deployment.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx-deployment</span><br><span class="line">spec:</span><br><span class="line">  revisionHistoryLimit: 10 # revision保留个数</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  minReadySeconds: 5  # 新建 pod 视为准备好的 最小等待时间 5 秒</span><br><span class="line">  updateStrategy: # 这里指定了更新策略</span><br><span class="line">    type: RollingUpdate # 进行滚动更新 # OnDelete 删除时 # Recreate 一次性删除所有 pod 然后重建</span><br><span class="line">    rollingUpdate:</span><br><span class="line">      maxSurge: 2  # 升级过程中最多可以比原先设置多出的POD数量</span><br><span class="line">      maxUnavailable: 1 # 这是默认的值, 最多不可达 pod    ## 这一块以上 控制器定义（包括期望状态）</span><br><span class="line">  template:    ## 被控制对象的模板</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx:1.7.9</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure></p>
+<p>执行后<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl get pod</span><br><span class="line">NAME                                READY   STATUS    RESTARTS   AGE</span><br><span class="line">frontend-2w8z4                      1/1     Running   0          15m</span><br><span class="line">frontend-hwh69                      1/1     Running   0          15m</span><br><span class="line">frontend-j2pwv                      1/1     Running   0          15m</span><br><span class="line">my-pod                              1/1     Running   0          49m</span><br><span class="line">nginx-deployment-5bf87f5f59-2m56p   1/1     Running   0          3m39s</span><br><span class="line">nginx-deployment-5bf87f5f59-lctkl   1/1     Running   0          3m39s</span><br><span class="line">nginx-deployment-5bf87f5f59-txqlp   1/1     Running   0          3m39s</span><br><span class="line">[root@k8s01 ~]# kubectl get rs</span><br><span class="line">NAME                          DESIRED   CURRENT   READY   AGE</span><br><span class="line">frontend                      3         3         3       16m</span><br><span class="line">nginx-deployment-5bf87f5f59   3         3         3       3m48s</span><br><span class="line">[root@k8s01 ~]# kubectl get deployment</span><br><span class="line">NAME               READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment   3/3     3            3           3m59s</span><br></pre></td></tr></table></figure></p>
+<p>定义 <code>Deployment</code> , <code>Deployment</code> 是通过 <code>RelicaSet</code>  管理 <code>Pod</code> </p>
+<p> <img src="/images/blog_images/k8s/Deployment.png" alt="Deployment"></p>
+<p>多次修改 deployment 后 apply<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout status deployment nginx-deploy   # 查看当前升级状态</span><br><span class="line"></span><br><span class="line">kubectl rollout pause deployment nginx-deploy    # 暂停升级</span><br><span class="line"></span><br><span class="line">kubectl rollout resume deployment nginx-deploy   # 恢复升级</span><br><span class="line"></span><br><span class="line">kubectl rollout history deployment nginx-deploy  # 查看升级历史</span><br><span class="line"></span><br><span class="line">kubectl rollout undo deployment nginx-deploy     # 回滚到上一版本</span><br><span class="line"></span><br><span class="line"># 所有通过kubectl xxxx --record都会被kubernetes记录到etcd进行持久化</span><br><span class="line"># .spec.revisionHistoryLimit来限制最大保留的revision number</span><br><span class="line"></span><br><span class="line">kubectl rollout history deployment nginx-deploy --revision=2  # 查看 revision=2 的信息</span><br><span class="line"></span><br><span class="line">kubectl rollout undo deployment nginx-deploy --to-revision=2  # 恢复到 revision=2</span><br></pre></td></tr></table></figure></p>
+<p>扩容缩容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl scale deployment nginx-deployment --replicas=5</span><br><span class="line"></span><br><span class="line">kubectl scale deployment nginx-deployment --replicas=2</span><br></pre></td></tr></table></figure></p>
+<p>自动扩缩容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl autoscale deployment nginx-deployment --min=1 --max=10 --cpu-percent=80</span><br></pre></td></tr></table></figure></p>
+<h3 id="DaemonSet示例"><a href="#DaemonSet示例" class="headerlink" title="DaemonSet示例"></a>DaemonSet示例</h3><p>nginx-DaemonSet.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata:</span><br><span class="line">  name: daemonset-example</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      name: daemonset-example  </span><br><span class="line">  template:   </span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        name: daemonset-example</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: daemonset-example</span><br><span class="line">        image: nginx:1.7.8</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl get pods -o wide</span><br><span class="line">NAME                                READY   STATUS    RESTARTS   AGE     IP               NODE    NOMINATED NODE   READINESS GATES</span><br><span class="line">daemonset-example-6jht8             1/1     Running   0          2m45s   172.18.236.136   k8s02   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">daemonset-example-mz82g             1/1     Running   0          2m45s   172.18.235.135   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">frontend-2w8z4                      1/1     Running   0          24m     172.18.236.134   k8s02   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">frontend-hwh69                      1/1     Running   0          24m     172.18.236.133   k8s02   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">frontend-j2pwv                      1/1     Running   0          24m     172.18.235.132   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">my-pod                              1/1     Running   0          58m     172.18.235.131   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">nginx-deployment-5bf87f5f59-2m56p   1/1     Running   0          12m     172.18.235.133   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">nginx-deployment-5bf87f5f59-lctkl   1/1     Running   0          12m     172.18.235.134   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">nginx-deployment-5bf87f5f59-txqlp   1/1     Running   0          12m     172.18.236.135   k8s02   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">[root@k8s01 ~]# kubectl get daemonset</span><br><span class="line">NAME                DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE</span><br><span class="line">daemonset-example   2         2         2       2            2           &lt;none&gt;          2m49s</span><br><span class="line"></span><br><span class="line">调度机制，默认master没有</span><br></pre></td></tr></table></figure>
+<h3 id="Job示例"><a href="#Job示例" class="headerlink" title="Job示例"></a>Job示例</h3><p>pi-job.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: batch/v1</span><br><span class="line">kind: Job</span><br><span class="line">metadata:</span><br><span class="line">  name: pi</span><br><span class="line">spec:  </span><br><span class="line">  parallelism: 2  # 最大并行数  默认为 1</span><br><span class="line">  # completions: 4  # 最小完成数   # 不定义 completions 时，需自行决定什么时候 pod  算完成</span><br><span class="line">  # ttlSecondsAfterFinished: 100  # 该 Job 在运行结束 100 秒之后就被自动清理删除，实验功能</span><br><span class="line">  template:    </span><br><span class="line">    spec:      </span><br><span class="line">      containers:      </span><br><span class="line">      - name: pi        </span><br><span class="line">        image: resouer/ubuntu-bc        </span><br><span class="line">        command: [&quot;sh&quot;, &quot;-c&quot;, &quot;echo &apos;scale=5000; 4*a(1)&apos; | bc -l&quot;]     </span><br><span class="line">      restartPolicy: Never    # OnFailure 仅支持这两种</span><br><span class="line">  backoffLimit: 4  # 重试次数    默认为6</span><br><span class="line">  activeDeadlineSeconds: 100   # 最长运行时间   超过 100秒此job 就会终止</span><br></pre></td></tr></table></figure></p>
+<p>运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 stroage]# kubectl apply -f job.yaml</span><br><span class="line">job.batch/pi created</span><br><span class="line"></span><br><span class="line">[root@k8s01 stroage]# kubectl describe jobs/pi</span><br><span class="line">Name:                     pi</span><br><span class="line">Namespace:                default</span><br><span class="line">Selector:                 controller-uid=e896b336-dfde-49c3-9451-aef9204b261d  </span><br><span class="line">Labels:                   controller-uid=e896b336-dfde-49c3-9451-aef9204b261d</span><br><span class="line">                          job-name=pi</span><br><span class="line">Annotations:              &lt;none&gt;</span><br><span class="line">Parallelism:              2</span><br><span class="line">Completions:              &lt;unset&gt;</span><br><span class="line">Start Time:               Sat, 30 Jan 2021 23:21:43 +0800</span><br><span class="line">Active Deadline Seconds:  100s</span><br><span class="line">Pods Statuses:            2 Running / 0 Succeeded / 0 Failed</span><br><span class="line">Pod Template:</span><br><span class="line">  Labels:  controller-uid=e896b336-dfde-49c3-9451-aef9204b261d</span><br><span class="line">           job-name=pi</span><br><span class="line">  Containers:</span><br><span class="line">   pi:</span><br><span class="line">    Image:      resouer/ubuntu-bc</span><br><span class="line">    Port:       &lt;none&gt;</span><br><span class="line">    Host Port:  &lt;none&gt;</span><br><span class="line">    Command:</span><br><span class="line">      sh</span><br><span class="line">      -c</span><br><span class="line">      echo &apos;scale=5000; 4*a(1)&apos; | bc -l</span><br><span class="line">    Environment:  &lt;none&gt;</span><br><span class="line">    Mounts:       &lt;none&gt;</span><br><span class="line">  Volumes:        &lt;none&gt;</span><br><span class="line">Events:</span><br><span class="line">  Type    Reason            Age   From            Message</span><br><span class="line">  ----    ------            ----  ----            -------</span><br><span class="line">  Normal  SuccessfulCreate  38s   job-controller  Created pod: pi-pz6wv</span><br><span class="line">  Normal  SuccessfulCreate  38s   job-controller  Created pod: pi-ss82f</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>系统自动给 <code>Job</code> 添加了 <code>Selector</code>  : <code>controller-uid=e896b336-dfde-49c3-9451-aef9204b261d</code> </li>
+<li><code>Job</code> 上会自动被加上了 <code>Label</code> :<code>controller-uid=e896b336-dfde-49c3-9451-aef9204b261d</code>  和 <code>job-name=pi</code></li>
+<li><code>Job spec.podTemplate</code> 中也被加上了 <code>Label</code>，即 <code>controller-uid=e896b336-dfde-49c3-9451-aef9204b261d</code>和 <code>job-name=pi</code>。这样 <code>Job</code> 就可以通过这些 <code>Label</code> 和 <code>Pod</code> 关联起来，从而控制 <code>Pod</code> 的创建、删除等操作.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 stroage]# kubectl get pod --selector=controller-uid=896b336-dfde-49c3-9451-aef9204b261d</span><br><span class="line">NAME       READY   STATUS      RESTARTS   AGE</span><br><span class="line">pi-9cljf   0/1     Completed   0          2m15s</span><br><span class="line">pi-khbct   0/1     Completed   0          2m15s</span><br><span class="line"></span><br><span class="line">[root@k8s01 stroage]# kubectl logs  pi-khbct</span><br><span class="line"></span><br><span class="line">3.141592653589793238462643383279502884197169399375105820974944592307....</span><br></pre></td></tr></table></figure>
+<h3 id="CronJob"><a href="#CronJob" class="headerlink" title="CronJob"></a>CronJob</h3><p>CronJob_test.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 stroage]# cat CronJob_test.yaml</span><br><span class="line">apiVersion: batch/v1beta1</span><br><span class="line">kind: CronJob</span><br><span class="line">metadata:</span><br><span class="line">  name: hello # cronjob 名字</span><br><span class="line">spec:</span><br><span class="line">  schedule: &quot;*/1 * * * *&quot;   # 每  1 分钟执行一次</span><br><span class="line">  concurrencyPolicy: Replace   # 并发策略,Replace：取消当前正在运行的 Job，用一个新的来替换</span><br><span class="line">  failedJobsHistoryLimit: 1    # 失败任务历史显示个数</span><br><span class="line">  startingDeadlineSeconds: 200   # 在过去的  200秒,如果 miss 的数目达到了 100 次，那么这个 Job 就不会被创建执行了。</span><br><span class="line">  jobTemplate:</span><br><span class="line">    spec:</span><br><span class="line">      template:</span><br><span class="line">        spec:</span><br><span class="line">          containers:</span><br><span class="line">          - name: hello</span><br><span class="line">            image: busybox</span><br><span class="line">            args:</span><br><span class="line">            - /bin/sh</span><br><span class="line">            - -c</span><br><span class="line">            - date;echo hello from the Kubernetes cluster</span><br><span class="line">          restartPolicy: OnFailure</span><br></pre></td></tr></table></figure></p>
+<p><code>concurrencyPolicy</code></p>
+<p><code>Allow</code> : 默认值，允许并发任务的执行</p>
+<p><code>Forbid</code> : 不允许并发任务执行</p>
+<p><code>Replace</code> : 用新的 Job 来替换当前正在运行的老的 Job</p>
+<p>查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 stroage]# kubectl get cronjobs</span><br><span class="line">NAME    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE</span><br><span class="line">hello   */1 * * * *   False     0        31s             1m46s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 stroage]# kubectl get pod</span><br><span class="line">NAME                     READY   STATUS      RESTARTS   AGE</span><br><span class="line">hello-1612021620-mclcn   0/1     Completed   0          2m5s</span><br><span class="line">hello-1612021680-ch6r2   0/1     Completed   0          74s</span><br><span class="line">hello-1612021740-wc57x   0/1     Completed   0          14s</span><br><span class="line"></span><br><span class="line">[root@k8s01 stroage]# kubectl logs hello-1612021740-wc57x</span><br><span class="line">Sat Jan 30 15:49:03 UTC 2021</span><br><span class="line">hello from the Kubernetes cluster</span><br><span class="line"></span><br><span class="line">[root@k8s01 stroage]# kubectl logs hello-1612021680-ch6r2</span><br><span class="line">Sat Jan 30 15:48:02 UTC 2021</span><br><span class="line">hello from the Kubernetes cluster</span><br></pre></td></tr></table></figure>
+<h4 id="补"><a href="#补" class="headerlink" title="补"></a>补</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl get pod my-pod --o yaml   # 将资源的配置以 yaml格式输出</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    cni.projectcalico.org/podIP: 172.18.235.131/32</span><br><span class="line">    cni.projectcalico.org/podIPs: 172.18.235.131/32</span><br><span class="line">    kubectl.kubernetes.io/last-applied-configuration: |</span><br><span class="line">      &#123;&quot;apiVersion&quot;:&quot;v1&quot;,&quot;kind&quot;:&quot;Pod&quot;,&quot;metadata&quot;:&#123;&quot;annotations&quot;:&#123;&#125;,&quot;labels&quot;:&#123;&quot;app&quot;:&quot;nginx&quot;,&quot;version&quot;:&quot;latest&quot;&#125;,&quot;name&quot;:&quot;my-pod&quot;,&quot;namespace&quot;:&quot;default&quot;&#125;,&quot;spec&quot;:&#123;&quot;containers&quot;:[&#123;&quot;image&quot;:&quot;nginx:latest&quot;,&quot;name&quot;:&quot;app&quot;,&quot;ports&quot;:[&#123;&quot;containerPort&quot;:80&#125;]&#125;]&#125;&#125;</span><br><span class="line">  creationTimestamp: &quot;2020-08-09T15:03:15Z&quot;</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">    version: latest</span><br><span class="line">  managedFields:</span><br><span class="line">  - apiVersion: v1</span><br><span class="line">    fieldsType: FieldsV1</span><br><span class="line">    fieldsV1:</span><br><span class="line">      f:metadata:</span><br><span class="line">        f:annotations:</span><br><span class="line">          .: &#123;&#125;</span><br><span class="line">          f:kubectl.kubernetes.io/last-applied-configuration: &#123;&#125;</span><br><span class="line">        f:labels:</span><br><span class="line">          .: &#123;&#125;</span><br><span class="line">          f:app: &#123;&#125;</span><br><span class="line">          f:version: &#123;&#125;</span><br><span class="line">      f:spec:</span><br><span class="line">        f:containers:</span><br><span class="line">          k:&#123;&quot;name&quot;:&quot;app&quot;&#125;:</span><br><span class="line">            .: &#123;&#125;</span><br><span class="line">            f:image: &#123;&#125;</span><br><span class="line">            f:imagePullPolicy: &#123;&#125;</span><br><span class="line">            f:name: &#123;&#125;</span><br><span class="line">            f:ports:</span><br><span class="line">              .: &#123;&#125;</span><br><span class="line">              k:&#123;&quot;containerPort&quot;:80,&quot;protocol&quot;:&quot;TCP&quot;&#125;:</span><br><span class="line">                .: &#123;&#125;</span><br><span class="line">                f:containerPort: &#123;&#125;</span><br><span class="line">                f:protocol: &#123;&#125;</span><br><span class="line">            f:resources: &#123;&#125;</span><br><span class="line">            f:terminationMessagePath: &#123;&#125;</span><br><span class="line">            f:terminationMessagePolicy: &#123;&#125;</span><br><span class="line">        f:dnsPolicy: &#123;&#125;</span><br><span class="line">        f:enableServiceLinks: &#123;&#125;</span><br><span class="line">        f:restartPolicy: &#123;&#125;</span><br><span class="line">        f:schedulerName: &#123;&#125;</span><br><span class="line">        f:securityContext: &#123;&#125;</span><br><span class="line">        f:terminationGracePeriodSeconds: &#123;&#125;</span><br><span class="line">    manager: kubectl</span><br><span class="line">    operation: Update</span><br><span class="line">    time: &quot;2020-08-09T15:03:15Z&quot;</span><br><span class="line">  - apiVersion: v1</span><br><span class="line">    fieldsType: FieldsV1</span><br><span class="line">    fieldsV1:</span><br><span class="line">      f:metadata:</span><br><span class="line">        f:annotations:</span><br><span class="line">          f:cni.projectcalico.org/podIP: &#123;&#125;</span><br><span class="line">          f:cni.projectcalico.org/podIPs: &#123;&#125;</span><br><span class="line">    manager: calico</span><br><span class="line">    operation: Update</span><br><span class="line">    time: &quot;2020-08-09T15:03:16Z&quot;</span><br><span class="line">  - apiVersion: v1</span><br><span class="line">    fieldsType: FieldsV1</span><br><span class="line">    fieldsV1:</span><br><span class="line">      f:status:</span><br><span class="line">        f:conditions:</span><br><span class="line">          k:&#123;&quot;type&quot;:&quot;ContainersReady&quot;&#125;:</span><br><span class="line">            .: &#123;&#125;</span><br><span class="line">            f:lastProbeTime: &#123;&#125;</span><br><span class="line">            f:lastTransitionTime: &#123;&#125;</span><br><span class="line">            f:status: &#123;&#125;</span><br><span class="line">            f:type: &#123;&#125;</span><br><span class="line">          k:&#123;&quot;type&quot;:&quot;Initialized&quot;&#125;:</span><br><span class="line">            .: &#123;&#125;</span><br><span class="line">            f:lastProbeTime: &#123;&#125;</span><br><span class="line">            f:lastTransitionTime: &#123;&#125;</span><br><span class="line">            f:status: &#123;&#125;</span><br><span class="line">            f:type: &#123;&#125;</span><br><span class="line">          k:&#123;&quot;type&quot;:&quot;Ready&quot;&#125;:</span><br><span class="line">            .: &#123;&#125;</span><br><span class="line">            f:lastProbeTime: &#123;&#125;</span><br><span class="line">            f:lastTransitionTime: &#123;&#125;</span><br><span class="line">            f:status: &#123;&#125;</span><br><span class="line">            f:type: &#123;&#125;</span><br><span class="line">        f:containerStatuses: &#123;&#125;</span><br><span class="line">        f:hostIP: &#123;&#125;</span><br><span class="line">        f:phase: &#123;&#125;</span><br><span class="line">        f:podIP: &#123;&#125;</span><br><span class="line">        f:podIPs:</span><br><span class="line">          .: &#123;&#125;</span><br><span class="line">          k:&#123;&quot;ip&quot;:&quot;172.18.235.131&quot;&#125;:</span><br><span class="line">            .: &#123;&#125;</span><br><span class="line">            f:ip: &#123;&#125;</span><br><span class="line">        f:startTime: &#123;&#125;</span><br><span class="line">    manager: kubelet</span><br><span class="line">    operation: Update</span><br><span class="line">    time: &quot;2020-08-09T15:05:23Z&quot;</span><br><span class="line">  name: my-pod</span><br><span class="line">  namespace: default</span><br><span class="line">  resourceVersion: &quot;45037&quot;</span><br><span class="line">  selfLink: /api/v1/namespaces/default/pods/my-pod</span><br><span class="line">  uid: aab6a853-f6b4-45cb-b8be-bd3a0307c865</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx:latest</span><br><span class="line">    imagePullPolicy: Always</span><br><span class="line">    name: app</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line">      protocol: TCP</span><br><span class="line">    resources: &#123;&#125;</span><br><span class="line">    terminationMessagePath: /dev/termination-log</span><br><span class="line">    terminationMessagePolicy: File</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount</span><br><span class="line">      name: default-token-rr77c</span><br><span class="line">      readOnly: true</span><br><span class="line">  dnsPolicy: ClusterFirst</span><br><span class="line">  enableServiceLinks: true</span><br><span class="line">  nodeName: k8s03</span><br><span class="line">  priority: 0</span><br><span class="line">  restartPolicy: Always</span><br><span class="line">  schedulerName: default-scheduler</span><br><span class="line">  securityContext: &#123;&#125;</span><br><span class="line">  serviceAccount: default</span><br><span class="line">  serviceAccountName: default</span><br><span class="line">  terminationGracePeriodSeconds: 30</span><br><span class="line">  tolerations:</span><br><span class="line">  - effect: NoExecute</span><br><span class="line">    key: node.kubernetes.io/not-ready</span><br><span class="line">    operator: Exists</span><br><span class="line">    tolerationSeconds: 300</span><br><span class="line">  - effect: NoExecute</span><br><span class="line">    key: node.kubernetes.io/unreachable</span><br><span class="line">    operator: Exists</span><br><span class="line">    tolerationSeconds: 300</span><br><span class="line">  volumes:</span><br><span class="line">  - name: default-token-rr77c</span><br><span class="line">    secret:</span><br><span class="line">      defaultMode: 420</span><br><span class="line">      secretName: default-token-rr77c</span><br><span class="line">status:</span><br><span class="line">  conditions:</span><br><span class="line">  - lastProbeTime: null</span><br><span class="line">    lastTransitionTime: &quot;2020-08-09T15:03:16Z&quot;</span><br><span class="line">    status: &quot;True&quot;</span><br><span class="line">    type: Initialized</span><br><span class="line">  - lastProbeTime: null</span><br><span class="line">    lastTransitionTime: &quot;2020-08-09T15:05:23Z&quot;</span><br><span class="line">    status: &quot;True&quot;</span><br><span class="line">    type: Ready</span><br><span class="line">  - lastProbeTime: null</span><br><span class="line">    lastTransitionTime: &quot;2020-08-09T15:05:23Z&quot;</span><br><span class="line">    status: &quot;True&quot;</span><br><span class="line">    type: ContainersReady</span><br><span class="line">  - lastProbeTime: null</span><br><span class="line">    lastTransitionTime: &quot;2020-08-09T15:03:15Z&quot;</span><br><span class="line">    status: &quot;True&quot;</span><br><span class="line">    type: PodScheduled</span><br><span class="line">  containerStatuses:</span><br><span class="line">  - containerID: docker://c0deb071489b78bbcdb8b285ee1ae28684779813e2d5c601921de3ff991e1cd4</span><br><span class="line">    image: nginx:latest</span><br><span class="line">    imageID: docker-pullable://nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2</span><br><span class="line">    lastState: &#123;&#125;</span><br><span class="line">    name: app</span><br><span class="line">    ready: true</span><br><span class="line">    restartCount: 0</span><br><span class="line">    started: true</span><br><span class="line">    state:</span><br><span class="line">      running:</span><br><span class="line">        startedAt: &quot;2020-08-09T15:05:23Z&quot;</span><br><span class="line">  hostIP: 192.168.43.103</span><br><span class="line">  phase: Running</span><br><span class="line">  podIP: 172.18.235.131</span><br><span class="line">  podIPs:</span><br><span class="line">  - ip: 172.18.235.131</span><br><span class="line">  qosClass: BestEffort</span><br><span class="line">  startTime: &quot;2020-08-09T15:03:16Z&quot;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/k8s/control 控制器说明/" rel="next" title="控制器说明">
+                <i class="fa fa-chevron-left"></i> 控制器说明
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/运维/k8s/pod生命周期一/" rel="prev" title="Pod 生命周期一">
+                Pod 生命周期一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#资源清单格式"><span class="nav-number">1.</span> <span class="nav-text">资源清单格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pod"><span class="nav-number">1.1.</span> <span class="nav-text">pod</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见"><span class="nav-number">1.1.1.</span> <span class="nav-text">常见</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试-Pod-中容器端口重复"><span class="nav-number">1.1.2.</span> <span class="nav-text">测试 Pod 中容器端口重复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PodPreset"><span class="nav-number">1.1.3.</span> <span class="nav-text">PodPreset</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RS示例"><span class="nav-number">1.2.</span> <span class="nav-text">RS示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deployment示例"><span class="nav-number">1.3.</span> <span class="nav-text">Deployment示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DaemonSet示例"><span class="nav-number">1.4.</span> <span class="nav-text">DaemonSet示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Job示例"><span class="nav-number">1.5.</span> <span class="nav-text">Job示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CronJob"><span class="nav-number">1.6.</span> <span class="nav-text">CronJob</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#补"><span class="nav-number">1.6.1.</span> <span class="nav-text">补</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

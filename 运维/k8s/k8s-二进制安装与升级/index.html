@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="环境信息可以使用 github 的部署方法，二进制安装略微复杂  前置操作， keeplived + haproxy  等，可参考 kubeadm 高可用 安装中的前置操作。 环境信息 centos7 , x86_64, 公网主机 没有相同的主机名。（ keeplived + haproxy ） 三主节点  imwl-175    66.42.99.175     imwl-219    66.4">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s高可用集群二进制安装与升级">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/k8s-二进制安装与升级/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="环境信息可以使用 github 的部署方法，二进制安装略微复杂  前置操作， keeplived + haproxy  等，可参考 kubeadm 高可用 安装中的前置操作。 环境信息 centos7 , x86_64, 公网主机 没有相同的主机名。（ keeplived + haproxy ） 三主节点  imwl-175    66.42.99.175     imwl-219    66.4">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.343Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="k8s高可用集群二进制安装与升级">
+<meta name="twitter:description" content="环境信息可以使用 github 的部署方法，二进制安装略微复杂  前置操作， keeplived + haproxy  等，可参考 kubeadm 高可用 安装中的前置操作。 环境信息 centos7 , x86_64, 公网主机 没有相同的主机名。（ keeplived + haproxy ） 三主节点  imwl-175    66.42.99.175     imwl-219    66.4">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/k8s-二进制安装与升级/">
+
+
+
+
+
+  <title>k8s高可用集群二进制安装与升级 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/k8s-二进制安装与升级/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">k8s高可用集群二进制安装与升级</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-30T22:43:31+00:00">
+                2021-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h1><p>可以使用 <code>github</code> 的部署方法，二进制安装略微复杂 </p>
+<p>前置操作， <code>keeplived</code> + <code>haproxy</code>  等，可参考 <code>kubeadm</code> 高可用 安装中的前置操作。</p>
+<p>环境信息</p>
+<p><code>centos7</code> , x86_64, 公网主机 没有相同的主机名。（ <code>keeplived</code> + <code>haproxy</code> ）</p>
+<p>三主节点</p>
+<ol>
+<li>imwl-175    66.42.99.175    </li>
+<li>imwl-219    66.42.110.219   </li>
+<li>imwl-124    149.248.6.124   </li>
+</ol>
+<p>三从节点</p>
+<ol start="4">
+<li>imwl-53     45.32.21.53     </li>
+<li>imwl-244    207.148.89.244  </li>
+<li>imwl-18     45.32.254.18    </li>
+</ol>
+<h1 id="文件信息"><a href="#文件信息" class="headerlink" title="文件信息"></a>文件信息</h1><ol>
+<li>kubernetes-v1.20.5 地址</li>
+</ol>
+<p><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#downloads-for-v1205" target="_blank" rel="noopener">https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#downloads-for-v1205</a></p>
+<p>此页 <code>ctrl + f</code> 搜索 <code>etcd</code> , 发现支持的版本为 <code>3.4.13</code> (尽量保持一致，也可以先升级 k8s 之后再升级 etcd)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz</span><br><span class="line">https://github.com/etcd-io/etcd/releases/download/v3.4.13/etcd-v3.4.13-linux-amd64.tar.gz</span><br></pre></td></tr></table></figure></p>
+<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64</span><br><span class="line">wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64</span><br><span class="line">wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64</span><br><span class="line"></span><br><span class="line">chmod +x cfssl_linux-amd64 cfssljson_linux-amd64 cfssl-certinfo_linux-amd64</span><br><span class="line"></span><br><span class="line">mv cfssl_linux-amd64 /usr/local/bin/cfssl</span><br><span class="line">mv cfssljson_linux-amd64 /usr/local/bin/cfssljson</span><br><span class="line">mv cfssl-certinfo_linux-amd64 /usr/bin/cfssl-certinfo</span><br></pre></td></tr></table></figure>
+<ol>
+<li>创建证书配置文件 <code>ca-config.json</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@dong ssl]# vim ca-config.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;signing&quot;: &#123;</span><br><span class="line">    &quot;default&quot;: &#123;</span><br><span class="line">      &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;profiles&quot;: &#123;</span><br><span class="line">      &quot;kubernetes&quot;: &#123;</span><br><span class="line">        &quot;usages&quot;: [</span><br><span class="line">            &quot;signing&quot;,    # 表示该证书可以签名其他证书</span><br><span class="line">            &quot;key encipherment&quot;,  </span><br><span class="line">            &quot;server auth&quot;,  # 表示client可以用该 CA 对server提供的证书进行验证</span><br><span class="line">            &quot;client auth&quot;  # 表示server可以用该CA对client提供的证书进行验证</span><br><span class="line">        ],</span><br><span class="line">        &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>字段说明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ca-config.json：可以定义多个 profiles，分别指定不同的过期时间、使用场景等参数；后续在签名证书时使用某个 profile；</span><br><span class="line"></span><br><span class="line">signing：表示该证书可以签名其他证书；生成的ca.pem证书中 CA=TRUE；</span><br><span class="line"></span><br><span class="line">server auth：表示client可以用该 CA 对server提供的证书进行验证；</span><br><span class="line"></span><br><span class="line">client auth：表示server可以用该CA对client提供的证书进行验证；</span><br><span class="line"></span><br><span class="line">expiry：过期时间</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>创建  <code>CA</code> 证书签名请求文件 <code>ca-csr.json</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ssl]# cat  ca-csr.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;CN&quot;: &quot;kubernetes&quot;,   # Common Name，kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name)；浏览器使用该字段验证网站是否合法</span><br><span class="line">  &quot;key&quot;: &#123;</span><br><span class="line">    &quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">    &quot;size&quot;: 2048</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;names&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">      &quot;ST&quot;: &quot;BeiJing&quot;,</span><br><span class="line">      &quot;L&quot;: &quot;BeiJing&quot;,</span><br><span class="line">      &quot;O&quot;: &quot;k8s&quot;, # Organization，kube-apiserver 从证书中提取该字段作为请求用户所属的组 (Group)</span><br><span class="line">      &quot;OU&quot;: &quot;System&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">    &quot;ca&quot;: &#123;</span><br><span class="line">       &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>字段说明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CN: Common Name，kube-apiserver 从证书中提取该字段作为请求的用户名(UserName)；浏览器使用该字段验证网站是否合法；</span><br><span class="line">O: Organization，kube-apiserver 从证书中提取该字段作为请求用户所属的组(Group)；</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>使用 <code>ca-csr.json</code> 生成 证书文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-196 catest]# cfssl gencert -initca ca-csr.json | cfssljson -bare ca</span><br><span class="line">2021/04/06 17:38:51 [INFO] generating a new CA key and certificate from CSR</span><br><span class="line">2021/04/06 17:38:51 [INFO] generate received request</span><br><span class="line">2021/04/06 17:38:51 [INFO] received CSR</span><br><span class="line">2021/04/06 17:38:51 [INFO] generating key: rsa-2048</span><br><span class="line">2021/04/06 17:38:51 [INFO] encoded CSR</span><br><span class="line">2021/04/06 17:38:51 [INFO] signed certificate with serial number 521813437196023415968870323165871682871497777129</span><br><span class="line"></span><br><span class="line">[root@aps-196 catest]# ll</span><br><span class="line">total 20</span><br><span class="line">-rw-r--r-- 1 root root  473 Apr  6 17:31 ca-config.json</span><br><span class="line">-rw-r--r-- 1 root root 1001 Apr  6 17:38 ca.csr</span><br><span class="line">-rw-r--r-- 1 root root  257 Apr  6 17:38 ca-csr.json</span><br><span class="line">-rw------- 1 root root 1675 Apr  6 17:38 ca-key.pem</span><br><span class="line">-rw-r--r-- 1 root root 1359 Apr  6 17:38 ca.pem</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>ca.pem</code>  :  <code>CA</code> 证书, 是后面 <code>kubernetes</code> 组件会用到的 <code>RootCA</code></li>
+<li><code>ca-key.pem</code> : <code>CA</code> 的私钥</li>
+<li><code>ca.csr</code> : 一个签署请求</li>
+</ol>
+<h2 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h2><p>具体参数 请参考详细配置文件</p>
+<p>eg:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-53 ~]# systemctl status etcd -l</span><br><span class="line">● etcd.service - Etcd Server</span><br><span class="line">   Loaded: loaded (/etc/systemd/system/etcd.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Thu 2021-04-01 02:19:52 UTC; 3h 47min ago</span><br><span class="line">     Docs: https://github.com/coreos</span><br><span class="line"> Main PID: 8517 (etcd)</span><br><span class="line">    Tasks: 11</span><br><span class="line">   Memory: 97.6M</span><br><span class="line">   CGroup: /system.slice/etcd.service</span><br><span class="line">           └─8517 /opt/kube/bin/etcd --name=etcd1 --cert-file=/etc/etcd/ssl/etcd.pem --key-file=/etc/etcd/ssl/etcd-key.pem --peer-cert-file=/etc/etcd/ssl/etcd.pem --peer-key-file=/etc/etcd/ssl/etcd-key.pem --trusted-ca-file=/etc/kubernetes/ssl/ca.pem --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem --initial-advertise-peer-urls=https://45.32.21.53:2380 --listen-peer-urls=https://45.32.21.53:2380 --listen-client-urls=https://45.32.21.53:2379,http://127.0.0.1:2379 --advertise-client-urls=https://45.32.21.53:2379 --initial-cluster-token=etcd-cluster-0 --initial-cluster=etcd1=https://45.32.21.53:2380,etcd2=https://207.148.89.244:2380,etcd3=https://45.32.254.181:2380 --initial-cluster-state=new --data-dir=/var/lib/etcd --snapshot-count=50000 --auto-compaction-retention=1 --max-request-bytes=10485760 --auto-compaction-mode=periodic --quota-backend-bytes=8589934592</span><br></pre></td></tr></table></figure></p>
+<p>备份文件需要的主要配置信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CACERT=&apos;/etc/kubernetes/ssl/ca.pem&apos;</span><br><span class="line">CERT=&apos;/etc/etcd/ssl/etcd.pem&apos;</span><br><span class="line">KEY=&apos;/etc/etcd/ssl/etcd-key.pem&apos;</span><br><span class="line">DATA-DIR=&apos;/var/lib/etcd&apos;</span><br><span class="line">ETCDCTL_PATH=&apos;/opt/kube/bin/&apos;</span><br></pre></td></tr></table></figure></p>
+<h3 id="升级-etcd"><a href="#升级-etcd" class="headerlink" title="升级 etcd"></a>升级 etcd</h3><ol>
+<li>备份 <code>etcd</code> 数据， 每个节点都有完整的数据，只需要备份一个节点就好了</li>
+</ol>
+<p>执行 <code>etcd_backup.sh</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">set -e # 遇到错误直接退出</span><br><span class="line"># 不需要修改的变量</span><br><span class="line">script_abs=$(readlink -f &quot;$0&quot;) # 获取当前脚本绝对路径</span><br><span class="line">script_dir=$(dirname $script_abs) # 获取当前脚本所在的绝对目录</span><br><span class="line">script_name=$&#123;script_abs##*/&#125; # 获取当前脚本文件名</span><br><span class="line">cd $&#123;script_dir&#125; # 全局切换到脚本所在目录</span><br><span class="line">USER=$(whoami)   # 获取执行用户名</span><br><span class="line"></span><br><span class="line">gainAddress()&#123;</span><br><span class="line">    if [ ! -f &quot;./address.txt&quot; ];then</span><br><span class="line">        read -p $&apos;input ADDRESS : \n&apos; ADDRESS  </span><br><span class="line">        echo $ADDRESS &gt;  etcd_ip.txt</span><br><span class="line">    fi</span><br><span class="line">    ADDRESS=`cat etcd_ip.txt`  # 获取 etcd_ip 地址</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CLIENTPORT=2379</span><br><span class="line">PEERPORT=2380</span><br><span class="line">DATA-DIR=&apos;/var/lib/etcd&apos;</span><br><span class="line">ETCDBIN_DIR=&apos;/opt/kube/bin/&apos;</span><br><span class="line">CACERT=&apos;/etc/kubernetes/ssl/ca.pem&apos;</span><br><span class="line">CERT=&apos;/etc/etcd/ssl/etcd.pem&apos;</span><br><span class="line">KEY=&apos;/etc/etcd/ssl/etcd-key.pem&apos;</span><br><span class="line">BACKUP_DIR=&apos;/root/backup/etcd/&apos;</span><br><span class="line">DATE=`date +%Y%m%d-%H%M%S`</span><br><span class="line"></span><br><span class="line">SNAPSHOTNAME=$BACKUP_DIR/snapshot-$(date +%Y%m%d-%H%M%S).db</span><br><span class="line"></span><br><span class="line">etcdctl version</span><br><span class="line">etcd --version</span><br><span class="line"></span><br><span class="line">[ ! -d $BACKUP_DIR ] &amp;&amp; mkdir -p $BACKUP_DIR</span><br><span class="line">export ETCDCTL_API=3</span><br><span class="line">$ETCDCTL_PATH --endpoints=$ENDPOINT --cacert=$CACERT --cert=$CERT --key=$KEY snapshot save $SNAPSHOTNAME</span><br><span class="line"></span><br><span class="line">for ip in $ADDRESS;do</span><br><span class="line">    ssh $ip [ ! -d $BACKUP_DIR ] &amp;&amp; mkdir -p $BACKUP_DIR</span><br><span class="line">    scp $SNAPSHOTNAME $USER@$ip:~/</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>依次停止 etcd 集群，清理数据，替换二进制文件，</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop etcd</span><br><span class="line">rm -rf /var/lib/etcd  # 此路径 也是  `data_dir 的地址`</span><br><span class="line">for ip in $ADDRESS;do </span><br><span class="line">    ssh root@$ip systemctl stop etcd &amp;&amp; rm -rf $DATA-DIRE</span><br><span class="line">    scp ./etcd*  root@$ip:$ETCDBIN_DIR</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>恢复数据, 启动 etcd</li>
+</ol>
+<p>需要手动到各个节点执行，按需修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">etcdctl snapshot restore $snapbackname \</span><br><span class="line">--name etcd1 \</span><br><span class="line">--initial-cluster etcd1=https://45.32.21.53:2380,etcd2=https://207.148.89.244:2380,etcd3=https://45.32.254.181:2380  \</span><br><span class="line">--initial-advertise-peer-urls http://45.32.21.53:2380</span><br><span class="line">systemctl restart etcd</span><br></pre></td></tr></table></figure></p>
+<h1 id="补"><a href="#补" class="headerlink" title="补"></a>补</h1><h2 id="etcd-说明"><a href="#etcd-说明" class="headerlink" title="etcd 说明"></a>etcd 说明</h2><p>使用 <code>3.4.13</code> 版本 有问题,所以改了一下 <code>endpoint</code>, 改成 单个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-53 ~]# etcdctl --endpoints=45.32.21.53:2379,45.32.254.181:2379,207.148.89.244:2379 --cacert=/etc/kubernetes/ssl/ca.pem --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem  snapshot save /root/backup/etcd//snapshot-20210401-054755.db</span><br><span class="line">Error: snapshot must be requested to one selected node, not multiple [45.32.21.53:2379 45.32.254.181:2379 207.148.89.244:2379]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@imwl-53 ~]# etcdctl --endpoints=45.32.21.53:2379 --cacert=/etc/kubernetes/ssl/ca.pem --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem  snapshot save /root/backup/etcd/snapshot-20210401-054755.db</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617257504.110205,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:119&quot;,&quot;msg&quot;:&quot;created temporary db file&quot;,&quot;path&quot;:&quot;/root/backup/etcd/snapshot-20210401-054755.db.part&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2021-04-01T06:11:44.119Z&quot;,&quot;caller&quot;:&quot;clientv3/maintenance.go:200&quot;,&quot;msg&quot;:&quot;opened snapshot stream; downloading&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617257504.1191013,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:127&quot;,&quot;msg&quot;:&quot;fetching snapshot&quot;,&quot;endpoint&quot;:&quot;45.32.21.53:2379&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2021-04-01T06:11:44.156Z&quot;,&quot;caller&quot;:&quot;clientv3/maintenance.go:208&quot;,&quot;msg&quot;:&quot;completed snapshot read; closing&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617257504.1682398,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:142&quot;,&quot;msg&quot;:&quot;fetched snapshot&quot;,&quot;endpoint&quot;:&quot;45.32.21.53:2379&quot;,&quot;size&quot;:&quot;3.9 MB&quot;,&quot;took&quot;:0.057855651&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617257504.1684163,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:152&quot;,&quot;msg&quot;:&quot;saved&quot;,&quot;path&quot;:&quot;/root/backup/etcd/snapshot-20210401-054755.db&quot;&#125;</span><br><span class="line">Snapshot saved at /root/backup/etcd/snapshot-20210401-054755.db</span><br></pre></td></tr></table></figure>
+<h2 id="配置文件备份"><a href="#配置文件备份" class="headerlink" title="配置文件备份"></a>配置文件备份</h2><p><code>/etc/systemd/system/kubelet.service</code>  基本上 节点一致<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-124 ~]# cat /etc/systemd/system/kubelet.service   </span><br><span class="line">[Unit]</span><br><span class="line">Description=Kubernetes Kubelet</span><br><span class="line">Documentation=https://github.com/GoogleCloudPlatform/kubernetes</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">WorkingDirectory=/var/lib/kubelet</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/cpu/podruntime.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/cpuacct/podruntime.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/cpuset/podruntime.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/memory/podruntime.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/pids/podruntime.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/systemd/podruntime.slice</span><br><span class="line"></span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/cpu/system.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/cpuacct/system.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/cpuset/system.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/memory/system.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/pids/system.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/systemd/system.slice</span><br><span class="line"></span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/hugetlb/podruntime.slice</span><br><span class="line">ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/hugetlb/system.slice</span><br><span class="line">ExecStart=/opt/kube/bin/kubelet \</span><br><span class="line">  --config=/var/lib/kubelet/config.yaml \</span><br><span class="line">  --cni-bin-dir=/opt/kube/bin \</span><br><span class="line">  --cni-conf-dir=/etc/cni/net.d \</span><br><span class="line">  --hostname-override=149.248.6.124 \</span><br><span class="line">  --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \</span><br><span class="line">  --network-plugin=cni \</span><br><span class="line">  --pod-infra-container-image=easzlab/pause-amd64:3.2 \</span><br><span class="line">  --root-dir=/var/lib/kubelet \</span><br><span class="line">  --v=2</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=5</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p><code>/etc/systemd/system/kube-proxy.service</code>   基本上 节点一致<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-124 ~]# cat /etc/systemd/system/kube-proxy.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Kubernetes Kube-Proxy Server</span><br><span class="line">Documentation=https://github.com/GoogleCloudPlatform/kubernetes</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line"># kube-proxy 根据 --cluster-cidr 判断集群内部和外部流量，指定 --cluster-cidr 或 --masquerade-all 选项后，kube-proxy 会对访问 Service IP 的请求做 SNAT</span><br><span class="line">WorkingDirectory=/var/lib/kube-proxy</span><br><span class="line">ExecStart=/opt/kube/bin/kube-proxy \</span><br><span class="line">  --bind-address=149.248.6.124 \</span><br><span class="line">  --cluster-cidr=172.20.0.0/16 \</span><br><span class="line">  --hostname-override=149.248.6.124 \</span><br><span class="line">  --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \</span><br><span class="line">  --logtostderr=true \</span><br><span class="line">  --proxy-mode=ipvs \</span><br><span class="line">  --metrics-bind-address=149.248.6.124</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=5</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p><code>/etc/systemd/system/kube-apiserver.service</code>  , <code>msater</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-124 ~]# cat /etc/systemd/system/kube-apiserver.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Kubernetes API Server</span><br><span class="line">Documentation=https://github.com/GoogleCloudPlatform/kubernetes</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/opt/kube/bin/kube-apiserver \</span><br><span class="line">  --advertise-address=149.248.6.124 \</span><br><span class="line">  --allow-privileged=true \</span><br><span class="line">  --anonymous-auth=false \</span><br><span class="line">  --api-audiences=api,istio-ca \</span><br><span class="line">  --authorization-mode=Node,RBAC \</span><br><span class="line">  --token-auth-file=/etc/kubernetes/ssl/basic-auth.csv \</span><br><span class="line">  --bind-address=149.248.6.124 \</span><br><span class="line">  --client-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --endpoint-reconciler-type=lease \</span><br><span class="line">  --etcd-cafile=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --etcd-certfile=/etc/kubernetes/ssl/kubernetes.pem \</span><br><span class="line">  --etcd-keyfile=/etc/kubernetes/ssl/kubernetes-key.pem \</span><br><span class="line">  --etcd-servers=https://45.32.21.53:2379,https://207.148.89.244:2379,https://45.32.254.181:2379 \</span><br><span class="line">  --kubelet-certificate-authority=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --kubelet-client-certificate=/etc/kubernetes/ssl/admin.pem \</span><br><span class="line">  --kubelet-client-key=/etc/kubernetes/ssl/admin-key.pem \</span><br><span class="line">  --service-account-issuer=kubernetes.default.svc \</span><br><span class="line">  --service-account-signing-key-file=/etc/kubernetes/ssl/ca-key.pem \</span><br><span class="line">  --service-account-key-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --service-cluster-ip-range=10.68.0.0/16 \</span><br><span class="line">  --service-node-port-range=20000-40000 \</span><br><span class="line">  --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem \</span><br><span class="line">  --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \</span><br><span class="line">  --requestheader-client-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --requestheader-allowed-names= \</span><br><span class="line">  --requestheader-extra-headers-prefix=X-Remote-Extra- \</span><br><span class="line">  --requestheader-group-headers=X-Remote-Group \</span><br><span class="line">  --requestheader-username-headers=X-Remote-User \</span><br><span class="line">  --proxy-client-cert-file=/etc/kubernetes/ssl/aggregator-proxy.pem \</span><br><span class="line">  --proxy-client-key-file=/etc/kubernetes/ssl/aggregator-proxy-key.pem \</span><br><span class="line">  --enable-aggregator-routing=true \</span><br><span class="line">  --v=2</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=5</span><br><span class="line">Type=notify</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p><code>/etc/systemd/system/kube-controller-manager.service</code>  , <code>msater</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-124 ~]# cat /etc/systemd/system/kube-controller-manager.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Kubernetes Controller Manager</span><br><span class="line">Documentation=https://github.com/GoogleCloudPlatform/kubernetes</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/opt/kube/bin/kube-controller-manager \</span><br><span class="line">  --address=127.0.0.1 \</span><br><span class="line">  --allocate-node-cidrs=true \</span><br><span class="line">  --cluster-cidr=172.20.0.0/16 \</span><br><span class="line">  --cluster-name=kubernetes \</span><br><span class="line">  --cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem \</span><br><span class="line">  --kubeconfig=/etc/kubernetes/kube-controller-manager.kubeconfig \</span><br><span class="line">  --leader-elect=true \</span><br><span class="line">  --node-cidr-mask-size=24 \</span><br><span class="line">  --root-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --service-account-private-key-file=/etc/kubernetes/ssl/ca-key.pem \</span><br><span class="line">  --service-cluster-ip-range=10.68.0.0/16 \</span><br><span class="line">  --use-service-account-credentials=true \</span><br><span class="line">  --v=2</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=5</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p><code>/etc/systemd/system/kube-scheduler.service</code>  , <code>msater</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-124 ~]# cat /etc/systemd/system/kube-scheduler.service .</span><br><span class="line">[Unit]</span><br><span class="line">Description=Kubernetes Scheduler</span><br><span class="line">Documentation=https://github.com/GoogleCloudPlatform/kubernetes</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/opt/kube/bin/kube-scheduler \</span><br><span class="line">  --address=127.0.0.1 \</span><br><span class="line">  --kubeconfig=/etc/kubernetes/kube-scheduler.kubeconfig \</span><br><span class="line">  --leader-elect=true \</span><br><span class="line">  --v=2</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=5</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<h2 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h2><p><code>45.32.21.53</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-53 ~]# cat  /etc/systemd/system/etcd.service </span><br><span class="line">[Unit]</span><br><span class="line">Description=Etcd Server</span><br><span class="line">After=network.target</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line">Documentation=https://github.com/coreos</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">WorkingDirectory=/var/lib/etcd/</span><br><span class="line">ExecStart=/opt/kube/bin/etcd \</span><br><span class="line">  --name=etcd1 \</span><br><span class="line">  --cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --peer-cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --initial-advertise-peer-urls=https://45.32.21.53:2380 \</span><br><span class="line">  --listen-peer-urls=https://45.32.21.53:2380 \</span><br><span class="line">  --listen-client-urls=https://45.32.21.53:2379,http://127.0.0.1:2379 \</span><br><span class="line">  --advertise-client-urls=https://45.32.21.53:2379 \</span><br><span class="line">  --initial-cluster-token=etcd-cluster-0 \</span><br><span class="line">  --initial-cluster=etcd1=https://45.32.21.53:2380,etcd2=https://207.148.89.244:2380,etcd3=https://45.32.254.181:2380 \</span><br><span class="line">  --initial-cluster-state=new \</span><br><span class="line">  --data-dir=/var/lib/etcd \</span><br><span class="line">  --snapshot-count=50000 \</span><br><span class="line">  --auto-compaction-retention=1 \</span><br><span class="line">  --max-request-bytes=10485760 \</span><br><span class="line">  --auto-compaction-mode=periodic \</span><br><span class="line">  --quota-backend-bytes=8589934592</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=15</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line">OOMScoreAdjust=-999</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p><code>207.148.89.244</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-244 ~]# cat /etc/systemd/system/etcd.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Etcd Server</span><br><span class="line">After=network.target</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line">Documentation=https://github.com/coreos</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">WorkingDirectory=/var/lib/etcd/</span><br><span class="line">ExecStart=/opt/kube/bin/etcd \</span><br><span class="line">  --name=etcd2 \</span><br><span class="line">  --cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --peer-cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --initial-advertise-peer-urls=https://207.148.89.244:2380 \</span><br><span class="line">  --listen-peer-urls=https://207.148.89.244:2380 \</span><br><span class="line">  --listen-client-urls=https://207.148.89.244:2379,http://127.0.0.1:2379 \</span><br><span class="line">  --advertise-client-urls=https://207.148.89.244:2379 \</span><br><span class="line">  --initial-cluster-token=etcd-cluster-0 \</span><br><span class="line">  --initial-cluster=etcd1=https://45.32.21.53:2380,etcd2=https://207.148.89.244:2380,etcd3=https://45.32.254.181:2380 \</span><br><span class="line">  --initial-cluster-state=new \</span><br><span class="line">  --data-dir=/var/lib/etcd \</span><br><span class="line">  --snapshot-count=50000 \</span><br><span class="line">  --auto-compaction-retention=1 \</span><br><span class="line">  --max-request-bytes=10485760 \</span><br><span class="line">  --auto-compaction-mode=periodic \</span><br><span class="line">  --quota-backend-bytes=8589934592</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=15</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line">OOMScoreAdjust=-999</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p><code>45.32.254.181</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-181 ~]# cat /etc/systemd/system/etcd.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Etcd Server</span><br><span class="line">After=network.target</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line">Documentation=https://github.com/coreos</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">WorkingDirectory=/var/lib/etcd/</span><br><span class="line">ExecStart=/opt/kube/bin/etcd \</span><br><span class="line">  --name=etcd3 \</span><br><span class="line">  --cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --peer-cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --initial-advertise-peer-urls=https://45.32.254.181:2380 \</span><br><span class="line">  --listen-peer-urls=https://45.32.254.181:2380 \</span><br><span class="line">  --listen-client-urls=https://45.32.254.181:2379,http://127.0.0.1:2379 \</span><br><span class="line">  --advertise-client-urls=https://45.32.254.181:2379 \</span><br><span class="line">  --initial-cluster-token=etcd-cluster-0 \</span><br><span class="line">  --initial-cluster=etcd1=https://45.32.21.53:2380,etcd2=https://207.148.89.244:2380,etcd3=https://45.32.254.181:2380 \</span><br><span class="line">  --initial-cluster-state=new \</span><br><span class="line">  --data-dir=/var/lib/etcd \</span><br><span class="line">  --snapshot-count=50000 \</span><br><span class="line">  --auto-compaction-retention=1 \</span><br><span class="line">  --max-request-bytes=10485760 \</span><br><span class="line">  --auto-compaction-mode=periodic \</span><br><span class="line">  --quota-backend-bytes=8589934592</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=15</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line">OOMScoreAdjust=-999</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p>相同的配置</p>
+<p>切换 目录 <code>/etc/etcd/ssl/</code></p>
+<p><code>cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem -ca-key=/etc/kubernetes/ssl/ca-key.pem  -config=/etc/kubernetes/ssl/ca-config.json -profile=kubernetes /etc/etcd/ssl/etcd-csr.json | cfssljson -bare etcd</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@imwl-181 ssl]# cat etcd-csr.json etcd</span><br><span class="line">&#123;</span><br><span class="line">  &quot;CN&quot;: &quot;etcd&quot;,</span><br><span class="line">  &quot;hosts&quot;: [</span><br><span class="line">    &quot;45.32.21.53&quot;,</span><br><span class="line">    &quot;207.148.89.244&quot;,</span><br><span class="line">    &quot;45.32.254.181&quot;,</span><br><span class="line">    &quot;127.0.0.1&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;key&quot;: &#123;</span><br><span class="line">    &quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">    &quot;size&quot;: 2048</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;names&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">      &quot;ST&quot;: &quot;HangZhou&quot;,</span><br><span class="line">      &quot;L&quot;: &quot;XS&quot;,</span><br><span class="line">      &quot;O&quot;: &quot;k8s&quot;,</span><br><span class="line">      &quot;OU&quot;: &quot;System&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/k8s/k8s遇到的问题/" rel="next" title="k8s遇到的问题">
+                <i class="fa fa-chevron-left"></i> k8s遇到的问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/计算机网络/常见问题/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境信息"><span class="nav-number">1.</span> <span class="nav-text">环境信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件信息"><span class="nav-number">2.</span> <span class="nav-text">文件信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#证书"><span class="nav-number">2.1.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级"><span class="nav-number">2.2.</span> <span class="nav-text">升级</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#升级-etcd"><span class="nav-number">2.2.1.</span> <span class="nav-text">升级 etcd</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补"><span class="nav-number">3.</span> <span class="nav-text">补</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#etcd-说明"><span class="nav-number">3.1.</span> <span class="nav-text">etcd 说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件备份"><span class="nav-number">3.2.</span> <span class="nav-text">配置文件备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etcd"><span class="nav-number">3.3.</span> <span class="nav-text">etcd</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

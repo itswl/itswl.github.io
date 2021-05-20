@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介Istio 包含控制面 Istiod 和数据面 Envoy 两个组件。 Istiod : 负责配置校验(Galley)和下发(Pilot)、证书轮转(Citadel)等工作 Envoy : 负责数据代理和流量路由等工作 Envoy 是 C++ 编写的高性能边缘网关和代理程序，支持 HTTP、gRPC、Thrift、Redis、MongoDB 等多种协议代理。支持最好的还是 HTTP，几乎具备了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Istio">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/istio/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="简介Istio 包含控制面 Istiod 和数据面 Envoy 两个组件。 Istiod : 负责配置校验(Galley)和下发(Pilot)、证书轮转(Citadel)等工作 Envoy : 负责数据代理和流量路由等工作 Envoy 是 C++ 编写的高性能边缘网关和代理程序，支持 HTTP、gRPC、Thrift、Redis、MongoDB 等多种协议代理。支持最好的还是 HTTP，几乎具备了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/Envoy.png">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/Envoy过程.png">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/bookinfo.png">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.342Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Istio">
+<meta name="twitter:description" content="简介Istio 包含控制面 Istiod 和数据面 Envoy 两个组件。 Istiod : 负责配置校验(Galley)和下发(Pilot)、证书轮转(Citadel)等工作 Envoy : 负责数据代理和流量路由等工作 Envoy 是 C++ 编写的高性能边缘网关和代理程序，支持 HTTP、gRPC、Thrift、Redis、MongoDB 等多种协议代理。支持最好的还是 HTTP，几乎具备了">
+<meta name="twitter:image" content="http://imwl.ml/images/blog_images/k8s/Envoy.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/istio/">
+
+
+
+
+
+  <title>Istio | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/istio/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Istio</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-24T22:43:31+00:00">
+                2021-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><code>Istio</code> 包含控制面 <code>Istiod</code> 和数据面 <code>Envoy</code> 两个组件。</p>
+<p><code>Istiod</code> : 负责配置校验(<code>Galley</code>)和下发(<code>Pilot</code>)、证书轮转(<code>Citadel</code>)等工作</p>
+<p><code>Envoy</code> : 负责数据代理和流量路由等工作</p>
+<p><code>Envoy</code> 是 <code>C++</code> 编写的高性能边缘网关和代理程序，支持 <code>HTTP、gRPC、Thrift、Redis、MongoDB</code> 等多种协议代理。支持最好的还是 <code>HTTP</code>，几乎具备了 <code>Service Mesh</code> 数据面需要的所有功能，比如服务发现、限流熔断、多种负载均衡策略、精准流量路由等。</p>
+<p><strong>补充说明</strong></p>
+<p>1.5.0 版本以后 <code>Istio</code> 控制面由以下几个组件组成。</p>
+<p><code>Pilot</code>：<code>Istio</code> 控制面中最核心的模块，负责运行时配置下发，具体来说，就是和 <code>Envoy</code> 之间基于 <code>xDS</code> 协议进行的各种 <code>Envoy</code> 配置信息的推送，包括服务发现、路由发现、集群发现、监听器发现等。</p>
+<p><code>Citadel</code>：负责证书的分发和轮换，使 <code>Sidecar</code> 代理两端实现双向 <code>TLS</code> 认证、访问授权等。</p>
+<p><code>Galley</code>：配置信息的格式和正确性校验，将配置信息提供给 <code>Pilot</code> 使用。</p>
+<h2 id="Envoy-详解"><a href="#Envoy-详解" class="headerlink" title="Envoy 详解"></a>Envoy 详解</h2><p><code>Envoy</code> 是专为大型现代 <code>SOA</code>（面向服务架构）架构设计的 <code>L7</code> 代理和通信总线，它既可以作为 <code>Service Mesh</code> 中的数据面使用，也可以作为入口网关层使用，可以通过 <code>xDS API</code> 控制 <code>Envoy</code> 的监听、路由、负载均衡等行为。</p>
+<h3 id="Envoy-核心功能"><a href="#Envoy-核心功能" class="headerlink" title="Envoy 核心功能"></a>Envoy 核心功能</h3><ol>
+<li>高性能设计：采用 <code>C++</code> 编写，拥有良好的四层、七层代理性能</li>
+<li><code>Filter</code> 架构：可以在四、七层编写 <code>Filter</code> 以扩展 <code>Envoy</code> 的功能，eg: 监听过滤器、四层网络过滤器，以及七层过滤器。不过 <code>Envoy</code> 支持最完善的还是 <code>HTTP</code>过滤器，支持了限流、路由转发、故障注入等多种服务治理功能，</li>
+<li>良好的 <code>HTTP/2</code> 支持：随着 <code>gRPC</code> 框架的流行以及边缘层网络性能的要求提升，<code>HTTP/2</code> 越来越被重视。<code>Envoy</code> 原生支持 <code>HTTP/2</code>，可以在 <code>HTTP</code> 和 <code>HTTP/2</code> 之间做转换。比如在 <code>Sidecar</code> 模式中，无论应用协议是 <code>HTTP</code> 还是 <code>HTTP/2</code>，<code>Envoy</code> 之间默认使用 <code>HTTP/2</code> 通信，这样极大提升了服务性能和稳定性，避免了 <code>HTTP</code> 频繁建立连接带来的消耗和不稳定性。</li>
+<li>多种协议支持：<code>Thrift、gRPC、MongoDB、Redis、MySQL</code> 等多种网络协议都被支持，甚至可以使用 <code>Envoy</code> 做 <code>Redis</code> 的 <code>Mesh</code> 方案，用来代替流行的 <code>Redis</code> 中间件。</li>
+<li>可观测性：支持强大的统计系统。日志、<code>Metrics</code>、链路追踪都有良好的支持。</li>
+<li>边缘网关：<code>Envoy</code> 本身就是一个高性能的网络代理组件，完全可以作为入口网关层使用，在 <code>Kubernetes</code> 中，也可以作为 <code>Egress</code> 和 <code>Ingress</code> 使用。</li>
+<li>服务发现：和其他常见的网络代理软件不同，<code>Envoy</code> 默认支持服务发现组件。<code>Envoy</code>  使用了一套 <code>xDS</code> 的动态 <code>API</code>，获取服务的后端节点并实时更新，结合 <code>Envoy</code> 强大的负载均衡器，可以做到最终一致性。</li>
+<li><code>Wasm</code> 扩展：<code>Wasm</code> 全称为 <code>WebAssembly</code>，最早用在浏览器端用来解决 <code>JavaScript</code> 性能问题和大型项目团队协作问题。近些年，它开始在一些后端技术上使用，用来代替 <code>Lua</code>，作为核心系统的扩展方式。因为 <code>Wasm</code> 可以使用多种语言进行开发，所以方便对核心系统进行扩展，不用担心语言问题。当然相对于原生的 <code>C++</code> 扩展方式，它大概有 3 成的性能损耗。</li>
+</ol>
+<h3 id="Envoy-架构设计"><a href="#Envoy-架构设计" class="headerlink" title="Envoy 架构设计"></a>Envoy 架构设计</h3><p><img src="/images/blog_images/k8s/Envoy.png" alt="Envoy"></p>
+<ol>
+<li><code>Iptable</code>：通过 <code>Iptable</code> 劫持，将入口和出口流量都转发到 <code>Envoy</code> 上，达到劫持流量的目的。</li>
+<li><code>Listener</code>：<code>Envoy</code> 通过建立多个监听器提供不同的服务。比如通过监听的两个端口分别负责 <code>Sidecar</code> 模式的出流量和入流量，<code>Sidecar</code> 多使用这种设计，这样可以简化编程逻辑，也可以增强 <code>Filter</code> 的通用性。如果提供不同协议，<code>Envoy</code> 也会建立不同的端口来提供服务。</li>
+<li><code>Worker</code>：每个 <code>Listener</code> 维护一个对应的 <code>Worker Pool</code>，<code>Envoy</code> 为每个逻辑处理器创建一个 <code>Worker</code> 线程，当我们在一个新的端口启动一个新的 <code>server</code> 时，<code>Envoy</code> 也会根据 <code>-concurrency</code> 创建对应的 <code>Worker</code> 线程，要注意启动太多的 <code>worker</code> 线程并不一定是好事，特别是在 <code>Sidecar</code> 模式，我们并不会分配过多的逻辑核心给到 <code>Sidecar</code>，创建过多的 <code>Worker</code> 线程可能导致每个 <code>Worker</code> 线程维护的连接变多，<code>Upstream</code> 压力过大。</li>
+<li><code>Filters</code>：可以理解为中间件，通过 <code>Filter</code>，可以做到四层和七层的流量过滤，支持服务治理需要的限流、熔断等功能。</li>
+<li><code>Cluster Manager</code>：流量经过 <code>Router</code>，识别出需要转发的 <code>Cluster</code>，通过 <code>Cluster Manager</code> 进行服务发现和负载均衡等功能。</li>
+<li><code>Upstream</code>：<code>Upstream</code> 维护了 <code>EndPoint</code> 的连接池，通过负载具衡器，将流量转发到合适的 <code>EndPoint</code> 上面。</li>
+</ol>
+<h4 id="过程示例"><a href="#过程示例" class="headerlink" title="过程示例"></a>过程示例</h4><p><code>Productpage</code> 服务通过 <code>HTTP</code> 协议，调用 <code>review</code> 服务的过程。</p>
+<p><img src="/images/blog_images/k8s/Envoy过程.png" alt="Envoy过程"></p>
+<ol>
+<li><p>通过 <code>Iptables</code> 对流量进行劫持，将 <code>Productpage</code> 访问 <code>Reviews</code> 的流量转发到 <code>Envoy</code> 的出流量 <code>15001</code> 端口上。</p>
+</li>
+<li><p><code>Envoy</code> 先根据 <code>virtual_hosts</code> 进行匹配，再通过路由匹配，发现路由对应的 <code>Cluster</code>，通过服务发现找到 <code>Cluster</code> 对应的 <code>EndPoint</code>，将流量转发到 <code>10.40.0.15:9080</code> 的 <code>Pod</code> 上。</p>
+</li>
+<li><p><code>Reviews</code> 的 <code>Pod</code> 通过 <code>Iptables</code> 对流量进行劫持，将流量劫持到 <code>Envoy</code> 的入流量端口 <code>15006</code> 上。</p>
+</li>
+<li><p><code>Envoy</code> 将本地流量转发到对应的本地地址 <code>127.0.0.1:9080</code>，这里不需要对流量进行识别，因为流量被转发到入流量端口 <code>15006</code> 上，这个端口的配置用于本地流量的转发。</p>
+</li>
+<li><p>到这里整个 <code>Sidecar</code> 的流量出入过程就结束了。出入流量都经由 <code>Envoy</code>，最终被正确的转发到了 <code>Reviews</code> 的 <code>Pod</code> 上面。</p>
+</li>
+</ol>
+<h3 id="Envoy-配置"><a href="#Envoy-配置" class="headerlink" title="Envoy 配置"></a>Envoy 配置</h3><p><code>Envoy</code> 的配置分为静态配置和动态配置</p>
+<ol>
+<li>静态配置 : 手动填写的配置</li>
+<li>动态配置 : <code>xDS API</code> 获取的配置</li>
+</ol>
+<h4 id="静态配置"><a href="#静态配置" class="headerlink" title="静态配置"></a>静态配置</h4><p>eg：<br>定义 <code>Listener</code> 监听器，监听端口为 <code>10000</code>。<code>virtual_hosts</code> 匹配所有域名，<code>Routes</code> 的匹配规则为所有 <code>Path</code>，也就是所有访问 <code>10000</code> 端口的请求都会被转发到 <code>service_google</code> 服务。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">listeners:</span><br><span class="line">- name: listener_0</span><br><span class="line">  address:</span><br><span class="line">    socket_address: &#123; address: 0.0.0.0, port_value: 10000 &#125;</span><br><span class="line">  filter_chains:</span><br><span class="line">  - filters:</span><br><span class="line">    - name: envoy.http_connection_manager</span><br><span class="line">      config:</span><br><span class="line">        stat_prefix: ingress_http</span><br><span class="line">        codec_type: AUTO</span><br><span class="line">        route_config:</span><br><span class="line">          name: local_route</span><br><span class="line">          virtual_hosts:</span><br><span class="line">          - name: local_service</span><br><span class="line">            domains: [&quot;*&quot;] // 匹配所有域名</span><br><span class="line">            routes:</span><br><span class="line">            - match: &#123; prefix: &quot;/&quot; &#125;// 匹配所有 path</span><br><span class="line">              route: &#123; host_rewrite: www.google.com, cluster: service_google &#125; // 将流量转发到 service_google 服务</span><br><span class="line">        http_filters:</span><br><span class="line">        - name: envoy.router</span><br></pre></td></tr></table></figure></p>
+<p>service_google</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">clusters:</span><br><span class="line">- name: service_google</span><br><span class="line">  connect_timeout: 0.25s</span><br><span class="line">  type: LOGICAL_DNS</span><br><span class="line">  # Comment out the following line to test on v6 networks</span><br><span class="line">  dns_lookup_family: V4_ONLY</span><br><span class="line">  lb_policy: ROUND_ROBIN</span><br><span class="line">  hosts: [&#123; socket_address: &#123; address: google.com, port_value: 443 &#125;&#125;]</span><br><span class="line">  tls_context: &#123; sni: www.google.com &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="动态配置"><a href="#动态配置" class="headerlink" title="动态配置"></a>动态配置</h4><p>通过查询一个或多个管理服务器 获取数据 以发现动态资源变更，比如 <code>Router</code>、<code>Cluster</code>、<code>EndPoint</code> 等，我们把这些发现服务及其对应的 <code>API</code> 称为 <code>xDS</code> 。<code>xDS</code> 最大的价值就是定义了一套可扩展的通用微服务控制 <code>API</code>，这些 <code>API</code> 不仅可以做到服务发现，也可以做到路由发现、集群发现，可以说所有配置都能通过发现的方式解决</p>
+<p><code>xDS</code> 协议:  <code>Service Mesh</code> 控制面和数据面的通信桥梁</p>
+<p>通过 <code>xDS</code> 协议可以做到 <code>discovery everything</code>，所有配置都可以通过发现的方式解决，这是 <code>Envoy xDS</code> 架构为微服务世界带来的重大变革。</p>
+<h5 id="xDS-概念介绍"><a href="#xDS-概念介绍" class="headerlink" title="xDS 概念介绍"></a>xDS 概念介绍</h5><p><code>xDS</code> 包含:</p>
+<ol>
+<li>LDS（监听器发现服务）</li>
+<li>CDS（集群发现服务）</li>
+<li>EDS（节点发现服务）</li>
+<li>SDS（密钥发现服务）</li>
+<li>RDS（路由发现服务）</li>
+</ol>
+<p><code>xDS</code> 中每种类型对应一个发现的资源，这些类型数据存储在 <code>xDS</code> 协议的 <code>Discovery Request</code> 和 <code>Discovery Response</code> 的 <code>TypeUrl</code> 字段中, 这个字段按照以下格式存储： <code>type.googleapis.com/&lt;resource type&gt;</code></p>
+<p>eg： <code>type.googleapis.com/envoy.api.v2.Cluster</code> 就表明是 <code>Cluster</code> 类型的资源，需要按照 <code>Cluster</code> 类型处理数据</p>
+<h6 id="LDS"><a href="#LDS" class="headerlink" title="LDS"></a>LDS</h6><p><code>envoy.api.v2.Listener</code>（LDS）：对应 <code>Listener</code> 数据类型，包含了监听器的名称、监听端口、监听地址等信息，通过动态更新此类型，可以动态新增监听器或者更新监听器的地址端口等信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;address&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;filter_chains&quot;: [],</span><br><span class="line">  &quot;use_original_dst&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;per_connection_buffer_limit_bytes&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;metadata&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;drain_type&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;listener_filters&quot;: [],</span><br><span class="line">  &quot;listener_filters_timeout&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;continue_on_listener_filters_timeout&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;transparent&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;freebind&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;socket_options&quot;: [],</span><br><span class="line">  &quot;tcp_fast_open_queue_length&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;traffic_direction&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;udp_listener_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;api_listener&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;connection_balance_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;reuse_port&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;access_log&quot;: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h6 id="RDS"><a href="#RDS" class="headerlink" title="RDS"></a>RDS</h6><p><code>envoy.api.v2.RouteConfiguration</code>（<code>RDS</code>）：对应 <code>Envoy</code> 中的 <code>Route</code> 类型，用于更新 <code>virtual_hosts</code>，以及 <code>virtual_hosts</code> 包含的路由表信息、路由规则、针对路由的限流、路由级别的插件等，包括路由匹配到的 <code>Cluster</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;virtual_hosts&quot;: [],</span><br><span class="line">  &quot;vhds&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;internal_only_headers&quot;: [],</span><br><span class="line">  &quot;response_headers_to_add&quot;: [],</span><br><span class="line">  &quot;response_headers_to_remove&quot;: [],</span><br><span class="line">  &quot;request_headers_to_add&quot;: [],</span><br><span class="line">  &quot;request_headers_to_remove&quot;: [],</span><br><span class="line">  &quot;most_specific_header_mutations_wins&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;validate_clusters&quot;: &quot;&#123;...&#125;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h6 id="CDS"><a href="#CDS" class="headerlink" title="CDS"></a>CDS</h6><p><code>envoy.api.v2.Cluster</code>（CDS）：对应 <code>Envoy</code> 中的 <code>Cluster</code> 类型，包含了 <code>Cluster</code> 是采用静态配置数据，还是采用动态 EDS 发现的方式，包括 <code>Cluster</code> 的负载均衡策略、健康检查配置等，以及服务级别的插件设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;transport_socket_matches&quot;: [],</span><br><span class="line">  &quot;name&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;alt_stat_name&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;type&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;cluster_type&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;eds_cluster_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;connect_timeout&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;per_connection_buffer_limit_bytes&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;lb_policy&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;hosts&quot;: [],</span><br><span class="line">  &quot;load_assignment&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;health_checks&quot;: [],</span><br><span class="line">  &quot;max_requests_per_connection&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;circuit_breakers&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;tls_context&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;upstream_http_protocol_options&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;common_http_protocol_options&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;http_protocol_options&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;http2_protocol_options&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;extension_protocol_options&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;typed_extension_protocol_options&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;dns_refresh_rate&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;dns_failure_refresh_rate&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;respect_dns_ttl&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;dns_lookup_family&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;dns_resolvers&quot;: [],</span><br><span class="line">  &quot;use_tcp_for_dns_lookups&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;outlier_detection&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;cleanup_interval&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;upstream_bind_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;lb_subset_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;ring_hash_lb_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;original_dst_lb_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;least_request_lb_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;common_lb_config&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;transport_socket&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;metadata&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;protocol_selection&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;upstream_connection_options&quot;: &quot;&#123;...&#125;&quot;,</span><br><span class="line">  &quot;close_connections_on_host_health_failure&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;drain_connections_on_host_removal&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;filters&quot;: [],</span><br><span class="line">  &quot;track_timeout_budgets&quot;: &quot;...&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="EDS"><a href="#EDS" class="headerlink" title="EDS"></a>EDS</h6><p><code>envoy.api.v2.ClusterLoadAssignment</code>（EDS） :常说的服务发现。包含服务名、节点信息和 LB 策略等数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;cluster_name&quot;: &quot;...&quot;,</span><br><span class="line">  &quot;endpoints&quot;: [],</span><br><span class="line">  &quot;policy&quot;: &quot;&#123;...&#125;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h6 id="SDS"><a href="#SDS" class="headerlink" title="SDS"></a>SDS</h6><p><code>envoy.api.v2.Auth.Secret</code>（SDS）：用于发现证书信息，以动态更新证书。</p>
+<p><code>istio</code> 可以通过 <code>SDS</code> 即可动态更新证书<br>{<br>  “name”: “…”,<br>  “tls_certificate”: “{…}”,<br>  “session_ticket_keys”: “{…}”,<br>  “validation_context”: “{…}”,<br>  “generic_secret”: “{…}”<br>}</p>
+<h5 id="gRPC-流式订阅"><a href="#gRPC-流式订阅" class="headerlink" title="gRPC 流式订阅"></a>gRPC 流式订阅</h5><h6 id="API-请求顺序"><a href="#API-请求顺序" class="headerlink" title="API 请求顺序"></a>API 请求顺序</h6><p>典型的 HTTP 路由场景，客户端需要先获取 Listener 资源，通过 Listener 资源拿到 Route 的配置。Route 中包含一个或者多个 Cluster 集群资源，通过 Cluster 集群的信息再获取集群节点的信息，这样整个请求链路就完成了</p>
+<h6 id="全量请求和增量请求"><a href="#全量请求和增量请求" class="headerlink" title="全量请求和增量请求"></a>全量请求和增量请求</h6><p>当出现新的资源时，只需向 Management Server 发送新增的资源，Management Server 也只会返回新增资源的数据。</p>
+<h6 id="多条请求流和单条请求流"><a href="#多条请求流和单条请求流" class="headerlink" title="多条请求流和单条请求流"></a>多条请求流和单条请求流</h6><p>xDS 协议并不约束在请求多个资源时，多个资源使用同一个请求流，还是每个资源各使用一个请求流，Management Server 应该同时支持这两种模式。</p>
+<h5 id="在一个连接请求多个资源"><a href="#在一个连接请求多个资源" class="headerlink" title="在一个连接请求多个资源"></a>在一个连接请求多个资源</h5><p>支持在一条连接中按照顺序获取 xDS 中的各种 API，比如先请求 CDS，然后请求 EDS</p>
+<h4 id="xDS-协议详解"><a href="#xDS-协议详解" class="headerlink" title="xDS 协议详解"></a>xDS 协议详解</h4><p>请求信息示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">version_info:   # version_info 为空，表示这是连接中的第一个请求流</span><br><span class="line">node: &#123; id: envoy &#125;  # Node 中的 ID 则表明机器信息，需要传递机器的唯一标识</span><br><span class="line">resource_names:</span><br><span class="line">- foo</span><br><span class="line">- bar</span><br><span class="line">type_url: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment  #  EDS</span><br><span class="line">response_nonce:</span><br></pre></td></tr></table></figure></p>
+<p>回应信息示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">version_info: X</span><br><span class="line">resources:</span><br><span class="line">- foo ClusterLoadAssignment proto encoding</span><br><span class="line">- bar ClusterLoadAssignment proto encoding</span><br><span class="line">type_url: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment</span><br><span class="line">nonce: A  # ACK NACK  或者区分资源更新到底是响应哪个推送数据。</span><br></pre></td></tr></table></figure></p>
+<p><strong>补</strong></p>
+<p>在收到 Management Server 推送的新版本数据后，Envoy 会响应 ACK 或者 NACK 告知 Management Server 是否更新版本成功。ACK 代表更新版本成功，这时会携带 Management Server 推送的最新版本号发送 ACK 信息；NACK 代表更新版本失败，这时会携带旧的版本号发送 NACK 信息。</p>
+<h3 id="补-边缘代理模式"><a href="#补-边缘代理模式" class="headerlink" title="补 边缘代理模式"></a>补 边缘代理模式</h3><p><code>Envoy</code> 不仅可以用于 <code>Sidecar</code> 模式，也可以用作边缘网关，但是用作边缘网关层我们有一些注意事项，这些问题不仅在 <code>Envoy</code> 中存在，在其他的边缘网关中也应该处理。</p>
+<ol>
+<li>HTTP 标头清理 : use_remote_address 设置为 true 来清理 HTTP 标头。</li>
+<li>超时控制 : 连接超时、流超时和路由超时。</li>
+<li>连接限制</li>
+</ol>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>用当前最新版本 1.9.0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">root@k8s01 ~]#  curl -L https://istio.io/downloadIstio | sh -</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100   102  100   102    0     0     73      0  0:00:01  0:00:01 --:--:--    73</span><br><span class="line">100  4579  100  4579    0     0    552      0  0:00:08  0:00:08 --:--:--  1219</span><br><span class="line"></span><br><span class="line">Downloading istio-1.9.0 from https://github.com/istio/istio/releases/download/1.9.0/istio-1.9.0-linux-amd64.tar.gz ...</span><br><span class="line"></span><br><span class="line">Istio 1.9.0 Download Complete!</span><br><span class="line"></span><br><span class="line">Istio has been successfully downloaded into the istio-1.9.0 folder on your system.</span><br><span class="line"></span><br><span class="line">Next Steps:</span><br><span class="line">See https://istio.io/latest/docs/setup/install/ to add Istio to your Kubernetes cluster.</span><br><span class="line"></span><br><span class="line">To configure the istioctl client tool for your workstation,</span><br><span class="line">add the /root/istio-1.9.0/bin directory to your environment path variable with:</span><br><span class="line">         export PATH=&quot;$PATH:/root/istio-1.9.0/bin&quot;</span><br><span class="line"></span><br><span class="line">Begin the Istio pre-installation check by running:</span><br><span class="line">         istioctl x precheck</span><br><span class="line"></span><br><span class="line">Need more information? Visit https://istio.io/latest/docs/setup/install/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# istioctl x precheck  # 检查</span><br><span class="line"></span><br><span class="line">Checking the cluster to make sure it is ready for Istio installation...</span><br><span class="line"></span><br><span class="line">#1. Kubernetes-api</span><br><span class="line">-----------------------</span><br><span class="line">Can initialize the Kubernetes client.</span><br><span class="line">Can query the Kubernetes API Server.</span><br><span class="line"></span><br><span class="line">#2. Kubernetes-version</span><br><span class="line">-----------------------</span><br><span class="line">Istio is compatible with Kubernetes: v1.20.0.</span><br><span class="line"></span><br><span class="line">#3. Istio-existence</span><br><span class="line">-----------------------</span><br><span class="line">Istio will be installed in the istio-system namespace.</span><br><span class="line"></span><br><span class="line">#4. Kubernetes-setup</span><br><span class="line">-----------------------</span><br><span class="line">Can create necessary Kubernetes configurations: Namespace,ClusterRole,ClusterRoleBinding,CustomResourceDefinition,Role,ServiceAccount,Service,Deployments,ConfigMap.</span><br><span class="line"></span><br><span class="line">#5. SideCar-Injector</span><br><span class="line">-----------------------</span><br><span class="line">This Kubernetes cluster supports automatic sidecar injection. To enable automatic sidecar injection see https://istio.io/v1.9/docs/setup/additional-setup/sidecar-injection/#deploying-an-app</span><br><span class="line"></span><br><span class="line">-----------------------</span><br><span class="line">Install Pre-Check passed! The cluster is ready for Istio installation.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]#  istioctl install</span><br><span class="line">This will install the Istio 1.9.0  profile with [&quot;Istio core&quot; &quot;Istiod&quot; &quot;Ingress gateways&quot;] components into the cluster. Proceed? (y/N) y</span><br><span class="line">✔ Istio core installed</span><br><span class="line">✔ Processing resources for Istiod. Waiting for Deployment/istio-system/istiod</span><br><span class="line">✔ Istiod installed</span><br><span class="line">✔ Ingress gateways installed</span><br><span class="line">✔ Installation complete  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl label namespace default istio-injection=enabled  # 在默认命名空间开启自动注入 Envoy Sidecar</span><br><span class="line">namespace/default labeled</span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl get svc -n istio-system</span><br><span class="line">NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                      AGE</span><br><span class="line">istio-ingressgateway   LoadBalancer   10.99.32.157    &lt;pending&gt;     15021:32027/TCP,80:31794/TCP,443:30320/TCP,15012:31269/TCP,15443:31456/TCP   23h</span><br><span class="line">istiod                 ClusterIP      10.109.186.86   &lt;none&gt;        15010/TCP,15012/TCP,443/TCP,15014/TCP                                        23h</span><br></pre></td></tr></table></figure></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ol>
+<li>部署 Bookinfo 示例应用</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml</span><br><span class="line">service/details created</span><br><span class="line">serviceaccount/bookinfo-details created</span><br><span class="line">deployment.apps/details-v1 created</span><br><span class="line">service/ratings created</span><br><span class="line">serviceaccount/bookinfo-ratings created</span><br><span class="line">deployment.apps/ratings-v1 created</span><br><span class="line">service/reviews created</span><br><span class="line">serviceaccount/bookinfo-reviews created</span><br><span class="line">deployment.apps/reviews-v1 created</span><br><span class="line">deployment.apps/reviews-v2 created</span><br><span class="line">deployment.apps/reviews-v3 created</span><br><span class="line">service/productpage created</span><br><span class="line">serviceaccount/bookinfo-productpage created</span><br><span class="line">deployment.apps/productpage-v1 created</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]# kubectl get services</span><br><span class="line">NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE</span><br><span class="line">details       ClusterIP   10.98.135.159    &lt;none&gt;        9080/TCP   23h</span><br><span class="line">kubernetes    ClusterIP   10.96.0.1        &lt;none&gt;        443/TCP    24h</span><br><span class="line">productpage   ClusterIP   10.101.199.227   &lt;none&gt;        9080/TCP   23h</span><br><span class="line">ratings       ClusterIP   10.105.246.179   &lt;none&gt;        9080/TCP   23h</span><br><span class="line">reviews       ClusterIP   10.111.156.154   &lt;none&gt;        9080/TCP   23h</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]# kubectl get pods</span><br><span class="line">NAME                              READY   STATUS    RESTARTS   AGE</span><br><span class="line">details-v1-79f774bdb9-jm9sx       2/2     Running   2          23h</span><br><span class="line">productpage-v1-6b746f74dc-jfnkp   2/2     Running   2          23h</span><br><span class="line">ratings-v1-b6994bb9-z5qfr         2/2     Running   2          23h</span><br><span class="line">reviews-v1-545db77b95-zzlv8       2/2     Running   2          23h</span><br><span class="line">reviews-v2-7bf8c9648f-7vtss       2/2     Running   2          23h</span><br><span class="line">reviews-v3-84779c7bbc-85nn2       2/2     Running   2          23h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]# kubectl exec &quot;$(kubectl get pod -l app=ratings -o jsonpath=&apos;&#123;.items[0].metadata.name&#125;&apos;)&quot; -c ratings -- curl -s productpage:9080/productpage | grep -o &quot;&lt;title&gt;.*&lt;/title&gt;&quot;   # 验证</span><br><span class="line"></span><br><span class="line">&lt;title&gt;Simple Bookstore App&lt;/title&gt;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>把应用关联到 <code>Istio</code> 网关</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 istio-1.9.0]# kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml</span><br><span class="line">gateway.networking.istio.io/bookinfo-gateway created</span><br><span class="line">virtualservice.networking.istio.io/bookinfo created</span><br><span class="line"></span><br><span class="line">##  Istio 通过 Gateway 将服务发布成外部可访问的服务，通过 80 端口将服务通过 Ingress 网关转发到特定的服务上</span><br><span class="line">##  Gateway 资源类型，需要配合 VirtualService 类型的资源一起使用</span><br><span class="line"></span><br><span class="line">## 虚拟服务 配置如何在服务网格内将请求路由到服务</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]# cat samples/bookinfo/networking/bookinfo-gateway.yaml</span><br><span class="line"># 网关配置被用于运行在网格边界的独立 Envoy 代理，而不是服务工作负载的 sidecar 代理。</span><br><span class="line"></span><br><span class="line"># 从 * 通过端口 80 流入 网格</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: Gateway</span><br><span class="line">metadata:</span><br><span class="line">  name: bookinfo-gateway</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    istio: ingressgateway # use istio default controller</span><br><span class="line">  servers:</span><br><span class="line">  - port:</span><br><span class="line">      number: 80</span><br><span class="line">      name: http</span><br><span class="line">      protocol: HTTP</span><br><span class="line">    hosts:</span><br><span class="line">    - &quot;*&quot;  # 所有 hosts 都能访问</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"># 为出口流量配置带有路由规则的虚拟服务。</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: bookinfo</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - &quot;*&quot;</span><br><span class="line">  gateways:</span><br><span class="line">  - bookinfo-gateway   # 使用上面的 Gateway</span><br><span class="line">  http:</span><br><span class="line">  - match:</span><br><span class="line">    - uri:</span><br><span class="line">        exact: /productpage  # 匹配 </span><br><span class="line">    - uri:</span><br><span class="line">        prefix: /static</span><br><span class="line">    - uri:</span><br><span class="line">        exact: /login</span><br><span class="line">    - uri:</span><br><span class="line">        exact: /logout</span><br><span class="line">    - uri:</span><br><span class="line">        prefix: /api/v1/products</span><br><span class="line">    route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: productpage   # 指向  服务名 svc productpage</span><br><span class="line">        port:</span><br><span class="line">          number: 9080</span><br><span class="line"></span><br><span class="line"># eg 访问 istio-ingressgateway:80/productpage → productpage:9080</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]#  istioctl analyze  # 确保配置文件没有问题</span><br><span class="line"></span><br><span class="line">✔ No validation issues found when analyzing namespace: default.</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>确定入站 <code>ip</code> 和 <code>port</code><br><code>ip</code> 为 <code>node ip</code>（<code>192.168.43.101</code>,<code>192.168.43.102</code>,<code>192.168.43.103</code>）<br><code>port</code> 为 <code>31794</code> (<code>80</code>)  ,  <code>30320</code>(<code>443</code>)</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 istio-1.9.0]#  kubectl get svc istio-ingressgateway -n istio-system  # LoadBalancer , 本地环境无此项 </span><br><span class="line">NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                      AGE</span><br><span class="line">istio-ingressgateway   LoadBalancer   10.99.32.157   &lt;pending&gt;     15021:32027/TCP,80:31794/TCP,443:30320/TCP,15012:31269/TCP,15443:31456/TCP   23h</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]# kubectl edit svc istio-ingressgateway -n istio-system  # 需要改成 NodePort</span><br><span class="line">service/istio-ingressgateway edited</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]#  kubectl get svc istio-ingressgateway -n istio-system</span><br><span class="line">NAME                   TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                      AGE</span><br><span class="line">istio-ingressgateway   NodePort   10.99.32.157   &lt;none&gt;        15021:32027/TCP,80:31794/TCP,443:30320/TCP,15012:31269/TCP,15443:31456/TCP   23h</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>验证</li>
+</ol>
+<p><img src="/images/blog_images/k8s/bookinfo.png" alt="bookinfo"></p>
+<h2 id="Ingress-和-Egress"><a href="#Ingress-和-Egress" class="headerlink" title="Ingress 和 Egress"></a>Ingress 和 Egress</h2><p><code>Ingress</code> 可以理解为入口网关，而 <code>Egress</code> 和 <code>Ingress</code> 的功能相仿，只是流量的代理流向不同，Egress 负责出口流量的代理。</p>
+<h3 id="Ingress"><a href="#Ingress" class="headerlink" title="Ingress"></a>Ingress</h3><p><code>kubernetes</code> 中的 <code>Ingress</code> 解决了 <code>NodePort</code> 配置不方便的问题，但通过 <code>YAML</code> 的方式控制 <code>Ingress</code> 依然是一件麻烦事，另外 <code>Ingress</code> 内部依然是使用 <code>ClusterIP</code> 的方式来访问 <code>Service</code>，而这样的方式是通过 <code>IPVS</code> 四层转发做到的。具体可查看  之前的文章 <code>Ingress</code></p>
+<p><code>Istio</code> 用 <code>Istio Gateway</code> 来代替 <code>Kubernetes</code> 中的 <code>Ingress</code> 资源类型。<code>Gateway</code> 允许外部流量访问内部服务，只需要配置流量转发即可。</p>
+<p>使用方法 见 前面  部署 <code>Bookinfo</code> 示例应用</p>
+<h3 id="Egress"><a href="#Egress" class="headerlink" title="Egress"></a>Egress</h3><p>####<br><code>kubernetes</code> 中的 <code>Egress</code> 只是在 <code>IP</code> 地址或端口层面（<code>OSI</code> 第 <code>3</code> 层或第 <code>4</code> 层）控制网络流量<br>eg：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: NetworkPolicy</span><br><span class="line">metadata:</span><br><span class="line">  name: test-network-policy</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  podSelector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      role: db</span><br><span class="line">  policyTypes:</span><br><span class="line">  - Ingress</span><br><span class="line">  - Egress</span><br><span class="line">  ingress:</span><br><span class="line">  - from:</span><br><span class="line">    - ipBlock:</span><br><span class="line">        cidr: 172.17.0.0/16</span><br><span class="line">        except:</span><br><span class="line">        - 172.17.1.0/24</span><br><span class="line">    - namespaceSelector:</span><br><span class="line">        matchLabels:</span><br><span class="line">          project: myproject</span><br><span class="line">    - podSelector:</span><br><span class="line">        matchLabels:</span><br><span class="line">          role: frontend</span><br><span class="line">    ports:</span><br><span class="line">    - protocol: TCP</span><br><span class="line">      port: 6379</span><br><span class="line">  egress:</span><br><span class="line">  - to:</span><br><span class="line">    - ipBlock:</span><br><span class="line">        cidr: 10.0.0.0/24</span><br><span class="line">    ports:</span><br><span class="line">    - protocol: TCP</span><br><span class="line">      port: 5978</span><br></pre></td></tr></table></figure></p>
+<h4 id="Istio-Egress"><a href="#Istio-Egress" class="headerlink" title="Istio Egress"></a>Istio Egress</h4><p><code>Istio</code> 的 <code>Egress</code> 本质上是一个 <code>Envoy Proxy</code>，通过 <code>Envoy</code> 强大的七层代理功能，提供丰富的路由策略，而不局限于简单的四层网络 <code>IP</code> 端口黑白名单的配置。</p>
+<p>默认安装未开启<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 istio-1.9.0]# istioctl manifest apply --set values.global.istioNamespace=istio-system --set values.gateways.istio-ingressgateway.enabled=true --set values.gateways.istio-egressgateway.enabled=true</span><br><span class="line">This will install the Istio 1.9.0  profile with [&quot;Istio core&quot; &quot;Istiod&quot; &quot;Ingress gateways&quot; &quot;Egress gateways&quot;] components into the cluster. Proceed? (y/N) y</span><br><span class="line">✔ Istio core installed</span><br><span class="line">✔ Istiod installed</span><br><span class="line">✔ Egress gateways installed</span><br><span class="line">✔ Ingress gateways installed</span><br><span class="line">✔ Installation complete </span><br><span class="line"></span><br><span class="line">[root@k8s01 user-gateway]# kubectl get pod  -n istio-system  # 当前已开启</span><br><span class="line">NAME                                    READY   STATUS    RESTARTS   AGE</span><br><span class="line">istio-egressgateway-956cbd66f-xkncd     1/1     Running   0          19m</span><br><span class="line">istio-ingressgateway-758985db4f-nglq6   1/1     Running   0          14m</span><br><span class="line">istiod-7c9c9d46d4-dn58c                 1/1     Running   4          25h</span><br></pre></td></tr></table></figure></p>
+<p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 istio-1.9.0]# cat samples/sleep/sleep.yaml</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  name: sleep</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: sleep</span><br><span class="line">  labels:</span><br><span class="line">    app: sleep</span><br><span class="line">    service: sleep</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">  - port: 80</span><br><span class="line">    name: http</span><br><span class="line">  selector:</span><br><span class="line">    app: sleep</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: sleep</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: sleep</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: sleep</span><br><span class="line">    spec:</span><br><span class="line">      terminationGracePeriodSeconds: 0</span><br><span class="line">      serviceAccountName: sleep</span><br><span class="line">      containers:</span><br><span class="line">      - name: sleep</span><br><span class="line">        image: curlimages/curl</span><br><span class="line">        command: [&quot;/bin/sleep&quot;, &quot;3650d&quot;]</span><br><span class="line">        imagePullPolicy: IfNotPresent</span><br><span class="line">        volumeMounts:</span><br><span class="line">        - mountPath: /etc/sleep/tls</span><br><span class="line">          name: secret-volume</span><br><span class="line">      volumes:</span><br><span class="line">      - name: secret-volume</span><br><span class="line">        secret:</span><br><span class="line">          secretName: sleep-secret</span><br><span class="line">          optional: true</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]#  kubectl apply -f samples/sleep/sleep.yaml</span><br><span class="line">serviceaccount/sleep created</span><br><span class="line">service/sleep created</span><br><span class="line">deployment.apps/sleep created</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]# echo $(kubectl get pod -l app=sleep -o jsonpath=&#123;.items..metadata.name&#125;)</span><br><span class="line">sleep-557747455f-rjlwd</span><br><span class="line">[root@k8s01 istio-1.9.0]# export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath=&#123;.items..metadata.name&#125;)</span><br><span class="line">[root@k8s01 istio-1.9.0]# kubectl exec -it $SOURCE_POD -c sleep -- curl -I https://www.douban.com | grep  &quot;HTTP/&quot;; kubectl exec -it $SOURCE_POD -c sleep -- curl -I https://edition.cnn.com | grep &quot;HTTP/&quot;</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">HTTP/2 200</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>创建一个 <code>ServiceEntry</code>，允许流量直接访问一个外部服务<br>ServiceEntry-test.yaml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: ServiceEntry</span><br><span class="line">metadata:</span><br><span class="line">  name: cnn</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - edition.cnn.com</span><br><span class="line">  ports:</span><br><span class="line">  - number: 80</span><br><span class="line">    name: http-port</span><br><span class="line">    protocol: HTTP</span><br><span class="line">  - number: 443</span><br><span class="line">    name: https</span><br><span class="line">    protocol: HTTPS</span><br><span class="line">  resolution: DNS</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为 <code>edition.cnn.com</code> 端口 <code>80</code> 创建 <code>Egress Gateway</code>，并为指向 <code>Egress Gateway</code> 的流量创建一个 <code>Destination Rule</code>：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: Gateway</span><br><span class="line">metadata:</span><br><span class="line">  name: istio-egressgateway</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    istio: egressgateway</span><br><span class="line">  servers:</span><br><span class="line">  - port:</span><br><span class="line">      number: 80</span><br><span class="line">      name: http</span><br><span class="line">      protocol: HTTP</span><br><span class="line">    hosts:</span><br><span class="line">    - edition.cnn.com</span><br><span class="line">---</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: DestinationRule</span><br><span class="line">metadata:</span><br><span class="line">  name: egressgateway-for-cnn</span><br><span class="line">spec:</span><br><span class="line">  host: istio-egressgateway.istio-system.svc.cluster.local</span><br><span class="line">  subsets:</span><br><span class="line">  - name: cnn</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><p>定义一个 <code>VirtualService</code>，将流量从 <code>Sidecar</code> 引导至 <code>Egress Gateway</code>，再从 <code>Egress Gateway</code> 引导至外部服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: direct-cnn-through-egress-gateway</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - edition.cnn.com</span><br><span class="line">  gateways:</span><br><span class="line">  - istio-egressgateway</span><br><span class="line">  - mesh</span><br><span class="line">  http:</span><br><span class="line">  - match:</span><br><span class="line">    - gateways:</span><br><span class="line">      - mesh</span><br><span class="line">      port: 80</span><br><span class="line">    route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: istio-egressgateway.istio-system.svc.cluster.local</span><br><span class="line">        subset: cnn</span><br><span class="line">        port:</span><br><span class="line">          number: 80</span><br><span class="line">      weight: 100</span><br><span class="line">  - match:</span><br><span class="line">    - gateways:</span><br><span class="line">      - istio-egressgateway</span><br><span class="line">      port: 80</span><br><span class="line">    route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: edition.cnn.com</span><br><span class="line">        port:</span><br><span class="line">          number: 80</span><br><span class="line">      weight: 100</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问第三方服务</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 istio-1.9.0]# kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics</span><br><span class="line">HTTP/1.1 301 Moved Permanently</span><br><span class="line">server: envoy</span><br><span class="line">retry-after: 0</span><br><span class="line">content-length: 0</span><br><span class="line">cache-control: public, max-age=600</span><br><span class="line">location: https://edition.cnn.com/politics</span><br><span class="line">accept-ranges: bytes</span><br><span class="line">date: Thu, 25 Feb 2021 07:36:24 GMT</span><br><span class="line">via: 1.1 varnish</span><br><span class="line">set-cookie: countryCode=CN; Domain=.cnn.com; Path=/; SameSite=Lax</span><br><span class="line">set-cookie: stateCode=FJ; Domain=.cnn.com; Path=/; SameSite=Lax</span><br><span class="line">set-cookie: geoData=xiamen|FJ|361000|CN|AS|800|broadband|24.430|118.050; Domain=.cnn.com; Path=/; SameSite=Lax</span><br><span class="line">x-served-by: cache-hnd18725-HND</span><br><span class="line">x-cache: HIT</span><br><span class="line">x-cache-hits: 0</span><br><span class="line">x-envoy-upstream-service-time: 252</span><br><span class="line"></span><br><span class="line">HTTP/2 200</span><br><span class="line">content-type: text/html; charset=utf-8</span><br><span class="line">x-servedbyhost: ::ffff:127.0.0.1</span><br><span class="line">access-control-allow-origin: *</span><br><span class="line">cache-control: max-age=60</span><br><span class="line">content-security-policy: default-src &apos;self&apos; blob: https://*.cnn.com:* http://*.cnn.com:* *.cnn.io:* *.cnn.net:* *.turner.com:* *.turner.io:* *.ugdturner.com:* courageousstudio.com *.vgtf.net:*; script-src &apos;unsafe-eval&apos; &apos;unsafe-inline&apos; &apos;self&apos; *; style-src &apos;unsafe-inline&apos; &apos;self&apos; blob: *; child-src &apos;self&apos; blob: *; frame-src &apos;self&apos; *; object-src &apos;self&apos; *; img-src &apos;self&apos; data: blob: *; media-src &apos;self&apos; data: blob: *; font-src &apos;self&apos; data: *; connect-src &apos;self&apos; *; frame-ancestors &apos;self&apos; https://*.cnn.com:* http://*.cnn.com:* https://*.cnn.io:* http://*.cnn.io:* *.turner.com:* courageousstudio.com;</span><br><span class="line">x-content-type-options: nosniff</span><br><span class="line">x-xss-protection: 1; mode=block</span><br><span class="line">via: 1.1 varnish, 1.1 varnish</span><br><span class="line">accept-ranges: bytes</span><br><span class="line">date: Thu, 25 Feb 2021 07:36:24 GMT</span><br><span class="line">age: 1943</span><br><span class="line">set-cookie: countryCode=CN; Domain=.cnn.com; Path=/; SameSite=Lax</span><br><span class="line">set-cookie: stateCode=GD; Domain=.cnn.com; Path=/; SameSite=Lax</span><br><span class="line">set-cookie: geoData=humen|GD|523061|CN|AS|800|broadband|23.040|113.780; Domain=.cnn.com; Path=/; SameSite=Lax</span><br><span class="line">set-cookie: FastAB=0=9064,1=5573,2=5753,3=6142,4=3408,5=6424,6=7127,7=4704,8=0524,9=3950; Domain=.cnn.com; Path=/; Expires=Sat Jul 01 2023 00:00:00 GMT; SameSite=Lax</span><br><span class="line">x-served-by: cache-dca17742-DCA, cache-hnd18720-HND</span><br><span class="line">x-cache: HIT, HIT</span><br><span class="line">x-cache-hits: 1, 1</span><br><span class="line">x-timer: S1614238585.990516,VS0,VE2</span><br><span class="line">vary: , Accept-Encoding</span><br><span class="line">content-length: 1285597</span><br><span class="line"></span><br><span class="line">[root@k8s01 istio-1.9.0]# kubectl logs -l istio=egressgateway -c istio-proxy -n istio-system | tail</span><br><span class="line">2021-02-25T06:50:10.204968Z     info    cache   generated new workload certificate      latency=233.025588ms ttl=23h59m59.795040317s</span><br><span class="line">2021-02-25T06:50:10.213941Z     info    ads     ADS: new connection for node:router~10.244.235.153~istio-egressgateway-956cbd66f-xkncd.istio-system~istio-system.svc.cluster.local-2</span><br><span class="line">2021-02-25T06:50:10.213941Z     info    ads     ADS: new connection for node:router~10.244.235.153~istio-egressgateway-956cbd66f-xkncd.istio-system~istio-system.svc.cluster.local-1</span><br><span class="line">2021-02-25T06:50:10.214124Z     info    cache   returned workload certificate from cache        ttl=23h59m59.785880303s</span><br><span class="line">2021-02-25T06:50:10.214315Z     info    sds     SDS: PUSH       resource=ROOTCA</span><br><span class="line">2021-02-25T06:50:10.214476Z     info    sds     SDS: PUSH       resource=default</span><br><span class="line">2021-02-25T06:50:11.037012Z     info    Initialization took 1.11720873s</span><br><span class="line">2021-02-25T06:50:11.037051Z     info    Envoy proxy is ready</span><br><span class="line">2021-02-25T07:21:20.431323Z     warning envoy config    StreamAggregatedResources gRPC config stream closed: 0,</span><br><span class="line">2021-02-25T07:21:20.737031Z     info    xdsproxy        connected to upstream XDS server: istiod.istio-system.svc:15012</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>删除测试</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete gateway istio-egressgateway</span><br><span class="line">kubectl delete serviceentry cnn</span><br><span class="line">kubectl delete virtualservice direct-cnn-through-egress-gateway</span><br><span class="line">kubectl delete destinationrule egressgateway-for-cnn</span><br></pre></td></tr></table></figure>
+<h2 id="金丝雀发布"><a href="#金丝雀发布" class="headerlink" title="金丝雀发布"></a>金丝雀发布</h2><p>金丝雀发布也被称为灰度发布，实际上就是将少量的生产流量路由到线上服务的新版本中，以验证新版本的准确性和稳定性。</p>
+<h3 id="k8s-原生方式"><a href="#k8s-原生方式" class="headerlink" title="k8s 原生方式"></a>k8s 原生方式</h3><p>启动 两个 版本 ，<code>service</code> 指向这 两个版本，完成简单的金丝雀发布。但这样的方式依然达不到精准控制的目的</p>
+<p>eg:</p>
+<p>svc<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 test]# cat service.yaml</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: my-nginx-svc</span><br><span class="line">  namespace: demo</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">spec:</span><br><span class="line">  type: ClusterIP</span><br><span class="line">  ports:</span><br><span class="line">  - port: 80</span><br><span class="line">  selector:</span><br><span class="line">    app: nginx</span><br></pre></td></tr></table></figure></p>
+<p>my-nginx-deployment-v1.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: my-nginx-v1</span><br><span class="line">  namespace: demo</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">    version: v1</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx:1.14.2</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure></p>
+<p>my-nginx-deployment-v2.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: my-nginx-v2</span><br><span class="line">  namespace: demo</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">    version: v2</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx:1.7.9</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure></p>
+<p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 test]# kubectl get svc -n demo</span><br><span class="line">NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE</span><br><span class="line">my-nginx-svc   ClusterIP   10.103.204.234   &lt;none&gt;        80/TCP    47s</span><br><span class="line">[root@k8s01 test]# kubectl get pod -n demo</span><br><span class="line">NAME                           READY   STATUS    RESTARTS   AGE</span><br><span class="line">my-nginx-v1-66b6c48dd5-7vbhr   1/1     Running   0          52s</span><br><span class="line">my-nginx-v1-66b6c48dd5-llpbv   1/1     Running   0          52s</span><br><span class="line">my-nginx-v1-66b6c48dd5-tchrh   1/1     Running   0          52s</span><br><span class="line">my-nginx-v2-5d59d67564-28bbf   1/1     Running   0          52s</span><br><span class="line">my-nginx-v2-5d59d67564-gqvtt   1/1     Running   0          52s</span><br><span class="line">my-nginx-v2-5d59d67564-v6zw4   1/1     Running   0          52s</span><br><span class="line"></span><br><span class="line">[root@k8s01 test]# curl -I 10.103.204.234  # 可以看到指向了两个 deployment </span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: nginx/1.7.9</span><br><span class="line"></span><br><span class="line">[root@k8s01 test]# curl -I 10.103.204.234</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: nginx/1.7.9</span><br><span class="line"></span><br><span class="line">[root@k8s01 test]# curl -I 10.103.204.234</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: nginx/1.14.2</span><br><span class="line"></span><br><span class="line">[root@k8s01 test]# curl -I 10.103.204.234  </span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: nginx/1.7.9</span><br></pre></td></tr></table></figure>
+<h3 id="istio-中的金丝雀发布"><a href="#istio-中的金丝雀发布" class="headerlink" title="istio 中的金丝雀发布"></a>istio 中的金丝雀发布</h3><p>还是使用 <code>book_info</code></p>
+<p>节选<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: reviews-v1</span><br><span class="line">  labels:</span><br><span class="line">    app: reviews</span><br><span class="line">    version: v1</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: reviews</span><br><span class="line">      version: v1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: reviews</span><br><span class="line">        version: v1</span><br><span class="line">        ...</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: reviews-v2</span><br><span class="line">  labels:</span><br><span class="line">    app: reviews</span><br><span class="line">    version: v2</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: reviews</span><br><span class="line">      version: v2</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: reviews</span><br><span class="line">        version: v2</span><br><span class="line">        ....</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: reviews-v3</span><br><span class="line">  labels:</span><br><span class="line">    app: reviews</span><br><span class="line">    version: v3</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: reviews</span><br><span class="line">      version: v3</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: reviews</span><br><span class="line">        version: v3</span><br><span class="line">        ....</span><br></pre></td></tr></table></figure></p>
+<p>查看信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 istio-1.9.0]# kubectl get pod -l app=reviews</span><br><span class="line">NAME                          READY   STATUS    RESTARTS   AGE</span><br><span class="line">reviews-v1-545db77b95-zzlv8   2/2     Running   2          26h</span><br><span class="line">reviews-v2-7bf8c9648f-7vtss   2/2     Running   2          26h</span><br><span class="line">reviews-v3-84779c7bbc-85nn2   2/2     Running   2          26h</span><br></pre></td></tr></table></figure></p>
+<p>访问 <code>http://192.168.43.101:31794/productpage</code>  三个版本几乎是随机出现的，类似于 k8s 原生方式</p>
+<p>创建一个 <code>reviews</code> 的路由规则，为了方便验证，这个配置将所有流量指向 <code>reviews</code> 的 <code>v1</code> 版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f - &lt;&lt;EOF</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: reivews</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">    - reviews</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host:   # svc </span><br><span class="line">        subset: v1</span><br><span class="line">---</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: DestinationRule</span><br><span class="line">metadata:</span><br><span class="line">  name: reviews</span><br><span class="line">spec:</span><br><span class="line">  host: reviews # svc </span><br><span class="line">  subsets:</span><br><span class="line">  - name: v1</span><br><span class="line">    labels:</span><br><span class="line">      version: v1</span><br><span class="line">  - name: v2</span><br><span class="line">    labels:</span><br><span class="line">      version: v2</span><br><span class="line">  - name: v3</span><br><span class="line">    labels:</span><br><span class="line">      version: v3</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></p>
+<p>多次刷新界面，<code>http://192.168.43.101:31794/productpage</code> 均为 v1 界面。</p>
+<p>50% 去 v1, 10% 去 v2, 40% 去 v3<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f - &lt;&lt;EOF</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: reivews</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">    - reviews</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews </span><br><span class="line">        subset: v1</span><br><span class="line">      weight: 50</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews</span><br><span class="line">        subset: v2</span><br><span class="line">      weight: 10</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews</span><br><span class="line">        subset: v3</span><br><span class="line">      weight: 40</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></p>
+<p>多次刷新界面，<code>http://192.168.43.101:31794/productpage</code> 得以验证。</p>
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p>卸载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# istioctl x uninstall --purge</span><br><span class="line">All Istio resources will be pruned from the cluster</span><br><span class="line">Proceed? (y/N) y</span><br><span class="line">  Removed IstioOperator:istio-system:installed-state.</span><br><span class="line">  Removed HorizontalPodAutoscaler:istio-system:istio-egressgateway.</span><br><span class="line">  Removed HorizontalPodAutoscaler:istio-system:istio-ingressgateway.</span><br><span class="line">  Removed HorizontalPodAutoscaler:istio-system:istiod.</span><br><span class="line">  Removed PodDisruptionBudget:istio-system:istio-egressgateway.</span><br><span class="line">  Removed PodDisruptionBudget:istio-system:istio-ingressgateway.</span><br><span class="line">  Removed PodDisruptionBudget:istio-system:istiod.</span><br><span class="line">  Removed Deployment:istio-system:istio-egressgateway.</span><br><span class="line">  Removed Deployment:istio-system:istio-ingressgateway.</span><br><span class="line">  Removed Deployment:istio-system:istiod.</span><br><span class="line">  Removed Service:istio-system:istio-egressgateway.</span><br><span class="line">  Removed Service:istio-system:istio-ingressgateway.</span><br><span class="line">  Removed Service:istio-system:istiod.</span><br><span class="line">  Removed ConfigMap:istio-system:istio.</span><br><span class="line">  Removed ConfigMap:istio-system:istio-sidecar-injector.</span><br><span class="line">  Removed Pod:istio-system:istio-egressgateway-54658cd5f5-fvlwg.</span><br><span class="line">  Removed Pod:istio-system:istio-ingressgateway-7cc49dcd99-ppmhp.</span><br><span class="line">  Removed Pod:istio-system:istiod-db9f9f86-7665m.</span><br><span class="line">  Removed ServiceAccount:istio-system:istio-egressgateway-service-account.</span><br><span class="line">  Removed ServiceAccount:istio-system:istio-ingressgateway-service-account.</span><br><span class="line">  Removed ServiceAccount:istio-system:istio-reader-service-account.</span><br><span class="line">  Removed ServiceAccount:istio-system:istiod-service-account.</span><br><span class="line">  Removed RoleBinding:istio-system:istio-egressgateway-sds.</span><br><span class="line">  Removed RoleBinding:istio-system:istio-ingressgateway-sds.</span><br><span class="line">  Removed RoleBinding:istio-system:istiod-istio-system.</span><br><span class="line">  Removed Role:istio-system:istio-egressgateway-sds.</span><br><span class="line">  Removed Role:istio-system:istio-ingressgateway-sds.</span><br><span class="line">  Removed Role:istio-system:istiod-istio-system.</span><br><span class="line">  Removed EnvoyFilter:istio-system:metadata-exchange-1.8.</span><br><span class="line">  Removed EnvoyFilter:istio-system:metadata-exchange-1.9.</span><br><span class="line">  Removed EnvoyFilter:istio-system:stats-filter-1.8.</span><br><span class="line">  Removed EnvoyFilter:istio-system:stats-filter-1.9.</span><br><span class="line">  Removed EnvoyFilter:istio-system:tcp-metadata-exchange-1.8.</span><br><span class="line">  Removed EnvoyFilter:istio-system:tcp-metadata-exchange-1.9.</span><br><span class="line">  Removed EnvoyFilter:istio-system:tcp-stats-filter-1.8.</span><br><span class="line">  Removed EnvoyFilter:istio-system:tcp-stats-filter-1.9.</span><br><span class="line">  Removed MutatingWebhookConfiguration::istio-sidecar-injector.</span><br><span class="line">  Removed ValidatingWebhookConfiguration::istiod-istio-system.</span><br><span class="line">  Removed ClusterRole::istio-reader-istio-system.</span><br><span class="line">  Removed ClusterRole::istiod-istio-system.</span><br><span class="line">  Removed ClusterRoleBinding::istio-reader-istio-system.</span><br><span class="line">  Removed ClusterRoleBinding::istiod-istio-system.</span><br><span class="line">  Removed CustomResourceDefinition::authorizationpolicies.security.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::destinationrules.networking.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::envoyfilters.networking.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::gateways.networking.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::istiooperators.install.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::peerauthentications.security.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::requestauthentications.security.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::serviceentries.networking.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::sidecars.networking.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::virtualservices.networking.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::workloadentries.networking.istio.io.</span><br><span class="line">  Removed CustomResourceDefinition::workloadgroups.networking.istio.io.</span><br><span class="line">✔ Uninstall complete</span><br></pre></td></tr></table></figure></p>
+<p>删除 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> kubectl delete namespace istio-system</span><br><span class="line"></span><br><span class="line"> kubectl label namespace default istio-injection-</span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl get ns --show-labels</span><br><span class="line">NAME                   STATUS   AGE   LABELS</span><br><span class="line">default                Active   45h   &lt;none&gt;</span><br><span class="line">kube-node-lease        Active   45h   &lt;none&gt;</span><br><span class="line">kube-public            Active   45h   &lt;none&gt;</span><br><span class="line">kube-system            Active   45h   &lt;none&gt;</span><br><span class="line">kubernetes-dashboard   Active   39h   &lt;none&gt;</span><br><span class="line">monitoring             Active   27h   &lt;none&gt;</span><br><span class="line">rook-ceph              Active   23m   &lt;none&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/nginx/nginx高可用/" rel="next" title="高可用">
+                <i class="fa fa-chevron-left"></i> 高可用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/运维/k8s/云原生和微服务和Service Mesh核心组件/" rel="prev" title="微服务和Service Mesh核心组件">
+                微服务和Service Mesh核心组件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Envoy-详解"><span class="nav-number">1.1.</span> <span class="nav-text">Envoy 详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Envoy-核心功能"><span class="nav-number">1.1.1.</span> <span class="nav-text">Envoy 核心功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Envoy-架构设计"><span class="nav-number">1.1.2.</span> <span class="nav-text">Envoy 架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#过程示例"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">过程示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Envoy-配置"><span class="nav-number">1.1.3.</span> <span class="nav-text">Envoy 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态配置"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">静态配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态配置"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">动态配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#xDS-概念介绍"><span class="nav-number">1.1.3.2.1.</span> <span class="nav-text">xDS 概念介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#LDS"><span class="nav-number">1.1.3.2.1.1.</span> <span class="nav-text">LDS</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#RDS"><span class="nav-number">1.1.3.2.1.2.</span> <span class="nav-text">RDS</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CDS"><span class="nav-number">1.1.3.2.1.3.</span> <span class="nav-text">CDS</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#EDS"><span class="nav-number">1.1.3.2.1.4.</span> <span class="nav-text">EDS</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#SDS"><span class="nav-number">1.1.3.2.1.5.</span> <span class="nav-text">SDS</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gRPC-流式订阅"><span class="nav-number">1.1.3.2.2.</span> <span class="nav-text">gRPC 流式订阅</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#API-请求顺序"><span class="nav-number">1.1.3.2.2.1.</span> <span class="nav-text">API 请求顺序</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#全量请求和增量请求"><span class="nav-number">1.1.3.2.2.2.</span> <span class="nav-text">全量请求和增量请求</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#多条请求流和单条请求流"><span class="nav-number">1.1.3.2.2.3.</span> <span class="nav-text">多条请求流和单条请求流</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在一个连接请求多个资源"><span class="nav-number">1.1.3.2.3.</span> <span class="nav-text">在一个连接请求多个资源</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xDS-协议详解"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">xDS 协议详解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#补-边缘代理模式"><span class="nav-number">1.1.4.</span> <span class="nav-text">补 边缘代理模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">1.3.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ingress-和-Egress"><span class="nav-number">1.4.</span> <span class="nav-text">Ingress 和 Egress</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ingress"><span class="nav-number">1.4.1.</span> <span class="nav-text">Ingress</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Egress"><span class="nav-number">1.4.2.</span> <span class="nav-text">Egress</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Istio-Egress"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">Istio Egress</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#金丝雀发布"><span class="nav-number">1.5.</span> <span class="nav-text">金丝雀发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#k8s-原生方式"><span class="nav-number">1.5.1.</span> <span class="nav-text">k8s 原生方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#istio-中的金丝雀发布"><span class="nav-number">1.5.2.</span> <span class="nav-text">istio 中的金丝雀发布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载"><span class="nav-number">1.6.</span> <span class="nav-text">卸载</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

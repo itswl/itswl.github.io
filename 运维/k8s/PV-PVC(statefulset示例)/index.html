@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="集群开启名叫 DefaultStorageClass 的 Admission Plugin，它就会为 PVC 和 PV 自动添加一个默认的 StorageClass；否则，PVC 的 storageClassName 的值就是’’，这也意味着它只能够跟 storageClassName 也是’’的 PV 进行绑定。  PVC :  Pod 想要使用的持久化存储的属性，比如存储的大小、读写权限等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PV-PVC(statefulset示例)">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/PV-PVC(statefulset示例)/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="集群开启名叫 DefaultStorageClass 的 Admission Plugin，它就会为 PVC 和 PV 自动添加一个默认的 StorageClass；否则，PVC 的 storageClassName 的值就是’’，这也意味着它只能够跟 storageClassName 也是’’的 PV 进行绑定。  PVC :  Pod 想要使用的持久化存储的属性，比如存储的大小、读写权限等">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://imwl.ml/images/blog_images/k8s/pv-pvc.png">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.341Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PV-PVC(statefulset示例)">
+<meta name="twitter:description" content="集群开启名叫 DefaultStorageClass 的 Admission Plugin，它就会为 PVC 和 PV 自动添加一个默认的 StorageClass；否则，PVC 的 storageClassName 的值就是’’，这也意味着它只能够跟 storageClassName 也是’’的 PV 进行绑定。  PVC :  Pod 想要使用的持久化存储的属性，比如存储的大小、读写权限等">
+<meta name="twitter:image" content="http://imwl.ml/images/blog_images/k8s/pv-pvc.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/PV-PVC(statefulset示例)/">
+
+
+
+
+
+  <title>PV-PVC(statefulset示例) | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/PV-PVC(statefulset示例)/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PV-PVC(statefulset示例)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-30T22:43:31+00:00">
+                2020-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> <img src="/images/blog_images/k8s/pv-pvc.png" alt="pv-pvc"></p>
+<p>集群开启名叫 <code>DefaultStorageClass</code> 的 <code>Admission Plugin</code>，它就会为 <code>PVC</code> 和 <code>PV</code> 自动添加一个默认的 <code>StorageClass</code>；否则，<code>PVC</code> 的 <code>storageClassName</code> 的值就是’’，这也意味着它只能够跟 <code>storageClassName</code> 也是’’的 PV 进行绑定。</p>
+<ol>
+<li><code>PVC</code> :  <code>Pod</code> 想要使用的持久化存储的属性，比如存储的大小、读写权限等。</li>
+<li><code>PV</code>  :  一个具体的 <code>Volume</code> 的属性，比如 <code>Volume</code> 的类型、挂载目录、远程存储服务器地址等。</li>
+<li><code>StorageClass</code> : 充当 <code>PV</code> 的模板。并且，只有同属于一个 <code>StorageClass</code> 的 <code>PV</code> 和 <code>PVC</code>，才可以绑定在一起。也可以动态创建 <code>PV</code> 。</li>
+</ol>
+<h3 id="PersistentVolume（PV）"><a href="#PersistentVolume（PV）" class="headerlink" title="PersistentVolume（PV）"></a>PersistentVolume（PV）</h3><p>是由管理员设置的存储，它是群集的一部分。就像节点是集群中的资源一样，<code>PV</code> 也是集群中的资源。<code>PV</code> 是 <code>Volume</code> 之类的卷插件，但具有独立于使用 <code>PV</code> 的 <code>Pod</code> 的生命周期。此 <code>API</code> 对象包含存储实现的细节，即 <code>NFS</code>、<code>iSCSI</code> 或特定于云供应商的存储系统。</p>
+<h3 id="PersistentVolumeClaim（PVC）"><a href="#PersistentVolumeClaim（PVC）" class="headerlink" title="PersistentVolumeClaim（PVC）"></a>PersistentVolumeClaim（PVC）</h3><p>是用户存储的请求。它与 <code>Pod</code> 相似。<code>Pod</code> 消耗节点资源，<code>PVC</code> 消耗 <code>PV</code> 资源。<code>Pod</code> 可以请求特定级别的资源（CPU 和内存）。声明可以请求特定的大小和访问模式（例如，可以以读/写一次或只读多次模式挂载）</p>
+<h3 id="静态-pv"><a href="#静态-pv" class="headerlink" title="静态 pv"></a>静态 pv</h3><p>集群管理员创建一些 <code>PV</code>。它们带有可供群集用户使用的实际存储的细节。它们存在于 <code>Kubernetes API</code> 中，可用于消费</p>
+<h3 id="动态-pv"><a href="#动态-pv" class="headerlink" title="动态 pv"></a>动态 pv</h3><p>当管理员创建的静态 <code>PV</code> 都不匹配用户的 <code>PersistentVolumeClaim</code>  时，集群可能会尝试动态地为 <code>PVC</code> 创建卷。此配置基于 <code>StorageClasses</code>：<code>PVC</code> 必须请求 [存储类]，并且管理员必须创建并配置该类才能进行动态创建。声明该类为””可以有效地禁用其动态配置要启用基于存储级别的动态存储配置，集群管理员需要启用 <code>API server</code> 上的 <code>DefaultStorageClass</code> [准入控制器]。例如，通过确保 <code>DefaultStorageClass</code> 位于 <code>API server</code> 组件的 <code>--admission-control</code> 标志，使用逗号分隔的有序值列表中，可以完成此操作</p>
+<p><code>StorageClass</code> 对象的作用，其实就是创建 <code>PV</code> 的模板。</p>
+<ol>
+<li><code>PV</code> 的属性。比如，存储类型、<code>Volume</code> 的大小等等。</li>
+<li>创建这种 <code>PV</code> 需要用到的存储插件。比如，<code>Ceph</code> 等等。</li>
+</ol>
+<p>动态 <code>PV</code> 工作的过程:</p>
+<p>首先我们定义了一个 <code>StorageClass</code>。当用户创建好 <code>Pod</code> 以后，指定了 <code>PVC</code>，这个时候 <code>Kubernetes</code> 就会根据 <code>StorageClass</code> 中定义的 <code>Provisioner</code> 来调用对应的 <code>plugin</code> 来创建 <code>PV</code>。<code>PV</code> 创建成功后，跟 <code>PVC</code> 进行绑定，挂载到 <code>Pod</code> 中使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: storage.k8s.io/v1</span><br><span class="line">kind: StorageClass</span><br><span class="line">metadata:</span><br><span class="line">  name: fast-rbd-sc</span><br><span class="line">  annotation:</span><br><span class="line">    storageclass.kubernetes.io/is-default-class: &quot;true&quot;</span><br><span class="line">provisioner: kubernetes.io/rbd # 必填项，用来指定volume plugin来创建PV的物理资源,内置</span><br><span class="line">parameters: # 一些参数</span><br><span class="line">  monitors: 10.16.153.105:6789</span><br><span class="line">  adminId: kube</span><br><span class="line">  adminSecretName: ceph-secret</span><br><span class="line">  adminSecretNamespace: kube-system</span><br><span class="line">  pool: kube</span><br><span class="line">  userId: kube</span><br><span class="line">  userSecretName: ceph-secret-user</span><br><span class="line">  userSecretNamespace: default</span><br><span class="line">  fsType: ext4</span><br><span class="line">  imageFormat: &quot;2&quot;</span><br><span class="line">  imageFeatures: &quot;layering&quot;</span><br></pre></td></tr></table></figure></p>
+<h3 id="绑定"><a href="#绑定" class="headerlink" title="绑定"></a>绑定</h3><p><code>master</code> 中的控制环路监视新的 <code>PVC</code>，寻找匹配的 <code>PV</code>（如果可能），并将它们绑定在一起。如果为新的 <code>PVC</code> 动态调配 <code>PV</code>，则该环路将始终将该 <code>PV</code> 绑定到 <code>PVC</code>。否则，用户总会得到他们所请求的存储，但是容量可能超出要求的数量。一旦 <code>PV</code> 和 <code>PVC</code> 绑定后，<code>PersistentVolumeClaim</code> 绑定是排他性的，不管它们是如何绑定的。 <code>PVC</code> 跟 <code>PV</code> 绑定是一对一的映射</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: PersistentVolumeClaim</span><br><span class="line">metadata:</span><br><span class="line">  name: claim1</span><br><span class="line">spec:</span><br><span class="line">  accessModes:</span><br><span class="line">    - ReadWriteOnce</span><br><span class="line">  storageClassName: fast-rbd-sc  # PVC 所要使用的 StorageClass </span><br><span class="line">  resources:</span><br><span class="line">    requests:</span><br><span class="line">      storage: 30Gi</span><br></pre></td></tr></table></figure>
+<h3 id="持久化卷声明的保护PVC"><a href="#持久化卷声明的保护PVC" class="headerlink" title="持久化卷声明的保护PVC"></a>持久化卷声明的保护PVC</h3><p>保护的目的是确保由 <code>pod</code> 正在使用的 <code>PVC</code> 不会从系统中移除，因为如果被移除的话可能会导致数据丢失.当启用 <code>PVC</code> 保护 <code>alpha</code> 功能时，如果用户删除了一个 <code>pod</code> 正在使用的 <code>PVC</code>，则该 <code>PVC</code> 不会被立即删除。<code>PVC</code> 的删除将被推迟，直到 <code>PVC</code> 不再被任何 <code>pod</code> 使用</p>
+<h3 id="PV-访问模式"><a href="#PV-访问模式" class="headerlink" title="PV 访问模式"></a>PV 访问模式</h3><p><code>PersistentVolume</code>可以以资源提供者支持的任何方式挂载到主机上。</p>
+<ol>
+<li><code>ReadWriteOnce</code>—— 该卷可以被单个节点以读/写模式挂载   <code>RWO</code> </li>
+<li><code>ReadOnlyMany</code> —— 该卷可以被多个节点以只读模式挂载    <code>ROX</code> </li>
+<li><code>ReadWriteMany</code> —— 该卷可以被多个节点以读/写模式挂载  <code>RWX</code></li>
+</ol>
+<h3 id="回收策略"><a href="#回收策略" class="headerlink" title="回收策略"></a>回收策略</h3><ol>
+<li><code>Retain</code>（保留）——手动回收</li>
+<li><code>Recycle</code>（回收）——基本擦除（rm -rf /thevolume/*）</li>
+<li><code>Delete</code>（删除）——关联的存储资产（例如 AWS EBS、GCE PD、Azure Disk 和 OpenStack Cinder 卷）将被删除当前</li>
+</ol>
+<p><strong>只有 NFS(已不支持) 和 HostPath 支持回收策略。AWS EBS、GCE PD、Azure Disk 和 Cinder 卷支持删除策略</strong></p>
+<h3 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h3><p>卷可以处于以下的某种状态</p>
+<ol start="0">
+<li><code>Pending</code>  : 表示目前该 <code>PV</code> 在后端存储系统中还没创建完成；</li>
+<li><code>Available</code>: 一块空闲资源还没有被任何声明绑定</li>
+<li><code>Bound</code>    : 卷已经被声明绑定</li>
+<li><code>Released</code> : 声明被删除，但是资源还未被集群重新声明</li>
+<li><code>Failed</code>   : 该卷的自动回收失败</li>
+</ol>
+<p><strong>命令行会显示绑定到 PV 的 PVC 的名称</strong></p>
+<p>对于 <code>PVC</code> 来说，也有如下三种状态：</p>
+<p><code>Pending</code> 表示还未绑定任何 <code>PV</code></p>
+<p><code>Bound</code> 表示已经和某个 <code>PV</code> 进行了绑定</p>
+<p><code>Lost</code> 表示关联的 <code>PV</code> 失联</p>
+<h2 id="持久化演示说明-NFS"><a href="#持久化演示说明-NFS" class="headerlink" title="持久化演示说明 - NFS"></a>持久化演示说明 - NFS</h2><ol>
+<li>安装 NFS 服务器<br>eg: 在 三个 节点上安装<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nfs-common nfs-utils  rpcbind</span><br><span class="line">mkdir /nfsdata</span><br><span class="line">chmod 666 /nfsdata</span><br><span class="line">chown nfsnobody /nfsdata</span><br><span class="line">echo &quot;/nfsdata *(rw,no_root_squash,no_all_squash,sync)&quot; &gt;&gt; /etc/exports</span><br><span class="line">systemctl start rpcbind</span><br><span class="line">systemctl start nfs</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>k8s02,k8s03操作</strong> </p>
+<p>测试 NFS 是否成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s02 ~]# showmount -e 192.168.43.101</span><br><span class="line">Export list for 192.168.43.101:</span><br><span class="line">/nfsdata *</span><br><span class="line"></span><br><span class="line">[root@k8s02 ~]# mkdir /testnfs/</span><br><span class="line">[root@k8s02 ~]#  mount -t nfs 192.168.43.101:/nfsdata /testnfs/</span><br><span class="line"></span><br><span class="line">[root@k8s02 ~]# df -h  #节选</span><br><span class="line">Filesystem               Size  Used Avail Use% Mounted on</span><br><span class="line"></span><br><span class="line">192.168.43.101:/nfsdata   17G  3.9G   14G  23% /testnfs </span><br><span class="line"></span><br><span class="line">$ umount /testnfs/</span><br><span class="line">umount.nfs4: /testnfs: device is busy</span><br><span class="line">$ cd ~</span><br><span class="line">$ umount /testnfs/</span><br><span class="line">$ rm -rf /testnfs/</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>部署 PV<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: PersistentVolume</span><br><span class="line">metadata:</span><br><span class="line">  name: pv0003</span><br><span class="line">spec:</span><br><span class="line">  capacity:</span><br><span class="line">    storage: 5Gi  </span><br><span class="line">  volumeMode: Filesystem  </span><br><span class="line">  accessModes:    </span><br><span class="line">  - ReadWriteOnce  </span><br><span class="line">  persistentVolumeReclaimPolicy: Retain  # 回收策略 </span><br><span class="line">  storageClassName: nfs  # 类名称 PV 和 PVC 的 storageClassName 字段必须一样</span><br><span class="line">  nfs:    </span><br><span class="line">    path: /nfsdata</span><br><span class="line">    server: 192.168.43.101</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>eg:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl  apply -f pv-example.yaml</span><br><span class="line">persistentvolume/pv0003 created</span><br><span class="line">[root@k8s01 ~]# kubectl  get pv</span><br><span class="line">NAME     CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE</span><br><span class="line">pv0003   5Gi        RWO            Retain           Available           nfs                     35s</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>创建服务并使用 PVC</li>
+</ol>
+<p>一个典型、完整可用的 <code>StatefulSet</code> 通常由三个组件构成： <code>Headless Service</code> 、 <code>StatefulSet</code> 和 <code>volumeClaimTemplate</code> 。其中，<code>Headless Service</code> 用于为 <code>Pod</code> 资源标识符生成可解析的 <code>DNS</code> 资源记录，<code>StatefulSet</code> 用于管控 <code>Pod</code> 资源，<code>volumeClaimTemplate</code> 则基于静态或动态的 <code>PV</code> 供给方式为 <code>Pod</code> 资源提供专有且固定的存储。</p>
+<p>StatefulSet-example.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx  </span><br><span class="line">  labels:    </span><br><span class="line">    app: nginx</span><br><span class="line">spec:</span><br><span class="line">  ports:  </span><br><span class="line">  - port: 80    </span><br><span class="line">    name: web  </span><br><span class="line">  clusterIP: None  </span><br><span class="line">  selector:    </span><br><span class="line">    app: nginx</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: StatefulSet   # 使用 StatefulSet 必须先建立一个 无头服务</span><br><span class="line">metadata:</span><br><span class="line">  name: web</span><br><span class="line">spec:  </span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:      </span><br><span class="line">      app: nginx  </span><br><span class="line">  serviceName: &quot;nginx&quot; </span><br><span class="line">  replicas: 3  </span><br><span class="line">  template:    </span><br><span class="line">    metadata:      </span><br><span class="line">      labels:        </span><br><span class="line">        app: nginx    </span><br><span class="line">    spec:      </span><br><span class="line">      containers:      </span><br><span class="line">      - name: nginx        </span><br><span class="line">        image: nginx:1.7.9        </span><br><span class="line">        ports:        </span><br><span class="line">        - containerPort: 80          </span><br><span class="line">          name: web        </span><br><span class="line">        volumeMounts:        </span><br><span class="line">        - name: www     # 与下面对应   </span><br><span class="line">          mountPath: /usr/share/nginx/html  </span><br><span class="line">  volumeClaimTemplates:  </span><br><span class="line">  - metadata:    </span><br><span class="line">      name: www    </span><br><span class="line">    spec:</span><br><span class="line">      accessModes: [&quot;ReadWriteOnce&quot;]      </span><br><span class="line">      storageClassName: &quot;nfs&quot;  #  PV 和 PVC 的 storageClassName 字段必须一样     </span><br><span class="line">      resources:        </span><br><span class="line">        requests:          </span><br><span class="line">          storage: 1Gi</span><br></pre></td></tr></table></figure></p>
+<p>因为只能绑定 1个 PV<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl  apply -f StatefulSet-example.yaml</span><br><span class="line">service/nginx created</span><br><span class="line">statefulset.apps/web created</span><br><span class="line">[root@k8s01 ~]# kubectl  get pod  # 有序部署 0，1，2 (0完成后才部署1)</span><br><span class="line">NAME    READY   STATUS    RESTARTS   AGE</span><br><span class="line">web-0   1/1     Running   0          12s</span><br><span class="line">web-1   0/1     Pending   0          10s  # 一直处于 Pending 状态</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 节选，发现绑定不了 PV</span><br><span class="line">Events:</span><br><span class="line">  Type     Reason            Age                 From               Message</span><br><span class="line">  ----     ------            ----                ----               -------</span><br><span class="line">  Warning  FailedScheduling  28s (x3 over 101s)  default-scheduler  running &quot;VolumeBinding&quot; filter plugin for pod &quot;web-1&quot;: pod has unbound immediate PersistentVolumeClaims</span><br></pre></td></tr></table></figure></p>
+<p>pv-example-more.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: PersistentVolume</span><br><span class="line">metadata:</span><br><span class="line">  name: pv01</span><br><span class="line">spec:</span><br><span class="line">  capacity:</span><br><span class="line">    storage: 2Gi</span><br><span class="line">  volumeMode: Filesystem</span><br><span class="line">  accessModes:</span><br><span class="line">  - ReadWriteOnce</span><br><span class="line">  persistentVolumeReclaimPolicy: Retain  # 回收策略</span><br><span class="line">  storageClassName: nfs  # 类名称</span><br><span class="line">  nfs:</span><br><span class="line">    path: /nfsdata01</span><br><span class="line">    server: 192.168.43.101</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: PersistentVolume</span><br><span class="line">metadata:</span><br><span class="line">  name: pv02</span><br><span class="line">spec:</span><br><span class="line">  capacity:</span><br><span class="line">    storage: 1Gi</span><br><span class="line">  volumeMode: Filesystem</span><br><span class="line">  accessModes:</span><br><span class="line">  - ReadWriteOnce</span><br><span class="line">  persistentVolumeReclaimPolicy: Retain  # 回收策略</span><br><span class="line">  storageClassName: test  # 类名称</span><br><span class="line">  nfs:</span><br><span class="line">    path: /nfsdata02</span><br><span class="line">    server: 192.168.43.101</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: PersistentVolume</span><br><span class="line">metadata:</span><br><span class="line">  name: pv03</span><br><span class="line">spec:</span><br><span class="line">  capacity:</span><br><span class="line">    storage: 1Gi</span><br><span class="line">  volumeMode: Filesystem</span><br><span class="line">  accessModes:</span><br><span class="line">  - ReadWriteOnce</span><br><span class="line">  persistentVolumeReclaimPolicy: Retain  # 回收策略</span><br><span class="line">  storageClassName: nfs  # 类名称</span><br><span class="line">  nfs:</span><br><span class="line">    path: /nfsdata03</span><br><span class="line">    server: 192.168.43.101</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: PersistentVolume</span><br><span class="line">metadata:</span><br><span class="line">  name: pv04</span><br><span class="line">spec:</span><br><span class="line">  capacity:</span><br><span class="line">    storage: 1Gi</span><br><span class="line">  volumeMode: Filesystem</span><br><span class="line">  accessModes:</span><br><span class="line">  - ReadWriteOnce</span><br><span class="line">  persistentVolumeReclaimPolicy: Retain  # 回收策略</span><br><span class="line">  storageClassName: nfs  # 类名称</span><br><span class="line">  nfs:</span><br><span class="line">    path: /nfsdata04</span><br><span class="line">    server: 192.168.43.101</span><br></pre></td></tr></table></figure></p>
+<p>创建<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# mkdir /nfsdata&#123;01,02,03,04&#125;</span><br><span class="line">root@k8s01 ~]# kubectl apply -f pv-example-more.yaml</span><br><span class="line">persistentvolume/pv01 created</span><br><span class="line">persistentvolume/pv02 created</span><br><span class="line">persistentvolume/pv03 created</span><br><span class="line">persistentvolume/pv04 created</span><br><span class="line">[root@k8s01 ~]# chmod 666 /nfsdata&#123;01,02,03,04&#125;</span><br><span class="line">[root@k8s01 ~]# chown nfsnobody /nfsdata&#123;01,02,03,04&#125;</span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl describe pod web-0  # 报错 因为 没执行 echo &quot;/nfsdata01 *(rw,no_root_squash,no_all_squash,sync)&quot; &gt;&gt; /etc/exports</span><br><span class="line">## systemctl restart rpcbind</span><br><span class="line">## systemctl restart nfs</span><br><span class="line">## 节选</span><br><span class="line">Events:</span><br><span class="line">  Type     Reason       Age   From            Message</span><br><span class="line">  ----     ------       ----  ----            -------</span><br><span class="line">Mounting command: systemd-run</span><br><span class="line">Mounting arguments: --description=Kubernetes transient mount for /var/lib/kubelet/pods/6c4be93c-fb32-4891-821e-817a7853c4c5/volumes/kubernetes.io~nfs/pv01 --scope -- mount -t nfs 192.168.43.101:/nfsdata01 /var/lib/kubelet/pods/6c4be93c-fb32-4891-821e-817a7853c4c5/volumes/kubernetes.io~nfs/pv01</span><br><span class="line">Output: Running scope as unit run-51115.scope.</span><br><span class="line">mount.nfs: access denied by server while mounting 192.168.43.101:/nfsdata01</span><br><span class="line">  Warning  FailedMount  55s  kubelet, k8s03  MountVolume.SetUp failed for volume &quot;pv01&quot; : mount failed: exit status 32</span><br><span class="line">Mounting command: systemd-run</span><br><span class="line">Mounting arguments: --description=Kubernetes transient mount for /var/lib/kubelet/pods/6c4be93c-fb32-4891-821e-817a7853c4c5/volumes/kubernetes.io~nfs/pv01 --scope -- mount -t nfs 192.168.43.101:/nfsdata01 /var/lib/kubelet/pods/6c4be93c-fb32-4891-821e-817a7853c4c5/volumes/kubernetes.io~nfs/pv01</span><br><span class="line">Output: Running scope as unit run-51258.scope.</span><br><span class="line">mount.nfs: access denied by server while mounting 192.168.43.101:/nfsdata01</span><br><span class="line">  Warning  FailedScheduling  25s (x2 over 25s)  default-scheduler  running &quot;VolumeBinding&quot; filter plugin for pod &quot;web-0&quot;: pod has unbound immediate PersistentVolumeClaims</span><br><span class="line">  Normal   Scheduled         23s                default-scheduler  Successfully assigned default/web-0 to k8s03</span><br></pre></td></tr></table></figure></p>
+<p>查看信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl get pod  # 有序部署 0，1，2</span><br><span class="line">NAME    READY   STATUS    RESTARTS   AGE</span><br><span class="line">web-0   1/1     Running   0          10s</span><br><span class="line">web-1   1/1     Running   0          7s</span><br><span class="line">web-2   1/1     Running   0          3s</span><br><span class="line">[root@k8s01 ~]# kubectl get pvc</span><br><span class="line">NAME        STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE</span><br><span class="line">www-web-0   Bound    pv01     2Gi        RWO            nfs            65s</span><br><span class="line">www-web-1   Bound    pv03     2Gi        RWO            nfs            62s</span><br><span class="line">www-web-2   Bound    pv04     2Gi        RWO            nfs            58s</span><br><span class="line">[root@k8s01 ~]# kubectl get pv</span><br><span class="line">NAME   CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM               STORAGECLASS   REASON   AGE</span><br><span class="line">pv01   2Gi        RWO            Retain           Bound       default/www-web-0   nfs                     3m58s</span><br><span class="line">pv02   2Gi        RWO            Retain           Available                       test                    3m58s</span><br><span class="line">pv03   2Gi        RWO            Retain           Bound       default/www-web-1   nfs                     3m58s</span><br><span class="line">pv04   2Gi        RWO            Retain           Bound       default/www-web-2   nfs                     3m58s</span><br></pre></td></tr></table></figure></p>
+<p>删除顺序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl get pod -w # 有序删除 2，1，0</span><br><span class="line">NAME                                    READY     STATUS    RESTARTS   AGE</span><br><span class="line">web-0                                   1/1       Running   0          1m</span><br><span class="line">web-1                                   1/1       Running   0          1m</span><br><span class="line">web-2                                   1/1       Running   0          48s</span><br><span class="line">web-2     1/1       Terminating   0         54s</span><br><span class="line">web-2     0/1       Terminating   0         57s</span><br><span class="line">web-2     0/1       Terminating   0         1m</span><br><span class="line">web-2     0/1       Terminating   0         1m</span><br><span class="line">web-1     1/1       Terminating   0         1m</span><br><span class="line">web-1     0/1       Terminating   0         1m</span><br><span class="line">web-1     0/1       Terminating   0         1m</span><br><span class="line">web-1     0/1       Terminating   0         1m</span><br><span class="line">web-0     1/1       Terminating   0         1m</span><br><span class="line">web-0     0/1       Terminating   0         1m</span><br><span class="line">web-0     0/1       Terminating   0         1m</span><br><span class="line">web-0     0/1       Terminating   0         1m</span><br></pre></td></tr></table></figure></p>
+<p>释放 pv<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl delete pvc  www-web-0 www-web-1 www-web-2</span><br><span class="line">persistentvolumeclaim &quot;www-web-0&quot; deleted</span><br><span class="line">persistentvolumeclaim &quot;www-web-1&quot; deleted</span><br><span class="line">persistentvolumeclaim &quot;www-web-2&quot; deleted</span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl get pv</span><br><span class="line">NAME   CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM               STORAGECLASS   REASON   AGE</span><br><span class="line">pv01   2Gi        RWO            Retain           Bound       default/www-web-0   nfs                     11m</span><br><span class="line">pv02   2Gi        RWO            Retain           Available                       test                    11m</span><br><span class="line">pv03   2Gi        RWO            Retain           Bound       default/www-web-1   nfs                     11m</span><br><span class="line">pv04   2Gi        RWO            Retain           Bound       default/www-web-2   nfs                     11m</span><br><span class="line">[root@k8s01 ~]# kubectl edit pv pv01</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 删除以下字段解除绑定</span><br><span class="line">  claimRef:</span><br><span class="line">    apiVersion: v1</span><br><span class="line">    kind: PersistentVolumeClaimWWW</span><br><span class="line">    name: www-web-0</span><br><span class="line">    namespace: default</span><br><span class="line">    resourceVersion: &quot;322074&quot;</span><br><span class="line">    uid: 9cb4adcc-01ba-4a4f-9bf0-205bcb3a9b9e</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">persistentvolume/pv01 edited</span><br><span class="line">[root@k8s01 ~]# kubectl get pv</span><br><span class="line">NAME   CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM               STORAGECLASS   REASON   AGE</span><br><span class="line">pv01   2Gi        RWO            Retain           Available                       nfs                     12m</span><br><span class="line">pv02   2Gi        RWO            Retain           Available                       test                    12m</span><br><span class="line">pv03   2Gi        RWO            Retain           Bound       default/www-web-1   nfs                     12m</span><br><span class="line">pv04   2Gi        RWO            Retain           Bound       default/www-web-2   nfs                     12m</span><br></pre></td></tr></table></figure></p>
+<h2 id="关于-StatefulSet"><a href="#关于-StatefulSet" class="headerlink" title="关于 StatefulSet"></a>关于 StatefulSet</h2><ol>
+<li>匹配 <code>Pod name</code> ( 网络标识 ) 的模式为：<code>$(statefulset名称)-$(序号)</code>，比如上面的示例：<code>web-0</code>，<code>web-1</code>，<code>web-2</code></li>
+<li><code>StatefulSet</code> 为每个 <code>Pod</code> 副本创建了一个 <code>DNS</code> 域名，这个域名的格式为： <code>$(podname).(headless servername)</code>，也就意味着服务间是通过Pod域名来通信而非 Pod IP，因为当 <code>Pod</code> 所在 <code>Node</code> 发生故障时， <code>Pod</code> 会被飘移到其它 <code>Node</code> 上，<code>Pod IP</code> 会发生变化，但是 <code>Pod</code> 域名不会有变化</li>
+<li><code>StatefulSet</code> 使用 <code>Headless</code> 服务来控制 <code>Pod</code> 的域名，这个域名的 <code>FQDN</code> 为：<code>$(servicename).$(namespace).svc.cluster.local</code>，其中，<code>cluster.local</code> 指的是集群的域名</li>
+<li>根据 <code>volumeClaimTemplates</code>，为每个 <code>Pod</code> 创建一个 <code>pvc</code>，<code>pvc</code> 的命名规则匹配模式：(volumeClaimTemplates.name)-(pod_name)，比如上面的 <code>volumeMounts.name=www</code>， <code>Podname=web-[0-2]</code>，因此创建出来的 <code>PVC</code> 是 <code>www-web-0</code>、<code>www-web-1</code>、<code>www-web-2</code></li>
+<li>删除 <code>Pod</code> 不会删除其 <code>pvc</code>，手动删除 <code>pvc</code> 将自动释放 <code>pv</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 /]# kubectl get pod -o wide</span><br><span class="line">NAME    READY   STATUS    RESTARTS   AGE     IP               NODE    NOMINATED NODE   READINESS GATES</span><br><span class="line">web-0   1/1     Running   0          5m31s   172.18.235.136   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">web-1   1/1     Running   0          5m29s   172.18.235.145   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">web-2   1/1     Running   0          5m27s   172.18.235.146   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">[root@k8s01 /]# curl 172.18.235.136  # 因为权限为 666 访问 拒绝，设置为 777</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;</span><br><span class="line">&lt;body bgcolor=&quot;white&quot;&gt;</span><br><span class="line">&lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;</span><br><span class="line">&lt;hr&gt;&lt;center&gt;nginx/1.7.9&lt;/center&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">[root@k8s01 /]# curl 172.18.235.136  </span><br><span class="line">test # pv01 对应的 k8s 上 /nfsdata01/index.html</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 /]# kubectl delete pod web-0</span><br><span class="line">pod &quot;web-0&quot; deleted</span><br><span class="line">[root@k8s01 /]# kubectl get pod -o wide  # web-0 自动重新生成， ip会变，文件不变</span><br><span class="line">NAME    READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES</span><br><span class="line">web-0   1/1     Running   0          4s    172.18.235.155   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">web-1   1/1     Running   0          19m   172.18.235.145   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">web-2   1/1     Running   0          19m   172.18.235.146   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">[root@k8s01 /]# curl 172.18.235.155</span><br><span class="line">test</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 /]# kubectl exec web-2 -it -- /bin/bash</span><br><span class="line">root@web-2:/# ping web-0.nginx   # Pod 域名不会有变化</span><br><span class="line">PING web-0.nginx.default.svc.cluster.local (172.18.235.155): 48 data bytes</span><br><span class="line">56 bytes from 172.18.235.136: icmp_seq=0 ttl=63 time=0.075 ms</span><br><span class="line">56 bytes from 172.18.235.136: icmp_seq=1 ttl=63 time=0.113 ms</span><br><span class="line">56 bytes from 172.18.235.155: icmp_seq=2 ttl=63 time=0.082 ms</span><br><span class="line">56 bytes from 172.18.235.155: icmp_seq=0 ttl=63 time=0.075 ms</span><br><span class="line">56 bytes from 172.18.235.155: icmp_seq=1 ttl=63 time=0.113 ms</span><br><span class="line">56 bytes from 172.18.235.155: icmp_seq=2 ttl=63 time=0.082 ms</span><br><span class="line">^C--- web-0.nginx.default.svc.cluster.local ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 0.075/0.090/0.113/0.000 ms</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 /]# kubectl get pod -o wide --all-namespaces</span><br><span class="line">NAMESPACE       NAME                                        READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES</span><br><span class="line">default         web-0                                       1/1     Running   0          11m   172.18.235.155   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">default         web-1                                       1/1     Running   0          31m   172.18.235.145   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">default         web-2                                       1/1     Running   0          31m   172.18.235.146   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">ingress-nginx   nginx-ingress-controller-5bb8fb4bb6-lwlw7   1/1     Running   6          8d    172.18.235.189   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     calico-kube-controllers-76d4774d89-rltpc    1/1     Running   18         30d   172.18.73.123    k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     calico-node-5xqsz                           1/1     Running   19         35d   192.168.43.103   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     calico-node-cwv6n                           1/1     Running   156        35d   192.168.43.101   k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     calico-node-pfpr4                           1/1     Running   17         35d   192.168.43.102   k8s02   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     coredns-7ff77c879f-7frh7                    1/1     Running   20         35d   172.18.73.121    k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     coredns-7ff77c879f-hlzpn                    1/1     Running   19         35d   172.18.73.122    k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     etcd-k8s01                                  1/1     Running   19         35d   192.168.43.101   k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     kube-apiserver-k8s01                        1/1     Running   22         35d   192.168.43.101   k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     kube-controller-manager-k8s01               1/1     Running   20         35d   192.168.43.101   k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     kube-proxy-hmlxx                            1/1     Running   18         35d   192.168.43.103   k8s03   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     kube-proxy-nh96k                            1/1     Running   17         35d   192.168.43.102   k8s02   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     kube-proxy-x57zq                            1/1     Running   19         35d   192.168.43.101   k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">kube-system     kube-scheduler-k8s01                        1/1     Running   20         35d   192.168.43.101   k8s01   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">[root@k8s01 /]# dig -t A  nginx.default.svc.cluster.local. @172.18.73.121   #  `StatefulSet` 使用 `Headless` 服务来控制 `Pod` 的域名，这个域名的 `FQDN` 为：`$(servicename).$(namespace).svc.cluster.local`，其中，`cluster.local` 指的是集群的域名 172.18.73.121 是 coreDns的ip</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.4-P2-RedHat-9.11.4-16.P2.el7_8.6 &lt;&lt;&gt;&gt; -t A nginx.default.svc.cluster.local. @172.18.73.121</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; WARNING: .local is reserved for Multicast DNS</span><br><span class="line">;; You are currently testing what happens when an mDNS query is leaked to DNS</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 44346</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;nginx.default.svc.cluster.local. IN    A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">nginx.default.svc.cluster.local. 30 IN  A       172.18.235.145</span><br><span class="line">nginx.default.svc.cluster.local. 30 IN  A       172.18.235.146</span><br><span class="line">nginx.default.svc.cluster.local. 30 IN  A       172.18.235.155</span><br><span class="line"></span><br><span class="line">;; Query time: 37 msec</span><br><span class="line">;; SERVER: 172.18.73.121#53(172.18.73.121)</span><br><span class="line">;; WHEN: Mon Aug 31 18:20:00 EDT 2020</span><br><span class="line">;; MSG SIZE  rcvd: 201</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# nslookup nginx.default.svc.cluster.local. 172.18.73.121  # 同上</span><br><span class="line">Server:         172.18.73.121</span><br><span class="line">Address:        172.18.73.121#53</span><br><span class="line"></span><br><span class="line">Name:   nginx.default.svc.cluster.local</span><br><span class="line">Address: 172.18.235.145</span><br><span class="line">Name:   nginx.default.svc.cluster.local</span><br><span class="line">Address: 172.18.235.146</span><br><span class="line">Name:   nginx.default.svc.cluster.local</span><br><span class="line">Address: 172.18.235.155</span><br></pre></td></tr></table></figure>
+<h3 id="Statefulset的启停顺序"><a href="#Statefulset的启停顺序" class="headerlink" title="Statefulset的启停顺序"></a>Statefulset的启停顺序</h3><ol>
+<li>有序部署：部署StatefulSet时，如果有多个Pod副本，它们会被顺序地创建（从0到N-1）并且，在下一个Pod运行之前所有之前的Pod必须都是Running和Ready状态。</li>
+<li>有序删除：当Pod被删除时，它们被终止的顺序是从N-1到0。</li>
+<li>有序扩展：当对Pod执行扩展操作时，与部署一样，它前面的Pod必须都处于Running和Ready状态。</li>
+</ol>
+<h3 id="StatefulSet使用场景"><a href="#StatefulSet使用场景" class="headerlink" title="StatefulSet使用场景"></a>StatefulSet使用场景</h3><ol>
+<li>稳定的持久化存储，即 <code>Pod</code> 重新调度后还是能访问到相同的持久化数据，基于 <code>PVC</code> 来实现。</li>
+<li>稳定的网络标识符，即 <code>Pod</code> 重新调度后其 <code>PodName</code> 和 <code>HostName</code> 不变。</li>
+<li>有序部署，有序扩展，基于 <code>init containers</code> 来实现。</li>
+<li>有序收缩。</li>
+</ol>
+<h2 id="动态创建-PV-rook-示例"><a href="#动态创建-PV-rook-示例" class="headerlink" title="动态创建 PV  rook 示例"></a>动态创建 PV  rook 示例</h2><p>rook示例</p>
+<p>storageclass.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"># 定义一个块存储池</span><br><span class="line">apiVersion: ceph.rook.io/v1</span><br><span class="line">kind: CephBlockPool</span><br><span class="line">metadata:</span><br><span class="line">  name: replicapool</span><br><span class="line">  namespace: rook-ceph</span><br><span class="line">spec:</span><br><span class="line">  # 每个数据副本必须跨越不同的故障域分布，如果设置为host，则保证每个副本在不同机器上</span><br><span class="line">  failureDomain: host</span><br><span class="line">  # 副本数量</span><br><span class="line">  replicated:</span><br><span class="line">    size: 3</span><br><span class="line">    # Disallow setting pool with replica 1, this could lead to data loss without recovery.</span><br><span class="line">    # Make sure you&apos;re *ABSOLUTELY CERTAIN* that is what you want</span><br><span class="line">    requireSafeReplicaSize: true</span><br><span class="line">    # gives a hint (%) to Ceph in terms of expected consumption of the total cluster capacity of a given pool</span><br><span class="line">    # for more info: https://docs.ceph.com/docs/master/rados/operations/placement-groups/#specifying-expected-pool-size</span><br><span class="line">    #targetSizeRatio: .5</span><br><span class="line">---</span><br><span class="line"># 定义一个StorageClass</span><br><span class="line">apiVersion: storage.k8s.io/v1</span><br><span class="line">kind: StorageClass</span><br><span class="line">metadata:</span><br><span class="line">   name: rook-ceph-block</span><br><span class="line"># 该SC的Provisioner标识，rook-ceph前缀即当前命名空间</span><br><span class="line">provisioner: rook-ceph.rbd.csi.ceph.com</span><br><span class="line">parameters:</span><br><span class="line">    # clusterID 就是集群所在的命名空间名</span><br><span class="line">    # If you change this namespace, also change the namespace below where the secret namespaces are defined</span><br><span class="line">    clusterID: rook-ceph</span><br><span class="line"></span><br><span class="line">    # If you want to use erasure coded pool with RBD, you need to create</span><br><span class="line">    # two pools. one erasure coded and one replicated.</span><br><span class="line">    # You need to specify the replicated pool here in the `pool` parameter, it is</span><br><span class="line">    # used for the metadata of the images.</span><br><span class="line">    # The erasure coded pool must be set as the `dataPool` parameter below.</span><br><span class="line">    #dataPool: ec-data-pool</span><br><span class="line">    # RBD镜像在哪个池中创建</span><br><span class="line">    pool: replicapool</span><br><span class="line"></span><br><span class="line">    # RBD image format. Defaults to &quot;2&quot;.</span><br><span class="line">    imageFormat: &quot;2&quot;</span><br><span class="line"></span><br><span class="line">    # 指定image特性，CSI RBD目前仅仅支持layering</span><br><span class="line">    imageFeatures: layering</span><br><span class="line"></span><br><span class="line">    # Ceph admin 管理凭证配置,由operator 自动生成</span><br><span class="line">    # in the same namespace as the cluster.</span><br><span class="line">    csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner</span><br><span class="line">    csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph</span><br><span class="line">    csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner</span><br><span class="line">    csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph</span><br><span class="line">    csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node</span><br><span class="line">    csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph</span><br><span class="line">    # 卷的文件系统类型，默认ext4，不建议xfs，因为存在潜在的死锁问题（超融合设置下卷被挂载到相同节点作为OSD时）</span><br><span class="line">    csi.storage.k8s.io/fstype: ext4</span><br><span class="line"># uncomment the following to use rbd-nbd as mounter on supported nodes</span><br><span class="line"># **IMPORTANT**: If you are using rbd-nbd as the mounter, during upgrade you will be hit a ceph-csi</span><br><span class="line"># issue that causes the mount to be disconnected. You will need to follow special upgrade steps</span><br><span class="line"># to restart your application pods. Therefore, this option is not recommended.</span><br><span class="line">#mounter: rbd-nbd</span><br><span class="line">allowVolumeExpansion: true</span><br><span class="line">reclaimPolicy: Delete</span><br></pre></td></tr></table></figure></p>
+<h2 id="file"><a href="#file" class="headerlink" title="file"></a>file</h2><p>filesystem.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: ceph.rook.io/v1</span><br><span class="line">kind: CephFilesystem</span><br><span class="line">metadata:</span><br><span class="line">  name: aps</span><br><span class="line">  namespace: rook-ceph</span><br><span class="line">spec:</span><br><span class="line">  # The metadata pool spec</span><br><span class="line">  metadataPool:</span><br><span class="line">    replicated:</span><br><span class="line">      # Increase the replication size if you have more than one osd</span><br><span class="line">      size: 3</span><br><span class="line">  # The list of data pool specs</span><br><span class="line">  dataPools:</span><br><span class="line">    - failureDomain: osd</span><br><span class="line">      replicated:</span><br><span class="line">        size: 3</span><br><span class="line">  # The metadata service (mds) configuration</span><br><span class="line">  metadataServer:</span><br><span class="line">    # The number of active MDS instances</span><br><span class="line">    activeCount: 1</span><br><span class="line">    # Whether each active MDS instance will have an active standby with a warm metadata cache for faster failover.</span><br><span class="line">    # If false, standbys will be available, but will not have a warm cache.</span><br><span class="line">    activeStandby: true</span><br><span class="line">    # The affinity rules to apply to the mds deployment</span><br><span class="line">    placement:</span><br><span class="line">    #  nodeAffinity:</span><br><span class="line">    #    requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">    #      nodeSelectorTerms:</span><br><span class="line">    #      - matchExpressions:</span><br><span class="line">    #        - key: role</span><br><span class="line">    #          operator: In</span><br><span class="line">    #          values:</span><br><span class="line">    #          - mds-node</span><br><span class="line">    #  tolerations:</span><br><span class="line">    #  - key: mds-node</span><br><span class="line">    #    operator: Exists</span><br><span class="line">    #  podAffinity:</span><br><span class="line">    #  podAntiAffinity:</span><br><span class="line">    resources:</span><br><span class="line">    # The requests and limits set here, allow the filesystem MDS Pod(s) to use half of one CPU core and 1 gigabyte of memory</span><br><span class="line">    #  limits:</span><br><span class="line">    #    cpu: &quot;500m&quot;</span><br><span class="line">    #    memory: &quot;1024Mi&quot;</span><br><span class="line">    #  requests:</span><br><span class="line">    #    cpu: &quot;500m&quot;</span><br><span class="line">    #    memory: &quot;1024Mi&quot;</span><br></pre></td></tr></table></figure></p>
+<p>查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@aps173 ~]# kubectl get storageclasses.storage.k8s.io</span><br><span class="line">NAME              PROVISIONER          RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE</span><br><span class="line">rook-ceph-block   ceph.rook.io/block   Delete          Immediate           false                  113m</span><br><span class="line"></span><br><span class="line">[root@aps173 ~]#  kubectl get cephfilesystems.ceph.rook.io --all-namespaces</span><br><span class="line">NAMESPACE   NAME      AGE</span><br><span class="line">rook-ceph   aps       13d</span><br></pre></td></tr></table></figure></p>
+<h3 id="sts"><a href="#sts" class="headerlink" title="sts"></a>sts</h3><p>sts.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">  - port: 80</span><br><span class="line">    name: web</span><br><span class="line">  clusterIP: None</span><br><span class="line">  selector:</span><br><span class="line">    app: nginx</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: StatefulSet   # 使用 StatefulSet 必须先建立一个 无头服务</span><br><span class="line">metadata:</span><br><span class="line">  name: web</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  serviceName: &quot;nginx&quot;</span><br><span class="line">  replicas: 3</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br><span class="line">          name: web</span><br><span class="line">        volumeMounts:</span><br><span class="line">        - name: www     # 与下面对应</span><br><span class="line">          mountPath: /usr/share/nginx/html</span><br><span class="line">  volumeClaimTemplates:</span><br><span class="line">  - metadata:</span><br><span class="line">      name: www</span><br><span class="line">    spec:</span><br><span class="line">      accessModes:</span><br><span class="line">      - ReadWriteOnce</span><br><span class="line">      resources:</span><br><span class="line">        requests:</span><br><span class="line">          storage: 100Gi</span><br><span class="line">      storageClassName: rook-ceph-block</span><br></pre></td></tr></table></figure></p>
+<p>验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@aps173 ceph]# kubectl get pvc</span><br><span class="line">NAME        STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE</span><br><span class="line">www-web-0   Bound     pvc-50fb6ff8-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            rook-ceph-block   24m</span><br><span class="line">www-web-1   Bound     pvc-6485e1af-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            rook-ceph-block   24m</span><br><span class="line">www-web-2   Bound     pvc-73b5a94a-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            rook-ceph-block   23m</span><br><span class="line">[root@aps173 ceph]# kubectl get pv|grep web</span><br><span class="line">pvc-50fb6ff8-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            Delete           Bound     default/www-web-0                   rook-ceph-block             25m</span><br><span class="line">pvc-6485e1af-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            Delete           Bound     default/www-web-1                   rook-ceph-block             24m</span><br><span class="line">pvc-73b5a94a-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            Delete           Bound     default/www-web-2                   rook-ceph-block             24m</span><br><span class="line">[root@aps173 ceph]# kubectl get pod</span><br><span class="line">NAME                                    READY     STATUS    RESTARTS   AGE</span><br><span class="line">web-0                                   1/1       Running   0          4m</span><br><span class="line">web-1                                   1/1       Running   0          24m</span><br><span class="line">web-2                                   1/1       Running   0          24m</span><br></pre></td></tr></table></figure>
+<h3 id="pod"><a href="#pod" class="headerlink" title="pod"></a>pod</h3><p>测试动态创建 PV</p>
+<p>test_pv.yaml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1  </span><br><span class="line">kind: PersistentVolumeClaim</span><br><span class="line">metadata:</span><br><span class="line">  name: pod-pvc</span><br><span class="line">spec:</span><br><span class="line">  accessModes:</span><br><span class="line">    - ReadWriteOnce</span><br><span class="line">  storageClassName: rook-ceph-block  # PVC 所要使用的 StorageClass</span><br><span class="line">  resources:</span><br><span class="line">    requests:</span><br><span class="line">      storage: 30Gi</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: pvtest</span><br><span class="line">  labels:</span><br><span class="line">    role: nginx</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: web</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">      - name: web</span><br><span class="line">        containerPort: 80</span><br><span class="line">    volumeMounts:</span><br><span class="line">        - name: www</span><br><span class="line">          mountPath: &quot;/usr/share/nginx/html&quot;</span><br><span class="line">  volumes:</span><br><span class="line">  - name: www</span><br><span class="line">    persistentVolumeClaim:</span><br><span class="line">      claimName: pod-pvc</span><br></pre></td></tr></table></figure></p>
+<p>验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@aps173 ceph]# kubectl get pv |grep pod-pvc</span><br><span class="line">pvc-ac6f8983-8d2e-11eb-b229-fad65d90ce00   30Gi       RWO            Delete           Bound     default/pod-pvc                      rook-ceph-block             23s</span><br><span class="line">[root@aps173 ceph]# kubectl get pvc|grep pod-pvc</span><br><span class="line">pod-pvc      Bound     pvc-ac6f8983-8d2e-11eb-b229-fad65d90ce00   30Gi       RWO            rook-ceph-block   43s</span><br></pre></td></tr></table></figure>
+<h3 id="测试删除-需要手动释放-pv"><a href="#测试删除-需要手动释放-pv" class="headerlink" title="测试删除, 需要手动释放 pv"></a>测试删除, 需要手动释放 pv</h3><p>eg：<br>删除 sts, pvc 后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@aps173 ceph]# kubectl get pv |grep www</span><br><span class="line">pvc-50fb6ff8-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            Delete           Released   default/www-web-0                   rook-ceph-block             2h</span><br><span class="line">pvc-6485e1af-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            Delete           Released   default/www-web-1                   rook-ceph-block             2h</span><br><span class="line">pvc-73b5a94a-8d1b-11eb-b229-fad65d90ce00   100Gi      RWO            Delete           Released   default/www-web-2                   rook-ceph-block             2h</span><br></pre></td></tr></table></figure>
+<p>无需再手动修改 <code>pv</code> ,立刻自动删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@aps173 ceph]# kubectl get pv|grep www</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/ansible简介/" rel="next" title="ansible简介">
+                <i class="fa fa-chevron-left"></i> ansible简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/运维/k8s/k8s安全/" rel="prev" title="k8s安全">
+                k8s安全 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PersistentVolume（PV）"><span class="nav-number">1.</span> <span class="nav-text">PersistentVolume（PV）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PersistentVolumeClaim（PVC）"><span class="nav-number">2.</span> <span class="nav-text">PersistentVolumeClaim（PVC）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态-pv"><span class="nav-number">3.</span> <span class="nav-text">静态 pv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态-pv"><span class="nav-number">4.</span> <span class="nav-text">动态 pv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定"><span class="nav-number">5.</span> <span class="nav-text">绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化卷声明的保护PVC"><span class="nav-number">6.</span> <span class="nav-text">持久化卷声明的保护PVC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PV-访问模式"><span class="nav-number">7.</span> <span class="nav-text">PV 访问模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回收策略"><span class="nav-number">8.</span> <span class="nav-text">回收策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态"><span class="nav-number">9.</span> <span class="nav-text">状态</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化演示说明-NFS"><span class="nav-number"></span> <span class="nav-text">持久化演示说明 - NFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于-StatefulSet"><span class="nav-number"></span> <span class="nav-text">关于 StatefulSet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Statefulset的启停顺序"><span class="nav-number">1.</span> <span class="nav-text">Statefulset的启停顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StatefulSet使用场景"><span class="nav-number">2.</span> <span class="nav-text">StatefulSet使用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态创建-PV-rook-示例"><span class="nav-number"></span> <span class="nav-text">动态创建 PV  rook 示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file"><span class="nav-number"></span> <span class="nav-text">file</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sts"><span class="nav-number">1.</span> <span class="nav-text">sts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pod"><span class="nav-number">2.</span> <span class="nav-text">pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试删除-需要手动释放-pv"><span class="nav-number">3.</span> <span class="nav-text">测试删除, 需要手动释放 pv</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

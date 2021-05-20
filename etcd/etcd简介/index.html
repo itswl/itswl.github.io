@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介etcd 是一款分布式存储中间件，使用 Go 语言编写，并通过 Raft 一致性算法处理和确保分布式一致性，解决了分布式系统中数据一致性的问题 etcd 的核心架构 etcd Server :   对外接收和处理客户端的请求 gRPC Server :   etcd 与其他 etcd 节点之间的通信和信息同步 MVCC : 多版本控制，etcd 的存储模块，键值对的每一次操作行为都会被记录存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="etcd简介">
+<meta property="og:url" content="http://imwl.ml/etcd/etcd简介/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="简介etcd 是一款分布式存储中间件，使用 Go 语言编写，并通过 Raft 一致性算法处理和确保分布式一致性，解决了分布式系统中数据一致性的问题 etcd 的核心架构 etcd Server :   对外接收和处理客户端的请求 gRPC Server :   etcd 与其他 etcd 节点之间的通信和信息同步 MVCC : 多版本控制，etcd 的存储模块，键值对的每一次操作行为都会被记录存储">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.320Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="etcd简介">
+<meta name="twitter:description" content="简介etcd 是一款分布式存储中间件，使用 Go 语言编写，并通过 Raft 一致性算法处理和确保分布式一致性，解决了分布式系统中数据一致性的问题 etcd 的核心架构 etcd Server :   对外接收和处理客户端的请求 gRPC Server :   etcd 与其他 etcd 节点之间的通信和信息同步 MVCC : 多版本控制，etcd 的存储模块，键值对的每一次操作行为都会被记录存储">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/etcd/etcd简介/">
+
+
+
+
+
+  <title>etcd简介 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/etcd/etcd简介/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">etcd简介</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-16T11:05:31+00:00">
+                2020-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/etcd/" itemprop="url" rel="index">
+                    <span itemprop="name">etcd</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><code>etcd</code> 是一款分布式存储中间件，使用 <code>Go</code> 语言编写，并通过 <code>Raf</code>t 一致性算法处理和确保分布式一致性，解决了分布式系统中数据一致性的问题</p>
+<h3 id="etcd-的核心架构"><a href="#etcd-的核心架构" class="headerlink" title="etcd 的核心架构"></a>etcd 的核心架构</h3><ol>
+<li><code>etcd Server</code> :   对外接收和处理客户端的请求</li>
+<li><code>gRPC Server</code> :   <code>etcd</code> 与其他 <code>etcd</code> 节点之间的通信和信息同步</li>
+<li><code>MVCC</code> : 多版本控制，<code>etcd</code> 的存储模块，键值对的每一次操作行为都会被记录存储，这些数据底层存储在 <code>BoltDB</code> 数据库中</li>
+<li><code>Snapshot、WAL</code> :  <code>WAL</code> 预写式日志，<code>etcd</code> 中的数据提交前都会记录到日志。 <code>Snapshot</code> 快照，以防 <code>WAL</code> 日志过多，用于存储某一时刻 <code>etcd</code> 的所有数据。<code>Snapshot</code> 和 <code>WAL</code> 相结合，<code>etcd</code> 可以有效地进行数据存储和节点故障恢复等操作。</li>
+<li><code>Raft</code> 模块 :  实现分布式集群的一致性</li>
+</ol>
+<h3 id="版本选择"><a href="#版本选择" class="headerlink" title="版本选择"></a>版本选择</h3><p>etcd 目前有 <code>V2.x</code> 和 <code>V3.x</code> 两个大版本</p>
+<p>主流版本 <code>V3.x</code>。 </p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>三节点部署， <code>etcd</code> 和 <code>etcdctl</code> 文件 在 <code>/usr/bin</code> 目录下</p>
+<h4 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h4><p>节点 <code>ip</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">172.20.40.173</span><br><span class="line">172.20.40.196</span><br><span class="line">172.20.40.107</span><br></pre></td></tr></table></figure></p>
+<h4 id="生成-etcd-的server-证书"><a href="#生成-etcd-的server-证书" class="headerlink" title="生成 etcd 的server 证书"></a>生成 etcd 的server 证书</h4><p>当前和 <code>k8s</code>  共同部署，<code>k8s</code> 文件均相同, 在 <code>/etc/kubernetes/ssl/</code> 目录下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/kubernetes/ssl/ca.pem</span><br><span class="line">/etc/kubernetes/ssl/ca-key.pem </span><br><span class="line">/etc/kubernetes/ssl/ca-config.json</span><br></pre></td></tr></table></figure></p>
+<p>/etc/kubernetes/ssl/ca-config.json 示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-173 test]# cat /etc/kubernetes/ssl/ca-config.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;signing&quot;: &#123;</span><br><span class="line">    &quot;default&quot;: &#123;</span><br><span class="line">      &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;profiles&quot;: &#123;</span><br><span class="line">      &quot;kubernetes&quot;: &#123;</span><br><span class="line">        &quot;usages&quot;: [</span><br><span class="line">            &quot;signing&quot;,</span><br><span class="line">            &quot;key encipherment&quot;,</span><br><span class="line">            &quot;server auth&quot;,</span><br><span class="line">            &quot;client auth&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>etcd</code> 使用的 <code>etcd-csr.json</code> 需要修改 <code>IP</code>, 在 <code>/etc/etcd/ssl</code> 目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-173 ssl]# pwd</span><br><span class="line">/etc/etcd/ssl</span><br><span class="line"></span><br><span class="line">[root@aps-173 ssl]# cat etcd-csr.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;CN&quot;: &quot;etcd&quot;,</span><br><span class="line">  &quot;hosts&quot;: [</span><br><span class="line">    &quot;127.0.0.1&quot;,</span><br><span class="line">    &quot;172.20.40.173&quot; # 需要每个节点对应修改</span><br><span class="line">  ],</span><br><span class="line">  &quot;key&quot;: &#123;</span><br><span class="line">    &quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">    &quot;size&quot;: 2048</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;names&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">      &quot;ST&quot;: &quot;HangZhou&quot;,</span><br><span class="line">      &quot;L&quot;: &quot;XS&quot;,</span><br><span class="line">      &quot;O&quot;: &quot;k8s&quot;,</span><br><span class="line">      &quot;OU&quot;: &quot;System&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在每个节点的 的 <code>/etc/etcd/ssl</code> 目录下执行, 生成 <code>etcd.csr</code> , <code>etcd-key.pem</code> , <code>etcd.pem</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-107 ssl]# pwd</span><br><span class="line">/etc/etcd/ssl</span><br><span class="line"></span><br><span class="line">[root@aps-107 ssl]# ls</span><br><span class="line">etcd-csr.json</span><br><span class="line"></span><br><span class="line">[root@aps-173 ssl]# cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem -ca-key=/etc/kubernetes/ssl/ca-key.pem  -config=/etc/kubernetes/ssl/ca-config.json -profile=kubernetes /etc/etcd/ssl/etcd-csr.json | cfssljson -bare etcd</span><br><span class="line">2021/04/06 13:48:22 [INFO] generate received request</span><br><span class="line">2021/04/06 13:48:22 [INFO] received CSR</span><br><span class="line">2021/04/06 13:48:22 [INFO] generating key: rsa-2048</span><br><span class="line">2021/04/06 13:48:23 [INFO] encoded CSR</span><br><span class="line">2021/04/06 13:48:23 [INFO] signed certificate with serial number 518875750718489889129533277175826954994664517958</span><br><span class="line">2021/04/06 13:48:23 [WARNING] This certificate lacks a &quot;hosts&quot; field. This makes it unsuitable for</span><br><span class="line">websites. For more information see the Baseline Requirements for the Issuance and Management</span><br><span class="line">of Publicly-Trusted Certificates, v.1.1.6, from the CA/Browser Forum (https://cabforum.org);</span><br><span class="line">specifically, section 10.2.3 (&quot;Information Requirements&quot;).</span><br><span class="line">cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem -ca-key=/etc/kubernetes/ssl/ca-key.pem  -config=/etc/kubernetes/ssl/ca-config.json -profile=kubernetes /etc/etcd/ssl/etcd-csr.json | cfssljson -bare etcd</span><br><span class="line"></span><br><span class="line">[root@aps-107 ssl]# ls</span><br><span class="line">etcd.csr  etcd-csr.json  etcd-key.pem  etcd.pem</span><br></pre></td></tr></table></figure></p>
+<h4 id="创建-etcd-service-启动文件"><a href="#创建-etcd-service-启动文件" class="headerlink" title="创建 etcd.service 启动文件"></a>创建 <code>etcd.service</code> 启动文件</h4><p>每个节点创建文件，对应修改<br>eg: <code>172.20.40.107</code>  名字为 <code>etcd3</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-107 ssl]# cat /etc/systemd/system/etcd.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Etcd Server</span><br><span class="line">After=network.target</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line">Documentation=https://github.com/coreos</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">WorkingDirectory=/var/lib/etcd/</span><br><span class="line">ExecStart=/usr/bin/etcd \</span><br><span class="line">  --name=etcd3 \</span><br><span class="line">  --cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --peer-cert-file=/etc/etcd/ssl/etcd.pem \</span><br><span class="line">  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \</span><br><span class="line">  --trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem \</span><br><span class="line">  --initial-advertise-peer-urls=https://172.20.40.107:2380 \</span><br><span class="line">  --listen-peer-urls=https://172.20.40.107:2380 \</span><br><span class="line">  --listen-client-urls=https://172.20.40.107:2379,http://127.0.0.1:2379 \</span><br><span class="line">  --advertise-client-urls=https://172.20.40.107:2379 \</span><br><span class="line">  --initial-cluster-token=etcd-cluster-0 \</span><br><span class="line">  --initial-cluster=etcd1=https://172.20.40.173:2380,etcd2=https://172.20.40.196:2380,etcd3=https://172.20.40.107:2380 \</span><br><span class="line">  --initial-cluster-state=new \</span><br><span class="line">  --data-dir=/mnt/etcd_data</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartSec=5</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br><span class="line">[root@aps-107 ssl]# systemctl daemon-reload &amp;&amp; systemctl enable --now etcd.service</span><br></pre></td></tr></table></figure></p>
+<p>验证, 当前正常 </p>
+<p>客户端交互端口  : <code>2379</code></p>
+<p><code>peer</code>通信端口  : <code>2380</code>   </p>
+<p><code>peer</code> : 同一集群的另一个 <code>member</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-107 ssl]# etcdctl --endpoints=http://localhost:2379  member list  # 查看集群成员</span><br><span class="line">d20c6ab8456f5fd, started, etcd1, https://172.20.40.173:2380, https://172.20.40.173:2379, false</span><br><span class="line">71c9147302874bdf, started, etcd3, https://172.20.40.107:2380, https://172.20.40.107:2379, false</span><br><span class="line">ce0a9eb4851e47ac, started, etcd2, https://172.20.40.196:2380, https://172.20.40.196:2379, fasle</span><br><span class="line"></span><br><span class="line">[root@aps-107 ssl]# ETCDCTL_API=3 /usr/bin/etcdctl  --endpoints=https://172.20.40.196:2379,https://172.20.40.107:2379,https://172.20.40.173:2379 --cacert=/etc/kubernetes/ssl/ca.pem --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem endpoint health  # 查看节点健康</span><br><span class="line"></span><br><span class="line">https://172.20.40.107:2379 is healthy: successfully committed proposal: took = 26.66478ms</span><br><span class="line">https://172.20.40.173:2379 is healthy: successfully committed proposal: took = 30.31433ms</span><br><span class="line">https://172.20.40.196:2379 is healthy: successfully committed proposal: took = 37.859764ms</span><br></pre></td></tr></table></figure></p>
+<h5 id="etcd-service-部分参数说明"><a href="#etcd-service-部分参数说明" class="headerlink" title="etcd.service 部分参数说明"></a>etcd.service 部分参数说明</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">--name：etcd 集群中的节点名，这里可以随意，方便区分且不重复即可。</span><br><span class="line"></span><br><span class="line">--listen-client-urls：监听用于客户端通信的 url，同样可以监听多个。</span><br><span class="line"></span><br><span class="line">--advertise-client-urls：建议使用的客户端通信 url，该值用于 etcd 代理或 etcd 成员与 etcd 节点通信。</span><br><span class="line"></span><br><span class="line">--listen-peer-urls：监听用于节点之间通信的 url，可监听多个，集群内部将通过这些 url 进行数据交互(如选举、数据同步等)。</span><br><span class="line"></span><br><span class="line">--initial-advertise-peer-urls：建议用于节点之间通信的 url，节点间将以该值进行通信。</span><br><span class="line"></span><br><span class="line">--initial-cluster-token： etcd-cluster-0，节点的 token 值，设置该值后集群将生成唯一 ID，并为每个节点也生成唯一 ID。当使用相同配置文件再启动一个集群时，只要该 token 值不一样，etcd 集群就不会相互影响。</span><br><span class="line"></span><br><span class="line">--initial-cluster：集群中所有的 initial-advertise-peer-urls 的合集。</span><br><span class="line"></span><br><span class="line">--initial-cluster-state：new，新建集群的标志。</span><br></pre></td></tr></table></figure>
+<h3 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h3><p>仅需 替换二进制文件 <code>etcd</code>, <code>etcdctl</code></p>
+<h3 id="备份恢复"><a href="#备份恢复" class="headerlink" title="备份恢复"></a>备份恢复</h3><p>在任一正常节点执行如下操作</p>
+<p>eg:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-173 test]# export ETCDCTL_API=3; /usr/bin/etcdctl --endpoints=172.20.40.107:2379 --cacert=/etc/kubernetes/ssl/ca.pem --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem snapshot save /root/backup/etcd/snapshot-20210406-143852.db</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691138.681973,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:119&quot;,&quot;msg&quot;:&quot;created temporary db file&quot;,&quot;path&quot;:&quot;/root/backup/etcd/snapshot-20210406-143852.db.part&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2021-04-06T14:38:58.698+0800&quot;,&quot;caller&quot;:&quot;clientv3/maintenance.go:200&quot;,&quot;msg&quot;:&quot;opened snapshot stream; downloading&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691138.698508,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:127&quot;,&quot;msg&quot;:&quot;fetching snapshot&quot;,&quot;endpoint&quot;:&quot;172.20.40.107:2379&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2021-04-06T14:38:58.990+0800&quot;,&quot;caller&quot;:&quot;clientv3/maintenance.go:208&quot;,&quot;msg&quot;:&quot;completed snapshot read; closing&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691138.9978282,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:142&quot;,&quot;msg&quot;:&quot;fetched snapshot&quot;,&quot;endpoint&quot;:&quot;172.20.40.107:2379&quot;,&quot;size&quot;:&quot;10 MB&quot;,&quot;took&quot;:0.315710239&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691139.000513,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:152&quot;,&quot;msg&quot;:&quot;saved&quot;,&quot;path&quot;:&quot;/root/backup/etcd/snapshot-20210406-143852.db&quot;&#125;</span><br><span class="line">Snapshot saved at /root/backup/etcd/snapshot-20210406-143852.db</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@aps-173 test]# export ETCDCTL_API=3; /usr/bin/etcdctl --endpoints=172.20.40.107:2379 --cacert=/etc/kubernetes/ssl/ca.pem --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem snapshot save /root/backup/etcd/snapshot-20210406-143852.db</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691138.681973,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:119&quot;,&quot;msg&quot;:&quot;created temporary db file&quot;,&quot;path&quot;:&quot;/root/backup/etcd/snapshot-20210406-143852.db.part&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2021-04-06T14:38:58.698+0800&quot;,&quot;caller&quot;:&quot;clientv3/maintenance.go:200&quot;,&quot;msg&quot;:&quot;opened snapshot stream; downloading&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691138.698508,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:127&quot;,&quot;msg&quot;:&quot;fetching snapshot&quot;,&quot;endpoint&quot;:&quot;172.20.40.107:2379&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2021-04-06T14:38:58.990+0800&quot;,&quot;caller&quot;:&quot;clientv3/maintenance.go:208&quot;,&quot;msg&quot;:&quot;completed snapshot read; closing&quot;&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691138.9978282,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:142&quot;,&quot;msg&quot;:&quot;fetched snapshot&quot;,&quot;endpoint&quot;:&quot;172.20.40.107:2379&quot;,&quot;size&quot;:&quot;10 MB&quot;,&quot;took&quot;:0.315710239&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1617691139.000513,&quot;caller&quot;:&quot;snapshot/v3_snapshot.go:152&quot;,&quot;msg&quot;:&quot;saved&quot;,&quot;path&quot;:&quot;/root/backup/etcd/snapshot-20210406-143852.db&quot;&#125;</span><br><span class="line">Snapshot saved at /root/backup/etcd/snapshot-20210406-143852.db</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 恢复</span><br><span class="line">systemctl stop etcd.service </span><br><span class="line"></span><br><span class="line">cd /root/backup/etcd/ &amp;&amp; \</span><br><span class="line">	ETCDCTL_API=3 /use/bin/etcdctl snapshot restore snapshot-20210406-143852.db\</span><br><span class="line">	--name etcd-3 \</span><br><span class="line">	--initial-cluster etcd1=https://172.20.40.173:2380,etcd2=https://172.20.40.196:2380,etcd3=https://172.20.40.107:2380 \</span><br><span class="line">	--initial-cluster-token etcd-cluster-0 \</span><br><span class="line">	--initial-advertise-peer-urls https://172.20.40.107:2380&quot;</span><br></pre></td></tr></table></figure></p>
+<p>具体可以参考 之前编写的 <code>ansible</code> 文件</p>
+<h3 id="etcd-网关与-gRPC-Gateway"><a href="#etcd-网关与-gRPC-Gateway" class="headerlink" title="etcd 网关与 gRPC-Gateway"></a>etcd 网关与 gRPC-Gateway</h3><p><code>etcd</code> 网关通常用于 <code>etcd</code> 集群的门户，是一个简单的 <code>TCP</code> 代理，将客户端请求转发到 <code>etcd</code> 集群，对外屏蔽了 <code>etcd</code> 集群内部的实际情况，在集群出现故障或者异常时，可以通过 etcd 网关进行切换；</p>
+<p><code>gRPC-Gateway</code> 则是对于 <code>etcd</code> 的 <code>gRPC</code> 通信协议的补充，有些语言的客户端不支持 <code>gRPC</code> 通信协议，此时就可以使用 <code>gRPC-Gateway</code> 对外提供的 <code>HTTP API</code> 接口。通过 <code>HTTP</code> 请求，实现与 <code>gRPC</code> 调用协议同样的功能。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/k8s/k8s安全与恢复,/" rel="next" title="k8s安全">
+                <i class="fa fa-chevron-left"></i> k8s安全
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/etcd/etcdctl/" rel="prev" title="etcdctl 常用操作">
+                etcdctl 常用操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#etcd-的核心架构"><span class="nav-number">1.1.</span> <span class="nav-text">etcd 的核心架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本选择"><span class="nav-number">1.2.</span> <span class="nav-text">版本选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.3.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前置条件"><span class="nav-number">1.3.1.</span> <span class="nav-text">前置条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-etcd-的server-证书"><span class="nav-number">1.3.2.</span> <span class="nav-text">生成 etcd 的server 证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-etcd-service-启动文件"><span class="nav-number">1.3.3.</span> <span class="nav-text">创建 etcd.service 启动文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#etcd-service-部分参数说明"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">etcd.service 部分参数说明</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#升级"><span class="nav-number">1.4.</span> <span class="nav-text">升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备份恢复"><span class="nav-number">1.5.</span> <span class="nav-text">备份恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#etcd-网关与-gRPC-Gateway"><span class="nav-number">1.6.</span> <span class="nav-text">etcd 网关与 gRPC-Gateway</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

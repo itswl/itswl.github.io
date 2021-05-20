@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="k8s 安全性Kubernetes 的安全性归纳为了以下四个方面：   Infrastructure（基础设施）  : 主要包括网络、存储、物理机、操作系统，等等 Kubernetes 集群自身 Containers（容器）及其运行时 Applications（业务应用）  措施1. 集群版本更新及 CVE 漏洞时刻关注社区 Kubernetes 的版本更新，以及披露的 CVE 漏洞，及时地把 C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s安全">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/k8s安全与恢复,/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="k8s 安全性Kubernetes 的安全性归纳为了以下四个方面：   Infrastructure（基础设施）  : 主要包括网络、存储、物理机、操作系统，等等 Kubernetes 集群自身 Containers（容器）及其运行时 Applications（业务应用）  措施1. 集群版本更新及 CVE 漏洞时刻关注社区 Kubernetes 的版本更新，以及披露的 CVE 漏洞，及时地把 C">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.344Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="k8s安全">
+<meta name="twitter:description" content="k8s 安全性Kubernetes 的安全性归纳为了以下四个方面：   Infrastructure（基础设施）  : 主要包括网络、存储、物理机、操作系统，等等 Kubernetes 集群自身 Containers（容器）及其运行时 Applications（业务应用）  措施1. 集群版本更新及 CVE 漏洞时刻关注社区 Kubernetes 的版本更新，以及披露的 CVE 漏洞，及时地把 C">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/k8s安全与恢复,/">
+
+
+
+
+
+  <title>k8s安全 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/k8s安全与恢复,/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">k8s安全</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-12T22:43:31+00:00">
+                2020-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="k8s-安全性"><a href="#k8s-安全性" class="headerlink" title="k8s 安全性"></a>k8s 安全性</h2><p><code>Kubernetes</code> 的安全性归纳为了以下四个方面： </p>
+<ol>
+<li><code>Infrastructure</code>（基础设施）  : 主要包括网络、存储、物理机、操作系统，等等</li>
+<li><code>Kubernetes</code> 集群自身</li>
+<li><code>Containers</code>（容器）及其运行时</li>
+<li><code>Applications</code>（业务应用）</li>
+</ol>
+<h3 id="措施"><a href="#措施" class="headerlink" title="措施"></a>措施</h3><h4 id="1-集群版本更新及-CVE-漏洞"><a href="#1-集群版本更新及-CVE-漏洞" class="headerlink" title="1. 集群版本更新及 CVE 漏洞"></a>1. 集群版本更新及 CVE 漏洞</h4><p>时刻关注社区 Kubernetes 的版本更新，以及披露的 CVE 漏洞，及时地把 CVE 的修复方案变更到你的集群中去。</p>
+<p>同时你需要保证跟社区的版本不要太脱节，跟社区保持 1 到 2 个大版本的差异</p>
+<h4 id="2-保护好-Etcd-集群"><a href="#2-保护好-Etcd-集群" class="headerlink" title="2. 保护好 Etcd 集群"></a>2. 保护好 Etcd 集群</h4><p>Etcd 中保存着整个 Kubernetes 集群中最重要的数据，比如 Pod 信息、Secret、Token 等。一旦这些数据遭到攻击，造成的影响面非常巨大。我们必须确保 Etcd 集群的安全。</p>
+<p>对于部署 Etcd 集群的各个节点，我们应该被授予最小的访问权限，同时还要尽量避免这些节点被用作其他用途。由于 Etcd 对数据的读写要求很高，这里磁盘最好是 SSD 类型。</p>
+<p>Etcd 集群要配置双向 TLS 认证（mTLS），用于 Etcd 各个节点之间的通信。同时 APIServer 对 Etcd 集群的访问最好也要基于 mTLS。通过 Kubeadm 搭建出来的集群，默认已经采取这种配置方式。</p>
+<h4 id="3-限制对-Kubernetes-APIServer-的访问"><a href="#3-限制对-Kubernetes-APIServer-的访问" class="headerlink" title="3. 限制对 Kubernetes APIServer 的访问"></a>3. 限制对 Kubernetes APIServer 的访问</h4><p>APIServer 是整个 Kubernetes 的大脑，及流量入口，所有的数据都在此进行交互。Kubernetes 的安全机制也都是围绕着保护 APIServer 进行设计的，正如我们第 18 讲介绍的认证（Authentication）、鉴权（Authorization）和准入控制（Admission Control），这三大机制保护了 APIServer 的安全。</p>
+<p>显而易见，APIServer 也必须得使用 TLS 进行通信，尽量不要开启不安全的 HTTP 方式，尤其是在云上的环境中，切记一定要关闭，你可以通过–insecure-port=0参数来关闭。</p>
+<p>同时要避免使用 AlwaysAllow 这种鉴权模式，这种模式会允许所有请求。一般来说，我建议这么配置鉴权模式，即–authorization-mode=RBAC,Node。RBAC（基于角色的访问控制）会将传入的用户/组与一组绑定到角色的权限进行匹配。这些权限将 HTTP 请求的动作（GET，POST，DELETE）和 Kubernetes 内部各种资源对象，比如 Pod、Service 或者 Node，在命名空间或者集群范围内有机地结合起来，你可以回顾我们第 18 讲的内容，这里不再赘述。</p>
+<h4 id="4-减少集群的端口暴露"><a href="#4-减少集群的端口暴露" class="headerlink" title="4. 减少集群的端口暴露"></a>4. 减少集群的端口暴露</h4><p>当然你还需要尽可能减少集群的端口暴露。如下是 Kubernetes 各组件需要的端口，在使用的时候，可以限制只允许固定节点对这些端口的访问。</p>
+<h4 id="5-限制对-Kubelet-的访问"><a href="#5-限制对-Kubelet-的访问" class="headerlink" title="5. 限制对 Kubelet 的访问"></a>5. 限制对 Kubelet 的访问</h4><p>Kubelet 上运行着我们的业务容器，同时还暴露了 10250 端口，可以用来查询容器，支持容器 exec，获取容器日志等功能。因此在生产级别的集群，我们要启用 Kubelet 身份验证和授权，同时关闭匿名访问–anonymous-auth=false。</p>
+<h4 id="6-开启审计能力"><a href="#6-开启审计能力" class="headerlink" title="6. 开启审计能力"></a>6. 开启审计能力</h4><p>APIServer 支持对所有的请求进行审计（Audit），你可以通过–audit-log-path来指定用来写入审计事件的日志文件路径，默认是不指定的。通过这个开启审计能力，再结合 RBAC，我们可以对整个集群的请求访问进行详细的监控和分析。</p>
+<p>这个审计功能提供了与安全相关的，按时间顺序排列的记录集，每一个请求都会有对应的审计事件，记录着：</p>
+<p>发生了什么？</p>
+<p>什么时候发生的？</p>
+<p>谁触发的？</p>
+<p>活动发生在哪个（些）对象上？</p>
+<p>在哪观察到的？</p>
+<p>它从哪触发的？</p>
+<p>活动的后续处理行为是什么？</p>
+<p>通过这些审计事件，集群管理员可以很容易地分析出集群内的安全风险，以采取应对策略。</p>
+<h4 id="7-通过-namespace-进行隔离"><a href="#7-通过-namespace-进行隔离" class="headerlink" title="7. 通过 namespace 进行隔离"></a>7. 通过 namespace 进行隔离</h4><p>通过 namespace 来隔离工作负载和数据，比如区分不用的用户，不同的业务场景，以及一些关键的业务。你可以通过对这些 namespace 内的资源设置一些 RBAC 的规则，来进一步增强安全性。</p>
+<h4 id="8-使用网络策略进行限制"><a href="#8-使用网络策略进行限制" class="headerlink" title="8. 使用网络策略进行限制"></a>8. 使用网络策略进行限制</h4><p>Kubernetes 提供了基于 namespace 的网络策略（Network Policy），可以允许和限制不同 namespace 中的 Pod 互访。</p>
+<p>网络策略通过网络插件来实现，所以你要使用这种能力，要选择支持 NetworkPolicy 的网络解决方案，比如 Calico、Cilium、Weave 等。</p>
+<h4 id="9-容器镜像安全"><a href="#9-容器镜像安全" class="headerlink" title="9. 容器镜像安全"></a>9. 容器镜像安全</h4><p>容器的运行依赖容器的镜像，保证镜像安全是最基本的。要避免使用一些未知来源的镜像，同时自己构建镜像的时候，要使用安全的、确知的、官方的基础镜像。</p>
+<p>同时，要定期地对镜像进行漏洞扫描，你可以使用 harbor-scanner-aqua、Clair 等工具对你的镜像中心、镜像进行扫描，来查找已知的漏洞。</p>
+<p>除此之外，我们还要限制特权容器，避免在容器镜像中使用 root 用户，防止特权升级。</p>
+<h4 id="10-应用程序的安全性"><a href="#10-应用程序的安全性" class="headerlink" title="10. 应用程序的安全性"></a>10. 应用程序的安全性</h4><p>应用程序自身的安全性也很重要。如果你的应用程序要暴露给集群外部，可以使用入口控制器（Ingress Controller），比如 Nginx。</p>
+<p>应用容器也要使用 TLS 进行通信，包括跟入口控制器之间的通信。不需要定期扫描源代码及依赖项，查找是否有新漏洞，还要持续测试你的应用程序，查看是否会受到攻击，比如 SQL 注入，DDoS 攻击等。</p>
+<h3 id="工具检测"><a href="#工具检测" class="headerlink" title="工具检测"></a>工具检测</h3><p><a href="https://github.com/aquasecurity/kube-bench" target="_blank" rel="noopener">https://github.com/aquasecurity/kube-bench</a></p>
+<p>能帮助你排查 95% Kubernetes 集群的配置风险</p>
+<h2 id="备份恢复"><a href="#备份恢复" class="headerlink" title="备份恢复"></a>备份恢复</h2><p><strong>master 节点</strong></p>
+<p>在 Master 节点上，我们运行着 Etcd 集群以及 Kubernetes 控制面的几大组件，比如 kube-apiserver、kube-controller-manager、kube-scheduler 和 cloud-controller-manager（可选）等。</p>
+<p>在这些组件中，除了 Etcd，其他都是无状态的服务。只要保证 Etcd 的数据正常，其他几个组件不管出现什么问题，我们都可以通过重启或者新建实例来解决，并不会受到任何影响。因此我们只需要备份 Etcd 中的数据。</p>
+<p><strong>node 节点</strong><br>主要对数据文件备份 eg: pv</p>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><h4 id="etcd-备份"><a href="#etcd-备份" class="headerlink" title="etcd 备份"></a>etcd 备份</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># 0. 数据备份</span><br><span class="line">ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \</span><br><span class="line">--cacert=/etc/kubernetes/pki/etcd/ca.crt \</span><br><span class="line">--key=/etc/kubernetes/pki/etcd/peer.key \</span><br><span class="line">--cert=/etc/kubernetes/pki/etcd/peer.crt \</span><br><span class="line">snapshot save ./new.snapshot.db</span><br><span class="line"># 1. 查看 etcd 集群的节点</span><br><span class="line">ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \ </span><br><span class="line">--cacert=/etc/kubernetes/pki/etcd/ca.crt \ </span><br><span class="line">--cert=/etc/kubernetes/pki/etcd/peer.crt \ </span><br><span class="line">--key=/etc/kubernetes/pki/etcd/peer.key \</span><br><span class="line">member list</span><br><span class="line"># 2. 停止所有节点上的 etcd！（注意是所有！！）</span><br><span class="line">## 如果是 static pod，可以听过如下的命令进行 stop</span><br><span class="line">## 如果是 systemd 管理的，可以通过 systemctl stop etcd</span><br><span class="line">mv /etc/kubernetes/manifests/etcd.yaml /etc/kubernetes/</span><br><span class="line"># 3. 数据清理</span><br><span class="line">## 依次在每个节点上，移除 etcd 数据</span><br><span class="line">rm -rf /var/lib/etcd</span><br><span class="line"># 4. 数据恢复</span><br><span class="line">## 依次在每个节点上，恢复 etcd 旧数据</span><br><span class="line">## 里面的 name，initial-advertise-peer-urls，initial-cluster=controlplane</span><br><span class="line">## 等参数，可以从 etcd pod 的 yaml 文件中获取到。</span><br><span class="line">ETCDCTL_API=3 etcdctl snapshot restore ./old.snapshot.db \</span><br><span class="line">--data-dir=/var/lib/etcd \</span><br><span class="line">--name=controlplane \</span><br><span class="line">--initial-advertise-peer-urls=https://172.17.0.18:2380 \</span><br><span class="line">--initial-cluster=controlplane=https://172.17.0.18:2380</span><br><span class="line"># 5. 恢复 etcd 服务</span><br><span class="line">## 依次在每个节点上，拉起 etcd 服务</span><br><span class="line">mv /etc/kubernetes/etcd.yaml /etc/kubernetes/manifests/</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
+<p>如果你的 Etcd 集群是运行在 Kubernetes 集群中的，你可以通过以下的定时 Job (CronJob) 来帮你自动化、周期性（如下的 YAML 文件中会每分钟对 Etcd 进行一次备份）地备份 Etcd 的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: batch/v1beta1</span><br><span class="line">kind: CronJob</span><br><span class="line">metadata:</span><br><span class="line">  name: backup</span><br><span class="line">  namespace: kube-system</span><br><span class="line">spec:</span><br><span class="line">  # activeDeadlineSeconds: 100</span><br><span class="line">  schedule: &quot;*/1 * * * *&quot;</span><br><span class="line">  jobTemplate:</span><br><span class="line">    spec:</span><br><span class="line">      template:</span><br><span class="line">        spec:</span><br><span class="line">          containers:</span><br><span class="line">          - name: backup</span><br><span class="line">            # Same image as in /etc/kubernetes/manifests/etcd.yaml</span><br><span class="line">            image: k8s.gcr.io/etcd:3.2.24</span><br><span class="line">            env:</span><br><span class="line">            - name: ETCDCTL_API</span><br><span class="line">              value: &quot;3&quot;</span><br><span class="line">            command: [&quot;/bin/sh&quot;]</span><br><span class="line">            args: [&quot;-c&quot;, &quot;etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save /backup/etcd-snapshot-$(date +%Y-%m-%d_%H:%M:%S_%Z).db&quot;]</span><br><span class="line">            volumeMounts:</span><br><span class="line">            - mountPath: /etc/kubernetes/pki/etcd</span><br><span class="line">              name: etcd-certs</span><br><span class="line">              readOnly: true</span><br><span class="line">            - mountPath: /backup</span><br><span class="line">              name: backup</span><br><span class="line">          restartPolicy: OnFailure</span><br><span class="line">          hostNetwork: true</span><br><span class="line">          volumes:</span><br><span class="line">          - name: etcd-certs</span><br><span class="line">            hostPath:</span><br><span class="line">              path: /etc/kubernetes/pki/etcd</span><br><span class="line">              type: DirectoryOrCreate</span><br><span class="line">          - name: backup</span><br><span class="line">            hostPath:</span><br><span class="line">              path: /data/backup</span><br><span class="line">              type: DirectoryOrCreate</span><br></pre></td></tr></table></figure>
+<h4 id="PV-备份"><a href="#PV-备份" class="headerlink" title="PV 备份"></a>PV 备份</h4><p>对于 PV 来讲，备份就比较麻烦了。Kubernetes 自身不提供存储能力，它依赖各个存储插件对存储进行管理和使用。因此对于存储的备份操作，尤其是 PV 的备份操作，我们需要依赖各个云提供商的 API 来做 snapshot。</p>
+<p>但是上述对于 Etcd 和 PV 的备份操作并不是很方便，我推荐你通过Velero来备份 Kubernetes。Velero 功能强大，但是操作起来很简单，它可以帮你做到以下 3 点：</p>
+<p>对 Kubernets 集群做备份和恢复。</p>
+<p>对集群进行迁移。</p>
+<p>对集群的配置和对象进行复制，比如复制到其他的开发和测试集群中去。</p>
+<p>而且 Velero 还提供针对单个 Namespace 进行备份的能力，如果你只想备份某些关键的业务和数据，这是一个十分方便的功能。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/k8s/k8s优先级/" rel="next" title="k8s优先级调度">
+                <i class="fa fa-chevron-left"></i> k8s优先级调度
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/etcd/etcd简介/" rel="prev" title="etcd简介">
+                etcd简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#k8s-安全性"><span class="nav-number">1.</span> <span class="nav-text">k8s 安全性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#措施"><span class="nav-number">1.1.</span> <span class="nav-text">措施</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-集群版本更新及-CVE-漏洞"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 集群版本更新及 CVE 漏洞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-保护好-Etcd-集群"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 保护好 Etcd 集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-限制对-Kubernetes-APIServer-的访问"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 限制对 Kubernetes APIServer 的访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-减少集群的端口暴露"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 减少集群的端口暴露</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-限制对-Kubelet-的访问"><span class="nav-number">1.1.5.</span> <span class="nav-text">5. 限制对 Kubelet 的访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-开启审计能力"><span class="nav-number">1.1.6.</span> <span class="nav-text">6. 开启审计能力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-通过-namespace-进行隔离"><span class="nav-number">1.1.7.</span> <span class="nav-text">7. 通过 namespace 进行隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-使用网络策略进行限制"><span class="nav-number">1.1.8.</span> <span class="nav-text">8. 使用网络策略进行限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-容器镜像安全"><span class="nav-number">1.1.9.</span> <span class="nav-text">9. 容器镜像安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-应用程序的安全性"><span class="nav-number">1.1.10.</span> <span class="nav-text">10. 应用程序的安全性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工具检测"><span class="nav-number">1.2.</span> <span class="nav-text">工具检测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#备份恢复"><span class="nav-number">2.</span> <span class="nav-text">备份恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#备份"><span class="nav-number">2.1.</span> <span class="nav-text">备份</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd-备份"><span class="nav-number">2.1.1.</span> <span class="nav-text">etcd 备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PV-备份"><span class="nav-number">2.1.2.</span> <span class="nav-text">PV 备份</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

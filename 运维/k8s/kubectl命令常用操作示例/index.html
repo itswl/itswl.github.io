@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="kubectl命令常用操作示例获取集群相关信息12345678910111213# 显示的是当前使用的客户端及服务端程序版本信息[root@centos01 ~]# kubectl version --short=trueClient Version: v1.18.6Server Version: v1.18.0# 显示集群信息[root@centos01 ~]# kubectl cluster-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubectl命令常用操作示例">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/kubectl命令常用操作示例/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="kubectl命令常用操作示例获取集群相关信息12345678910111213# 显示的是当前使用的客户端及服务端程序版本信息[root@centos01 ~]# kubectl version --short=trueClient Version: v1.18.6Server Version: v1.18.0# 显示集群信息[root@centos01 ~]# kubectl cluster-">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.345Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kubectl命令常用操作示例">
+<meta name="twitter:description" content="kubectl命令常用操作示例获取集群相关信息12345678910111213# 显示的是当前使用的客户端及服务端程序版本信息[root@centos01 ~]# kubectl version --short=trueClient Version: v1.18.6Server Version: v1.18.0# 显示集群信息[root@centos01 ~]# kubectl cluster-">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/kubectl命令常用操作示例/">
+
+
+
+
+
+  <title>kubectl命令常用操作示例 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/kubectl命令常用操作示例/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">kubectl命令常用操作示例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-12T22:43:31+00:00">
+                2020-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="kubectl命令常用操作示例"><a href="#kubectl命令常用操作示例" class="headerlink" title="kubectl命令常用操作示例"></a>kubectl命令常用操作示例</h2><h3 id="获取集群相关信息"><a href="#获取集群相关信息" class="headerlink" title="获取集群相关信息"></a>获取集群相关信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 显示的是当前使用的客户端及服务端程序版本信息</span><br><span class="line">[root@centos01 ~]# kubectl version --short=true</span><br><span class="line">Client Version: v1.18.6</span><br><span class="line">Server Version: v1.18.0</span><br><span class="line"></span><br><span class="line"># 显示集群信息</span><br><span class="line">[root@centos01 ~]# kubectl cluster-info</span><br><span class="line">Kubernetes master is running at https://192.168.43.25:6443</span><br><span class="line">KubeDNS is running at https://192.168.43.25:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy</span><br><span class="line"></span><br><span class="line">To further debug and diagnose cluster problems, use &apos;kubectl cluster-info dump&apos;.</span><br><span class="line"></span><br><span class="line">[root@centos01 ~]# kubectl cluster-info dump &gt; ./k8s.log</span><br></pre></td></tr></table></figure>
+<p>##<br>查看 api 信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl api-resources</span><br><span class="line">NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND</span><br><span class="line">bindings                                       v1                                     true         Binding</span><br><span class="line">componentstatuses                 cs           v1                                     false        ComponentStatus</span><br><span class="line">configmaps                        cm           v1                                     true         ConfigMap</span><br><span class="line">endpoints                         ep           v1                                     true         Endpoints</span><br><span class="line">events                            ev           v1                                     true         Event</span><br><span class="line">limitranges                       limits       v1                                     true         LimitRange</span><br><span class="line">namespaces                        ns           v1                                     false        Namespace</span><br><span class="line">nodes                             no           v1                                     false        Node</span><br><span class="line">persistentvolumeclaims            pvc          v1                                     true         PersistentVolumeClaim</span><br><span class="line">persistentvolumes                 pv           v1                                     false        PersistentVolume</span><br><span class="line">pods                              po           v1                                     true         Pod</span><br><span class="line">podtemplates                                   v1                                     true         PodTemplate</span><br><span class="line">replicationcontrollers            rc           v1                                     true         ReplicationController</span><br><span class="line">resourcequotas                    quota        v1                                     true         ResourceQuota</span><br><span class="line">secrets                                        v1                                     true         Secret</span><br><span class="line">serviceaccounts                   sa           v1                                     true         ServiceAccount</span><br><span class="line">services                          svc          v1                                     true         Service</span><br><span class="line">mutatingwebhookconfigurations                  admissionregistration.k8s.io/v1        false        MutatingWebhookConfiguration</span><br><span class="line">validatingwebhookconfigurations                admissionregistration.k8s.io/v1        false        ValidatingWebhookConfiguration</span><br><span class="line">customresourcedefinitions         crd,crds     apiextensions.k8s.io/v1                false        CustomResourceDefinition</span><br><span class="line">apiservices                                    apiregistration.k8s.io/v1              false        APIService</span><br><span class="line">controllerrevisions                            apps/v1                                true         ControllerRevision</span><br><span class="line">daemonsets                        ds           apps/v1                                true         DaemonSet</span><br><span class="line">deployments                       deploy       apps/v1                                true         Deployment</span><br><span class="line">replicasets                       rs           apps/v1                                true         ReplicaSet</span><br><span class="line">statefulsets                      sts          apps/v1                                true         StatefulSet</span><br><span class="line">tokenreviews                                   authentication.k8s.io/v1               false        TokenReview</span><br><span class="line">localsubjectaccessreviews                      authorization.k8s.io/v1                true         LocalSubjectAccessReview</span><br><span class="line">selfsubjectaccessreviews                       authorization.k8s.io/v1                false        SelfSubjectAccessReview</span><br><span class="line">selfsubjectrulesreviews                        authorization.k8s.io/v1                false        SelfSubjectRulesReview</span><br><span class="line">subjectaccessreviews                           authorization.k8s.io/v1                false        SubjectAccessReview</span><br><span class="line">horizontalpodautoscalers          hpa          autoscaling/v1                         true         HorizontalPodAutoscaler</span><br><span class="line">cronjobs                          cj           batch/v1beta1                          true         CronJob</span><br><span class="line">jobs                                           batch/v1                               true         Job</span><br><span class="line">certificatesigningrequests        csr          certificates.k8s.io/v1                 false        CertificateSigningRequest</span><br><span class="line">leases                                         coordination.k8s.io/v1                 true         Lease</span><br><span class="line">bgpconfigurations                              crd.projectcalico.org/v1               false        BGPConfiguration</span><br><span class="line">bgppeers                                       crd.projectcalico.org/v1               false        BGPPeer</span><br><span class="line">blockaffinities                                crd.projectcalico.org/v1               false        BlockAffinity</span><br><span class="line">clusterinformations                            crd.projectcalico.org/v1               false        ClusterInformation</span><br><span class="line">felixconfigurations                            crd.projectcalico.org/v1               false        FelixConfiguration</span><br><span class="line">globalnetworkpolicies             gnp          crd.projectcalico.org/v1               false        GlobalNetworkPolicy</span><br><span class="line">globalnetworksets                              crd.projectcalico.org/v1               false        GlobalNetworkSet</span><br><span class="line">hostendpoints                                  crd.projectcalico.org/v1               false        HostEndpoint</span><br><span class="line">ipamblocks                                     crd.projectcalico.org/v1               false        IPAMBlock</span><br><span class="line">ipamconfigs                                    crd.projectcalico.org/v1               false        IPAMConfig</span><br><span class="line">ipamhandles                                    crd.projectcalico.org/v1               false        IPAMHandle</span><br><span class="line">ippools                                        crd.projectcalico.org/v1               false        IPPool</span><br><span class="line">kubecontrollersconfigurations                  crd.projectcalico.org/v1               false        KubeControllersConfiguration</span><br><span class="line">networkpolicies                                crd.projectcalico.org/v1               true         NetworkPolicy</span><br><span class="line">networksets                                    crd.projectcalico.org/v1               true         NetworkSet</span><br><span class="line">endpointslices                                 discovery.k8s.io/v1beta1               true         EndpointSlice</span><br><span class="line">events                            ev           events.k8s.io/v1                       true         Event</span><br><span class="line">ingresses                         ing          extensions/v1beta1                     true         Ingress</span><br><span class="line">flowschemas                                    flowcontrol.apiserver.k8s.io/v1beta1   false        FlowSchema</span><br><span class="line">prioritylevelconfigurations                    flowcontrol.apiserver.k8s.io/v1beta1   false        PriorityLevelConfiguration</span><br><span class="line">nodes                                          metrics.k8s.io/v1beta1                 false        NodeMetrics</span><br><span class="line">pods                                           metrics.k8s.io/v1beta1                 true         PodMetrics</span><br><span class="line">alertmanagerconfigs                            monitoring.coreos.com/v1alpha1         true         AlertmanagerConfig</span><br><span class="line">alertmanagers                                  monitoring.coreos.com/v1               true         Alertmanager</span><br><span class="line">podmonitors                                    monitoring.coreos.com/v1               true         PodMonitor</span><br><span class="line">probes                                         monitoring.coreos.com/v1               true         Probe</span><br><span class="line">prometheuses                                   monitoring.coreos.com/v1               true         Prometheus</span><br><span class="line">prometheusrules                                monitoring.coreos.com/v1               true         PrometheusRule</span><br><span class="line">servicemonitors                                monitoring.coreos.com/v1               true         ServiceMonitor</span><br><span class="line">thanosrulers                                   monitoring.coreos.com/v1               true         ThanosRuler</span><br><span class="line">ingressclasses                                 networking.k8s.io/v1                   false        IngressClass</span><br><span class="line">ingresses                         ing          networking.k8s.io/v1                   true         Ingress</span><br><span class="line">networkpolicies                   netpol       networking.k8s.io/v1                   true         NetworkPolicy</span><br><span class="line">runtimeclasses                                 node.k8s.io/v1                         false        RuntimeClass</span><br><span class="line">poddisruptionbudgets              pdb          policy/v1beta1                         true         PodDisruptionBudget</span><br><span class="line">podsecuritypolicies               psp          policy/v1beta1                         false        PodSecurityPolicy</span><br><span class="line">clusterrolebindings                            rbac.authorization.k8s.io/v1           false        ClusterRoleBinding</span><br><span class="line">clusterroles                                   rbac.authorization.k8s.io/v1           false        ClusterRole</span><br><span class="line">rolebindings                                   rbac.authorization.k8s.io/v1           true         RoleBinding</span><br><span class="line">roles                                          rbac.authorization.k8s.io/v1           true         Role</span><br><span class="line">priorityclasses                   pc           scheduling.k8s.io/v1                   false        PriorityClass</span><br><span class="line">csidrivers                                     storage.k8s.io/v1                      false        CSIDriver</span><br><span class="line">csinodes                                       storage.k8s.io/v1                      false        CSINode</span><br><span class="line">storageclasses                    sc           storage.k8s.io/v1                      false        StorageClass</span><br><span class="line">volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# kubectl api-versions</span><br><span class="line">admissionregistration.k8s.io/v1</span><br><span class="line">admissionregistration.k8s.io/v1beta1</span><br><span class="line">apiextensions.k8s.io/v1</span><br><span class="line">apiextensions.k8s.io/v1beta1</span><br><span class="line">apiregistration.k8s.io/v1</span><br><span class="line">apiregistration.k8s.io/v1beta1</span><br><span class="line">apps/v1</span><br><span class="line">authentication.k8s.io/v1</span><br><span class="line">authentication.k8s.io/v1beta1</span><br><span class="line">authorization.k8s.io/v1</span><br><span class="line">authorization.k8s.io/v1beta1</span><br><span class="line">autoscaling/v1</span><br><span class="line">autoscaling/v2beta1</span><br><span class="line">autoscaling/v2beta2</span><br><span class="line">batch/v1</span><br><span class="line">batch/v1beta1</span><br><span class="line">certificates.k8s.io/v1</span><br><span class="line">certificates.k8s.io/v1beta1</span><br><span class="line">coordination.k8s.io/v1</span><br><span class="line">coordination.k8s.io/v1beta1</span><br><span class="line">crd.projectcalico.org/v1</span><br><span class="line">discovery.k8s.io/v1beta1</span><br><span class="line">events.k8s.io/v1</span><br><span class="line">events.k8s.io/v1beta1</span><br><span class="line">extensions/v1beta1</span><br><span class="line">flowcontrol.apiserver.k8s.io/v1beta1</span><br><span class="line">metrics.k8s.io/v1beta1</span><br><span class="line">monitoring.coreos.com/v1</span><br><span class="line">monitoring.coreos.com/v1alpha1</span><br><span class="line">networking.k8s.io/v1</span><br><span class="line">networking.k8s.io/v1beta1</span><br><span class="line">node.k8s.io/v1</span><br><span class="line">node.k8s.io/v1beta1</span><br><span class="line">policy/v1beta1</span><br><span class="line">rbac.authorization.k8s.io/v1</span><br><span class="line">rbac.authorization.k8s.io/v1beta1</span><br><span class="line">scheduling.k8s.io/v1</span><br><span class="line">scheduling.k8s.io/v1beta1</span><br><span class="line">storage.k8s.io/v1</span><br><span class="line">storage.k8s.io/v1beta1</span><br><span class="line">v1</span><br></pre></td></tr></table></figure></p>
+<h2 id="创建资源对象"><a href="#创建资源对象" class="headerlink" title="创建资源对象"></a>创建资源对象</h2><p><code>kubectl run</code></p>
+<p><code>kubectl expose</code></p>
+<p><code>kubectl create</code></p>
+<p><code>kubectl apply</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 创建名为nginx-deploy的Deployment控制器资源对象</span><br><span class="line">[root@k8s01 ~]# kubectl run nginx-deploy --image=nginx:1.12 --replicas=2</span><br><span class="line">Flag --replicas has been deprecated, has no effect and will be removed in the future.</span><br><span class="line"># --replicas 已不支持直接命令式操作  </span><br><span class="line"></span><br><span class="line"># 创建名为nginx-svc的Service资源对象</span><br><span class="line">kubectl expose pod nginx-deploy --name=nginx-svc --port=80</span><br></pre></td></tr></table></figure>
+<h3 id="查看资源对象"><a href="#查看资源对象" class="headerlink" title="查看资源对象"></a>查看资源对象</h3><p><code>kubectl get</code>  :  可分类列出资源对象及其相关的状态信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 列出系统上所有的Namespace资源对象</span><br><span class="line">[root@k8s01 ~]# kubectl get namespaces</span><br><span class="line">NAME              STATUS   AGE</span><br><span class="line">default           Active   20m</span><br><span class="line">kube-node-lease   Active   20m</span><br><span class="line">kube-public       Active   20m</span><br><span class="line">kube-system       Active   20m</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 列出默认名称空间内的所有Pod和Service对象，并输出额外信息</span><br><span class="line">[root@k8s01 ~]# kubectl get pods,services -o wide</span><br><span class="line">NAME               READY   STATUS    RESTARTS   AGE     IP               NODE    NOMINATED NODE   READINESS GATES</span><br><span class="line">pod/nginx-deploy   1/1     Running   0          8m49s   172.18.236.129   k8s02   &lt;none&gt;           &lt;none&gt;</span><br><span class="line"></span><br><span class="line">NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE     SELECTOR</span><br><span class="line">service/kubernetes   ClusterIP   10.96.0.1      &lt;none&gt;        443/TCP   30m     &lt;none&gt;</span><br><span class="line">service/nginx-svc    ClusterIP   10.100.63.22   &lt;none&gt;        80/TCP    2m11s   run=nginx-deploy</span><br><span class="line"></span><br><span class="line"># 获取含有标签 app=nginx 的 pod name </span><br><span class="line">kubectl get pod -l app=nginx -o jsonpath=&#123;.items..metadata.name&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># k8s集群上任一节点  均可访问</span><br><span class="line">curl 172.18.236.129 &amp;&amp; curl  10.100.63.22</span><br><span class="line"></span><br><span class="line">### kubectl expose pod httpd-app --type=&apos;NodePort&apos; --port 80</span><br></pre></td></tr></table></figure>
+<h3 id="打印资源对象的详细信息"><a href="#打印资源对象的详细信息" class="headerlink" title="打印资源对象的详细信息"></a>打印资源对象的详细信息</h3><p>每个资源对象都包含着用户期望的状态（<code>Spec</code>）和现有的实际状态 (<code>Status</code>）两种状态息，<code>kubectl get  -o{yaml|josn}</code>  或  <code>kubectl describe</code> 命令都能够打印出指定资源对象的详细描述信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看kube-system名称空间中拥有标签component=kube-apiserver的Pod对象的资源配置清单（期望的状态）及当前的状态信息，并输出为yaml格式</span><br><span class="line">kubectl get pods -l component=kube-apiserver -o yaml -n kube-system</span><br><span class="line"></span><br><span class="line"># 查看kube-system名称空间中拥有标签component=kube-apiserver的Pod对象的详细描述信息</span><br><span class="line">kubectl describe pods -l component=kube-apiserver -n kube-system</span><br></pre></td></tr></table></figure>
+<h3 id="打印容器中的日志信息"><a href="#打印容器中的日志信息" class="headerlink" title="打印容器中的日志信息"></a>打印容器中的日志信息</h3><p>通常一个容器中仅会运行一个进程（及其子进程），此进程作为PID为1的进程接收并处理管理信息，同时将日志直接输出至终端中，而无须再像传统的多进程系统环境那样将日志保存于文件中，因此容器日志信息的获取一般要到其控制上进行。</p>
+<p><code>kubectl logs</code> 命令可打印Pod对象内指定容器的日志信息，命令格式为 <code>kubectl logs[-f][-p]（POD|TYPE/NAME）[-c CONTAINER][options]”</code>kubectl logs -f <code></code>kubectl logs –tail 100 -f `</p>
+<p>输出最后 <code>100</code> 行日志到文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs --tail 100 -n rook-ceph rook-ceph-operator-6f7f6b96d-vqx5c  &gt; /tmp/rook-ceph-operator.log</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 查看名称空间kube-system中仅有一个容器的Pod对象kube-apiserver-master.ilinux.io的日志</span><br><span class="line"></span><br><span class="line">kubectl logs kube-apiserver-k8s01  -n kube-system</span><br></pre></td></tr></table></figure>
+<h3 id="在容器中执行命令"><a href="#在容器中执行命令" class="headerlink" title="在容器中执行命令"></a>在容器中执行命令</h3><p><code>kubectl exec</code> 命令便是用于在指定的容器内运行其他应用程序的命令.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ，在kube-system名称空间中的Pod对象kube-apiserver-master.ilinux.io上的唯一容器中运行ps命令</span><br><span class="line">kubectl exec  kube-apiserver-k8s01 -n kube-system -- ps</span><br></pre></td></tr></table></figure>
+<p>若 <code>Pod</code> 对象中存在多个容器，则需要以 <code>-c</code> 选项指定容器后再运行。</p>
+<h3 id="删除资源对象"><a href="#删除资源对象" class="headerlink" title="删除资源对象"></a>删除资源对象</h3><p><code>kubectl delete</code>  </p>
+<p>对于受控于控制器的对象来说，删除之后其控制器可能会重建出类似的对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 删除默认名称空间中名为nginx-svc的Service资源对象</span><br><span class="line">kubectl delete services nginx-svc</span><br><span class="line"></span><br><span class="line"># 删除kube-system名称空间中拥有标签“app=kube-proxy”的所有Pod对象：</span><br><span class="line">kubectl delete pods -l app=monitor -n kube-system</span><br><span class="line"></span><br><span class="line"># 删除 所有名称空间中拥有标签“app=monitor”和&quot;ver=3.1.1&quot;的所有Pod,service对象：</span><br><span class="line">kubectl delete pods services -l ver=3.1.1,app=monitor  --all-namespaces</span><br><span class="line"></span><br><span class="line"># kubectl delete TYPE--all-n NS</span><br><span class="line"># 删除kube-public名称空间中的所有Pod对象：</span><br><span class="line">kubectl delete pods --all -n default</span><br></pre></td></tr></table></figure>
+<p>有些资源类型（如 <code>Pod</code> ），支持优雅删除的机制，它们有着默认的删除宽限期，不过，用户可以在命令中使用 <code>--grace-period</code> 选项或 <code>--now</code> 选项来覆盖默认的宽限期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kubectl get deployments</span><br><span class="line">kubectl get svc</span><br><span class="line">kubectl get rs</span><br><span class="line">kubectl get pod</span><br><span class="line">kubectl get node</span><br><span class="line">kubectl get cm</span><br><span class="line">kubectl get secret</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 storage]#  kubectl run myapp --image=nginx:1.7.9 --port=80 --dry-run=client  # 并未真正执行</span><br><span class="line">pod/myapp created (dry run)</span><br><span class="line"></span><br><span class="line">[root@k8s01 test]# kubectl create ns demo --dry-run=client -o yaml &gt; demo-ns.yaml  # 生成模板文件</span><br><span class="line">[root@k8s01 test]# cat tomcat.yaml</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Namespace</span><br><span class="line">metadata:</span><br><span class="line">  creationTimestamp: null</span><br><span class="line">  name: demo</span><br><span class="line">spec: &#123;&#125;</span><br><span class="line">status: &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查看资源占用资源情况"><a href="#查看资源占用资源情况" class="headerlink" title="查看资源占用资源情况"></a>查看资源占用资源情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@aps-173 ~]# kubectl top pod -n kube-system</span><br><span class="line">NAME                                             CPU(cores)   MEMORY(bytes)</span><br><span class="line">calico-kube-controllers-d8d4d9587-cbsn6          7m           17Mi</span><br><span class="line">calico-node-dt2bh                                46m          35Mi</span><br><span class="line">calico-node-fgwkj                                43m          23Mi</span><br><span class="line">calico-node-fj8gp                                58m          22Mi</span><br><span class="line">calico-node-tth8k                                30m          22Mi</span><br><span class="line">coredns-59c8bd8884-pcnbt                         9m           16Mi</span><br><span class="line">coredns-59c8bd8884-xqnnj                         10m          14Mi</span><br><span class="line">heapster-7d7fc6648b-kkd9q                        1m           17Mi</span><br><span class="line">kubernetes-dashboard-96f697bc5-w942c             0m           8Mi</span><br><span class="line">metrics-server-67cb878c78-8q7jq                  3m           20Mi</span><br><span class="line">nginx-ingress-controller-kfht8                   14m          77Mi</span><br><span class="line">nginx-ingress-controller-rr7tn                   9m           80Mi</span><br><span class="line">nginx-ingress-controller-wfnmx                   10m          77Mi</span><br><span class="line">nginx-ingress-controller-whcqg                   6m           84Mi</span><br><span class="line">nginx-ingress-default-backend-58c5c69f7c-mhr2m   0m           3Mi</span><br><span class="line">tiller-deploy-7bb9858659-w84j9                   0m           19Mi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@aps-173 ~]#  kubectl top node</span><br><span class="line">NAME            CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%</span><br><span class="line">172.20.40.107   513m         3%     5713Mi          40%</span><br><span class="line">172.20.40.173   915m         2%     13955Mi         46%</span><br><span class="line">172.20.40.196   571m         3%     4313Mi          30%</span><br><span class="line">172.20.40.249   282m         1%     5512Mi          38%</span><br></pre></td></tr></table></figure>
+<h2 id="pod-排序"><a href="#pod-排序" class="headerlink" title="pod 排序"></a>pod 排序</h2><p>按时间排序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod --sort-by=.status.startTime</span><br><span class="line">kubectl get pod --sort-by=.metadata.creationTimestamp</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/k8s/kubectl 的三种操作方式/" rel="next" title="kubectl 的三种操作方式">
+                <i class="fa fa-chevron-left"></i> kubectl 的三种操作方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/运维/k8s/Kubernetes的资源对象/" rel="prev" title="Kubernetes的资源对象">
+                Kubernetes的资源对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#kubectl命令常用操作示例"><span class="nav-number">1.</span> <span class="nav-text">kubectl命令常用操作示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取集群相关信息"><span class="nav-number">1.1.</span> <span class="nav-text">获取集群相关信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建资源对象"><span class="nav-number">2.</span> <span class="nav-text">创建资源对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看资源对象"><span class="nav-number">2.1.</span> <span class="nav-text">查看资源对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打印资源对象的详细信息"><span class="nav-number">2.2.</span> <span class="nav-text">打印资源对象的详细信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打印容器中的日志信息"><span class="nav-number">2.3.</span> <span class="nav-text">打印容器中的日志信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在容器中执行命令"><span class="nav-number">2.4.</span> <span class="nav-text">在容器中执行命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除资源对象"><span class="nav-number">2.5.</span> <span class="nav-text">删除资源对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看资源占用资源情况"><span class="nav-number">2.6.</span> <span class="nav-text">查看资源占用资源情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pod-排序"><span class="nav-number">3.</span> <span class="nav-text">pod 排序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介docker容器化封装缺点 单机使用，集群困难 容器数量上升，管理成本加大 没有有效的容灾，自愈机制 没有统一的配置管理中心工具 没有容器周期性管理工具 没有预设编排模板，无法快速实现，大规模容器调度 没有图形化运维工具 ….  Kubernetes(k8s) 是一套容器编排工具。Kubernetes 项目的本质，是为用户提供一个具有普遍意义的容器编排工具。 一个用于容器集群的自动化部署，扩展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s简介与安装">
+<meta property="og:url" content="http://imwl.ml/运维/k8s/简介与安装/index.html">
+<meta property="og:site_name" content="Get busy living">
+<meta property="og:description" content="简介docker容器化封装缺点 单机使用，集群困难 容器数量上升，管理成本加大 没有有效的容灾，自愈机制 没有统一的配置管理中心工具 没有容器周期性管理工具 没有预设编排模板，无法快速实现，大规模容器调度 没有图形化运维工具 ….  Kubernetes(k8s) 是一套容器编排工具。Kubernetes 项目的本质，是为用户提供一个具有普遍意义的容器编排工具。 一个用于容器集群的自动化部署，扩展">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-20T03:15:56.417Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="k8s简介与安装">
+<meta name="twitter:description" content="简介docker容器化封装缺点 单机使用，集群困难 容器数量上升，管理成本加大 没有有效的容灾，自愈机制 没有统一的配置管理中心工具 没有容器周期性管理工具 没有预设编排模板，无法快速实现，大规模容器调度 没有图形化运维工具 ….  Kubernetes(k8s) 是一套容器编排工具。Kubernetes 项目的本质，是为用户提供一个具有普遍意义的容器编排工具。 一个用于容器集群的自动化部署，扩展">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://imwl.ml/运维/k8s/简介与安装/">
+
+
+
+
+
+  <title>k8s简介与安装 | Get busy living</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+	
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Get busy living</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry,Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-gitbook">
+          <a href="/book/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            gitbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br>
+            
+            个人简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/k8s/简介与安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Get busy living">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">k8s简介与安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-09T22:43:31+00:00">
+                2020-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="docker容器化封装缺点"><a href="#docker容器化封装缺点" class="headerlink" title="docker容器化封装缺点"></a>docker容器化封装缺点</h2><ol>
+<li>单机使用，集群困难</li>
+<li>容器数量上升，管理成本加大</li>
+<li>没有有效的容灾，自愈机制</li>
+<li>没有统一的配置管理中心工具</li>
+<li>没有容器周期性管理工具</li>
+<li>没有预设编排模板，无法快速实现，大规模容器调度</li>
+<li>没有图形化运维工具</li>
+<li>….</li>
+</ol>
+<p><code>Kubernetes(k8s)</code> 是一套容器编排工具。<code>Kubernetes</code> 项目的本质，是为用户提供一个具有普遍意义的容器编排工具。</p>
+<p>一个用于容器集群的自动化部署，扩展，以及管理容器应用，提供了资源调度，部署管理，服务发现，扩容缩容，监控等一整套功能。</p>
+<h2 id="k8s主要功能"><a href="#k8s主要功能" class="headerlink" title="k8s主要功能"></a>k8s主要功能</h2><p>数据卷 ： <code>pod</code> 中容器共享数据</p>
+<p>应用程序健康检查 ： 容器内服务可能进程堵塞无法处理请求，可以设置监控检查策略保证应用健壮性</p>
+<p>复制应用程序实例 ： 控制器维护着 <code>pod</code> 副本数量，保证一个 <code>pod</code> 或一组同类的 <code>pod</code> 数量始终可用</p>
+<p>弹性伸缩 ： 根据设定的指标（cpu利用率）自动伸缩副本数量</p>
+<p>服务发现 ： 使用环境变量或 <code>DNS</code> 服务插件保证容器中程序发现 <code>Pod</code> 入口访问地址</p>
+<p>负载均衡 ： 一组 <code>pod</code> 副本分配 一个私有的集群 <code>IP</code> 地址，负载均衡转发请求到后端容器，在集群内部其他 <code>pod</code> 可通过这个 <code>clusterIP</code> 访问应用</p>
+<p>滚动更新 ：更新服务不中断，一次更新一个 <code>pod</code> ，而不是同时删除整个服务</p>
+<p>服务编排 ：通过文件描述部署服务，使得应用程序部署变得高效</p>
+<p>资源监控 ：<code>Node</code>节点组件集成 <code>cAdvisor</code> 资源收集工具，可通过 <code>Heapster</code> 汇总整个集群节点资源数据，然后存储到 <code>InfluxDB</code> 时序数据库，再由 <code>Grafana</code> 展示</p>
+<p>提供认证和授权 ： 支持角色访问控制（<code>RBAC</code>）认证授权等策略</p>
+<h2 id="基本对象"><a href="#基本对象" class="headerlink" title="基本对象"></a>基本对象</h2><p>访问这个 <code>pod</code> 集合的策略  ： 代理 <code>Pod</code> 集合对外表现是一个访问入口，分配一个集群</p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><ol>
+<li>修改 <code>root</code>  密码</li>
+<li>修改主机名</li>
+<li>配置静态 <code>ip</code></li>
+<li>修改 <code>hosts</code> </li>
+<li>安装 <code>docker</code> </li>
+<li>禁止防火墙</li>
+<li>关闭 <code>swap</code></li>
+<li>禁止 <code>selinux</code></li>
+<li><code>k8s</code> 系统网络配置</li>
+<li>安装 <code>k8s</code></li>
+<li>验证 <code>k8s</code></li>
+</ol>
+<h2 id="centsos7-安装最新版-k8s-流程示例"><a href="#centsos7-安装最新版-k8s-流程示例" class="headerlink" title="centsos7 安装最新版 k8s 流程示例"></a>centsos7 安装最新版 k8s 流程示例</h2><p>kubeadm 高可用安装 请参考  k8s安装-三主两工作节点高可用-kubeadm</p>
+<p>部分安装工具</p>
+<p><a href="https://github.com/easzlab/kubeasz" target="_blank" rel="noopener">https://github.com/easzlab/kubeasz</a>           ansible<br><a href="https://github.com/kubernetes/kubeadm" target="_blank" rel="noopener">https://github.com/kubernetes/kubeadm</a>        官方<br><a href="https://github.com/fanux/sealos" target="_blank" rel="noopener">https://github.com/fanux/sealos</a>              一个第三方的安装方法</p>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>三台刚安装系统的 <code>centos7</code> 主机（系统随意），国内环境先准备换源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.43.101  k8s01   </span><br><span class="line">192.168.43.102  k8s02   </span><br><span class="line">192.168.43.103  k8s03</span><br></pre></td></tr></table></figure>
+<h4 id="以下操作在所有主机进行-（虚拟机可以在一台主机操作完后-clone）"><a href="#以下操作在所有主机进行-（虚拟机可以在一台主机操作完后-clone）" class="headerlink" title="以下操作在所有主机进行 （虚拟机可以在一台主机操作完后 clone）"></a>以下操作在所有主机进行 （虚拟机可以在一台主机操作完后 clone）</h4><ol>
+<li>yum 换阿里源  国内网络可能下载不了 <code>k8s</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv /etc/yum.repos.d/  /etc/yum.repos.d.backup/</span><br><span class="line">mkdir /etc/yum.repos.d/</span><br><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>配置主机名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;192.168.43.101  k8s01</span><br><span class="line">192.168.43.102  k8s02</span><br><span class="line">192.168.43.103  k8s03&apos; &gt;&gt; /etc/hosts</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭 swap， 注释 swap 分区，关闭 selinux ,关闭防火墙<br><code>kubernetes</code> 的想法是将实例紧密包装到尽可能接近 <code>100％</code>。 所有的部署应该与<code>CPU /内存限制</code>固定在一起。 所以如果调度程序发送一个 <code>pod</code>到一台机器，它不应该使用交换。也可添加 <code>kubelet参数 --fail-swap-on=false</code> 来解决。但经常会出问题且难以定位，所以不推荐开启 <code>swap</code></p>
+</li>
+</ol>
+<p>关闭 <code>selinux</code> 以允许容器访问宿主机的文件系统,和访问 <code>pod</code> 网络的需要</p>
+<p><code>nftables</code> 后端兼容性问题，产生重复的防火墙规则<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a</span><br><span class="line">sed -ri &apos;s/.*swap.*/#&amp;/&apos; /etc/fstab   </span><br><span class="line">grep SELINUX= /etc/selinux/config | grep -v &quot;#&quot;</span><br><span class="line">sed -i &apos;s/SELINUX=enforcing/SELINUX=disabled/g&apos; /etc/selinux/config</span><br><span class="line">grep SELINUX= /etc/selinux/config | grep -v &quot;#&quot;</span><br><span class="line">setenforce 0</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure></p>
+<ol start="4">
+<li>配置内核参数，将桥接的 IPv4 流量传递到 iptables的链,并加载所有配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; /etc/sysctl.d/k8s.conf &lt;&lt;EOF</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sysctl --system</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; /etc/sysctl.d/kubernetes.conf &lt;&lt;EOF</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br><span class="line">net.ipv4.tcp_tw_recycle=0</span><br><span class="line">vm.swappiness=0 # 禁止使用 swap 空间，只有当系统 OOM 时才允许使用它</span><br><span class="line">vm.overcommit_memory=1 # 不检查物理内存是否够用</span><br><span class="line">vm.panic_on_oom=0 # 开启 OOM</span><br><span class="line">fs.inotify.max_user_instances=8192</span><br><span class="line">fs.inotify.max_user_watches=1048576</span><br><span class="line">fs.file-max=52706963</span><br><span class="line">fs.nr_open=52706963</span><br><span class="line">net.ipv6.conf.all.disable_ipv6=1</span><br><span class="line">net.netfilter.nf_conntrack_max=2310720 </span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sysctl --system</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li><p>安装常用包,调整时区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">yum install vim bash-completion net-tools gcc -y</span><br><span class="line"></span><br><span class="line">## 设置系统时区为中国/上海</span><br><span class="line"></span><br><span class="line">timedatectl set-timezone Asia/Shanghai</span><br><span class="line"></span><br><span class="line">## 将当前的 UTC 时间写入硬件时钟</span><br><span class="line"></span><br><span class="line">timedatectl set-local-rtc 0</span><br><span class="line"></span><br><span class="line">## 重启依赖于系统时间的服务</span><br><span class="line"></span><br><span class="line">systemctl restart rsyslog</span><br><span class="line">systemctl restart crond</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kube-proxy开启ipvs的前置条件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 1、加载netfilter模块</span><br><span class="line"></span><br><span class="line">modprobe br_netfilter  </span><br><span class="line"></span><br><span class="line"># 2、添加配置文件</span><br><span class="line"></span><br><span class="line">cat  &gt;  /etc/sysconfig/modules/ipvs.modules  &lt;&lt;EOF</span><br><span class="line">#!/bin/bash</span><br><span class="line">modprobe  --  ip_vs</span><br><span class="line">modprobe  --  ip_vs_rr</span><br><span class="line">modprobe  --  ip_vs_wrr</span><br><span class="line">modprobe  --  ip_vs_sh</span><br><span class="line">modprobe  --  nf_conntrack_ipv4</span><br><span class="line">EOF</span><br><span class="line"># 3、赋予权限并引导</span><br><span class="line"></span><br><span class="line">chmod 755 /etc/sysconfig/modules/ipvs.modules &amp;&amp; bash /etc/sysconfig/modules/ipvs.modules &amp;&amp;lsmod | grep -e ip_vs -e nf_conntrack_ipv4</span><br><span class="line"></span><br><span class="line">## 有结果则安装正常</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用阿里云安装 docker-ce , 并使用阿里云 作为镜像仓库,改为 systemd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">yum -y install docker-ce</span><br><span class="line">mkdir -p /etc/docker</span><br><span class="line">tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://1hdirfy9.mirror.aliyuncs.com&quot;],</span><br><span class="line">  &quot;exec-opts&quot;:[&quot;native.cgroupdriver=systemd&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl enable docker</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 kubectl、kubelet、kubeadm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">## 添加阿里kubernetes源</span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 安装</span><br><span class="line">yum install kubectl kubelet kubeadm -y</span><br><span class="line">systemctl enable kubelet</span><br><span class="line"></span><br><span class="line">yum list --showduplicates kubeadm --disableexcludes=kubernetes  # 查找kubeadm 版本</span><br><span class="line">yum install -y kubeadm-1.20.0-0 --disableexcludes=kubernetes  # 安装 kubeadm-1.20.0-0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>国内镜像拉取镜像,及修改配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 初始化配置写入文件  一般修改  advertiseAddress:master的IP eg：advertiseAddress: 192.168.43.101,  name: k8s01</span><br><span class="line"># 修改  imageRepository: registry.aliyuncs.com/google_containers  # 阿里云镜像</span><br><span class="line">kubeadm config print init-defaults  &gt; kubeadm_init.yaml </span><br><span class="line">kubeadm config images list --kubernetes-version v1.18.0  # 查看镜像版本</span><br><span class="line">kubeadm config images pull --config kubeadm_init.yaml  # 从配置文件拉取镜像</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>修改后的配置文件示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: kubeadm.k8s.io/v1beta2</span><br><span class="line">bootstrapTokens:</span><br><span class="line">- groups:</span><br><span class="line">  - system:bootstrappers:kubeadm:default-node-token</span><br><span class="line">  token: abcdef.0123456789abcdef</span><br><span class="line">  ttl: 24h0m0s</span><br><span class="line">  usages:</span><br><span class="line">  - signing</span><br><span class="line">  - authentication</span><br><span class="line">kind: InitConfiguration</span><br><span class="line">localAPIEndpoint:</span><br><span class="line">  advertiseAddress: 192.168.43.101</span><br><span class="line">  bindPort: 6443</span><br><span class="line">nodeRegistration:</span><br><span class="line">  criSocket: /var/run/dockershim.sock</span><br><span class="line">  name: k8s01</span><br><span class="line">  taints:</span><br><span class="line">  - effect: NoSchedule</span><br><span class="line">    key: node-role.kubernetes.io/master</span><br><span class="line">---</span><br><span class="line">apiServer:</span><br><span class="line">  timeoutForControlPlane: 4m0s</span><br><span class="line">apiVersion: kubeadm.k8s.io/v1beta2</span><br><span class="line">certificatesDir: /etc/kubernetes/pki</span><br><span class="line">clusterName: kubernetes</span><br><span class="line">controllerManager: &#123;&#125;</span><br><span class="line">dns:</span><br><span class="line">  type: CoreDNS</span><br><span class="line">etcd:</span><br><span class="line">  local:</span><br><span class="line">    dataDir: /var/lib/etcd</span><br><span class="line">imageRepository: imwl</span><br><span class="line">kind: ClusterConfiguration</span><br><span class="line">kubernetesVersion: v1.20.0</span><br><span class="line">networking:</span><br><span class="line">  dnsDomain: cluster.local</span><br><span class="line">  serviceSubnet: 10.96.0.0/12</span><br><span class="line">scheduler: &#123;&#125;</span><br><span class="line">---</span><br><span class="line">apiVersion: kubeproxy.config.k8s.io/v1alpha1</span><br><span class="line">kind: KubeProxyConfiguration</span><br><span class="line">mode: ipvs</span><br><span class="line">ipvs:</span><br><span class="line">  excludeCIDRs:</span><br><span class="line">  - 10.103.97.2/32</span><br></pre></td></tr></table></figure>
+<h4 id="以下操作在各个主机进行"><a href="#以下操作在各个主机进行" class="headerlink" title="以下操作在各个主机进行"></a>以下操作在各个主机进行</h4><ol>
+<li><p>修改主机名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl --static set-hostname k8s01</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>master</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --config kubeadm_init.yaml</span><br><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line">yum install -y bash-completion </span><br><span class="line">echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc # 自动补全</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# curl -k --tlsv1 &quot;https://192.168.43.101:6443/healthz&quot;  # Master 容器启动后，kubeadm 会通过检查 localhost:6443/healthz 这个 Master 组件的健康检查 URL，等待 Master 组件完全运行起来. 然后 kubeadm 就会为集群生成一个 bootstrap token</span><br><span class="line">ok</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>slave</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join 192.168.43.100:6443 --token abcdef.0123456789abcdef     --discovery-token-ca-cert-hash sha256:9817c0962e497c7bde436c1be5e4e98acecaf862c46dd0e1ba3d81ee04860104</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>master 实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f calico.yaml    #  创建资源</span><br><span class="line">kubectl delete -f calico.yaml    #  删除资源</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s01 ~]# curl  -k --tlsv1  https://192.168.43.101:6443/version</span><br><span class="line">&#123;</span><br><span class="line">  &quot;major&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;minor&quot;: &quot;20&quot;,</span><br><span class="line">  &quot;gitVersion&quot;: &quot;v1.20.0&quot;,</span><br><span class="line">  &quot;gitCommit&quot;: &quot;af46c47ce925f4c4ad5cc8d1fca46c7b77d13b38&quot;,</span><br><span class="line">  &quot;gitTreeState&quot;: &quot;clean&quot;,</span><br><span class="line">  &quot;buildDate&quot;: &quot;2020-12-08T17:51:19Z&quot;,</span><br><span class="line">  &quot;goVersion&quot;: &quot;go1.15.5&quot;,</span><br><span class="line">  &quot;compiler&quot;: &quot;gc&quot;,</span><br><span class="line">  &quot;platform&quot;: &quot;linux/amd64&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="kubeadm-补"><a href="#kubeadm-补" class="headerlink" title="kubeadm 补"></a>kubeadm 补</h3><h4 id="token-过期"><a href="#token-过期" class="headerlink" title="token 过期"></a>token 过期</h4><p>加入 <code>woker</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubeadm token create --print-join-command</span><br><span class="line"></span><br><span class="line">kubeadm join apiserver.cluster.local:6443 --token j1cf6b.fzf26rxmdxpyvyw3     --discovery-token-ca-cert-hash sha256:bf44a0498e5da5c767f468a157ceefac3f17810d18e7ff978c2953446c3d3ee3</span><br></pre></td></tr></table></figure></p>
+<p>加入 <code>contorl</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubeadm init phase upload-certs  --upload-certs</span><br><span class="line">[upload-certs] Storing the certificates in Secret &quot;kubeadm-certs&quot; in the &quot;kube-system&quot; Namespace</span><br><span class="line">[upload-certs] Using certificate key:</span><br><span class="line">c78726ecc6445372e4c00b1453f2743960eaa8ca3a9f97be8774ce40b028b59a</span><br><span class="line"></span><br><span class="line"># 结合work</span><br><span class="line"></span><br><span class="line">kubeadm join apiserver.cluster.local:6443 --token j1cf6b.fzf26rxmdxpyvyw3     --discovery-token-ca-cert-hash</span><br><span class="line">sha256:bf44a0498e5da5c767f468a157ceefac3f17810d18e7ff978c2953446c3d3ee3  --control-plane --certificate-key  c78726ecc6445372e4c00b1453f2743960eaa8ca3a9f97be8774ce40b028b59a</span><br></pre></td></tr></table></figure></p>
+<h4 id="Master-组件的-YAML-文件会被生成在-etc-kubernetes-manifests-路径下"><a href="#Master-组件的-YAML-文件会被生成在-etc-kubernetes-manifests-路径下" class="headerlink" title="Master 组件的 YAML 文件会被生成在 /etc/kubernetes/manifests 路径下"></a>Master 组件的 YAML 文件会被生成在 /etc/kubernetes/manifests 路径下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# ll /etc/kubernetes/manifests</span><br><span class="line">total 16</span><br><span class="line">-rw------- 1 root root 2216 Dec 10 23:03 etcd.yaml</span><br><span class="line">-rw------- 1 root root 3335 Dec 10 23:03 kube-apiserver.yaml</span><br><span class="line">-rw------- 1 root root 2827 Dec 10 23:03 kube-controller-manager.yaml</span><br><span class="line">-rw------- 1 root root 1413 Dec 10 23:03 kube-scheduler.yaml</span><br></pre></td></tr></table></figure>
+<p><code>Static Pod</code> : 当这台机器上的 <code>kubelet</code> 启动时，它会自动检查这个目录，加载所有的 <code>Pod YAML</code> 文件，然后在这台机器上启动它们</p>
+<h4 id="生成的证书文件都放在-Master-节点的-etc-kubernetes-pki-目录下"><a href="#生成的证书文件都放在-Master-节点的-etc-kubernetes-pki-目录下" class="headerlink" title="生成的证书文件都放在 Master 节点的 /etc/kubernetes/pki 目录下"></a>生成的证书文件都放在 Master 节点的 /etc/kubernetes/pki 目录下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# tree /etc/kubernetes/pki</span><br><span class="line">/etc/kubernetes/pki</span><br><span class="line">├── apiserver.crt</span><br><span class="line">├── apiserver-etcd-client.crt</span><br><span class="line">├── apiserver-etcd-client.key</span><br><span class="line">├── apiserver.key</span><br><span class="line">├── apiserver-kubelet-client.crt</span><br><span class="line">├── apiserver-kubelet-client.key  </span><br><span class="line">├── ca.crt</span><br><span class="line">├── ca.key</span><br><span class="line">├── etcd</span><br><span class="line">│   ├── ca.crt</span><br><span class="line">│   ├── ca.key</span><br><span class="line">│   ├── healthcheck-client.crt</span><br><span class="line">│   ├── healthcheck-client.key</span><br><span class="line">│   ├── peer.crt</span><br><span class="line">│   ├── peer.key</span><br><span class="line">│   ├── server.crt</span><br><span class="line">│   └── server.key</span><br><span class="line">├── front-proxy-ca.crt</span><br><span class="line">├── front-proxy-ca.key</span><br><span class="line">├── front-proxy-client.crt</span><br><span class="line">├── front-proxy-client.key</span><br><span class="line">├── sa.key</span><br><span class="line">└── sa.pub</span><br><span class="line"></span><br><span class="line">1 directory, 22 files</span><br></pre></td></tr></table></figure>
+<p>在 <code>token</code> 生成之后，<code>kubeadm</code> 会将 <code>ca.crt</code> 等 <code>Master</code> 节点的重要信息，通过 <code>ConfigMap</code> 的方式保存在 <code>Etcd</code> 当中，供后续部署 <code>Node</code> 节点使用。这个 <code>ConfigMap</code> 的名字是 <code>cluster-info</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s01 ~]# kubectl -n kube-public describe cm cluster-info</span><br><span class="line">Name:         cluster-info</span><br><span class="line">Namespace:    kube-public</span><br><span class="line">Labels:       &lt;none&gt;</span><br><span class="line">Annotations:  &lt;none&gt;</span><br><span class="line"></span><br><span class="line">Data</span><br><span class="line">====</span><br><span class="line">kubeconfig:</span><br><span class="line">----</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01USXhNREUxTURNME5Gb1hEVE13TVRJd09ERTFNRE0wTkZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTnJKCjg4VDBZQzFjSXF0eklZbm11Q0ZJQXFUenB6U0k2UWszdXNYN09KUC9UOEJaOWpyVTVpT2VBUWVvVFVhdUhSMjgKS0xEUUJkYmtJZWxlVVVOY3QvODhrK3h6WXNmclJGQ1NOSDFJb0NDVjZVVWg2TWw2MEdnL2liYW9sN1Z4OUE5bAo3MGIxU1lGbXZubWxyRzRPUURQTnBERkFUaTRvaEJPT1orKzVWakw1WDJVUkltYnRxVnp6eStSdlIwcUNCNENUCmNzWU1ZTHhuYUtWbnFzbkR6elVtcUZKbnJESXdYamdhU29WcndZMW9aZk1TVHk5N1FXR3U1ald6MXRBYVpxOXAKQmR2Qkw3SjFOQVRRTy9EMFFHM3dNRnlNalhtQXcxYTl4VW1oem1RK3Q1WmM4UkZxYVNhRmVkNkkzUzlpb1ZiQQp0R0VjY2Vid1ViUmYwQUgwRHhVQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZFcStxOUpXcDVQV1ZvbzZWOFZ1UnJwWDljZ1pNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFDemM5cmNkTndSeUFINjlwN25SbmVMVm05Wk9XSGlXMjJnWVhjcXh0VDZWVVYxNFBHZgprNFBla3VtbVNrbzY3aXNEc3BYM3phcS9QbXlwNStNZFp3aTFHczdkTWtDaWJkRnVZNHJKdTFjMXVKbDJ3RS9wCko3OE9rUGRWZG1zaExsb1J2SWQzbFNwWmh4TnBtcVNQamdZaS9ZcW5JVExBMjdNOTZ1Nlp3a25JQUwwengvNW8KWmhFL0Z4cWpQcUl4OVdIbkQwRk9BNGY2ZjhocVR4UHI4dW8zSlVvVzBkTWVmNnQvNm8xTUdkQm5OM1BZV1VBaQpIbWVLUXMxaHNxd0g2bTdLT3UwckJMa1JOUURtbU5TNXBDemZ1MTlWNGxhMXpTYVFnckNTL2s3Ujc0T254a3oyCmhObkhMQmtGWDQ5SHJLbE5tUmlNNGR1eDdsUDMxRFlHaFdERAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==</span><br><span class="line">    server: https://192.168.43.101:6443</span><br><span class="line">  name: &quot;&quot;</span><br><span class="line">contexts: null</span><br><span class="line">current-context: &quot;&quot;</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">users: null</span><br><span class="line"></span><br><span class="line">Events:  &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<p>在 <code>kubernetes</code> 集群中，<code>Node</code> 上组件 <code>kubelet</code> 和 <code>kube-proxy</code> 都需要与 <code>kube-apiserver</code> 进行通信，为了增加传输安全性，采用 <code>https</code>方式。这就涉及到 <code>Node</code> 组件需要具备 <code>kube-apiserver</code> 用的证书颁发机构（CA）签发客户端证书，当规模较大时，这种客户端证书颁发需要大量工作，同样也会增加集群扩展复杂度。为了简化流程，<code>Kubernetes</code> 引入了 <code>TLS bootstraping</code>机制来自动颁发客户端证书</p>
+<p><code>kubeadm</code> 至少需要发起一次“不安全模式”的访问到 <code>kube-apiserver</code>，从而拿到保存在 <code>ConfigMap</code> 中的 <code>cluster-info</code>（它保存了 <code>APIServer</code> 的授权信息）。而 <code>bootstrap token</code>，扮演的就是这个过程中的安全验证的角色。</p>
+<p>只要有了 <code>cluster-info</code> 里的 <code>kube-apiserver</code> 的地址、端口、证书，其他节点 的 <code>kubelet</code> 就可以以“安全模式”连接到 <code>apiserver</code> 上，这样一个新的节点就部署完成了。</p>
+<p>接下来，你只要在其他节点上重复这个指令就可以了 <code>kubeadm join 192.168.43.100:6443 --token abcdef.0123456789abcdef     --discovery-token-ca-cert-hash sha256:9817c0962e497c7bde436c1be5e4e98acecaf862c46dd0e1ba3d81ee04860104</code></p>
+<p>用户使用 <code>kubectl</code> 获取容器日志等 <code>streaming</code> 操作时，需要通过 <code>kube-apiserver</code> 向 <code>kubelet</code> 发起请求，这个连接也必须是安全的。<code>kubeadm</code> 为这一步生成的是 <code>apiserver-kubelet-client.crt</code> 文件，对应的私钥是 <code>apiserver-kubelet-client.key</code>。</p>
+<p><code>node</code> 节点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s03 ~]# tree /etc/kubernetes/pki</span><br><span class="line">/etc/kubernetes/pki</span><br><span class="line">└── ca.crt  # 是 master 节点的 ca.crt</span><br></pre></td></tr></table></figure></p>
+<h3 id="二进制安装"><a href="#二进制安装" class="headerlink" title="二进制安装"></a>二进制安装</h3><p><a href="/html/k8s/高可用.html">二进制安装</a></p>
+<h5 id="calico-示例"><a href="#calico-示例" class="headerlink" title="calico 示例"></a>calico 示例</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br><span class="line">735</span><br><span class="line">736</span><br><span class="line">737</span><br><span class="line">738</span><br><span class="line">739</span><br><span class="line">740</span><br><span class="line">741</span><br><span class="line">742</span><br><span class="line">743</span><br><span class="line">744</span><br><span class="line">745</span><br><span class="line">746</span><br><span class="line">747</span><br><span class="line">748</span><br><span class="line">749</span><br><span class="line">750</span><br><span class="line">751</span><br><span class="line">752</span><br><span class="line">753</span><br><span class="line">754</span><br><span class="line">755</span><br><span class="line">756</span><br><span class="line">757</span><br><span class="line">758</span><br><span class="line">759</span><br><span class="line">760</span><br><span class="line">761</span><br><span class="line">762</span><br><span class="line">763</span><br><span class="line">764</span><br><span class="line">765</span><br><span class="line">766</span><br><span class="line">767</span><br><span class="line">768</span><br><span class="line">769</span><br><span class="line">770</span><br><span class="line">771</span><br><span class="line">772</span><br><span class="line">773</span><br><span class="line">774</span><br><span class="line">775</span><br><span class="line">776</span><br><span class="line">777</span><br><span class="line">778</span><br><span class="line">779</span><br><span class="line">780</span><br><span class="line">781</span><br><span class="line">782</span><br><span class="line">783</span><br><span class="line">784</span><br><span class="line">785</span><br><span class="line">786</span><br><span class="line">787</span><br><span class="line">788</span><br><span class="line">789</span><br><span class="line">790</span><br><span class="line">791</span><br><span class="line">792</span><br><span class="line">793</span><br><span class="line">794</span><br><span class="line">795</span><br><span class="line">796</span><br><span class="line">797</span><br><span class="line">798</span><br><span class="line">799</span><br><span class="line">800</span><br><span class="line">801</span><br><span class="line">802</span><br><span class="line">803</span><br><span class="line">804</span><br><span class="line">805</span><br><span class="line">806</span><br><span class="line">807</span><br><span class="line">808</span><br><span class="line">809</span><br><span class="line">810</span><br><span class="line">811</span><br><span class="line">812</span><br><span class="line">813</span><br><span class="line">814</span><br><span class="line">815</span><br><span class="line">816</span><br><span class="line">817</span><br><span class="line">818</span><br><span class="line">819</span><br><span class="line">820</span><br><span class="line">821</span><br><span class="line">822</span><br><span class="line">823</span><br><span class="line">824</span><br><span class="line">825</span><br><span class="line">826</span><br><span class="line">827</span><br><span class="line">828</span><br><span class="line">829</span><br><span class="line">830</span><br><span class="line">831</span><br><span class="line">832</span><br><span class="line">833</span><br><span class="line">834</span><br><span class="line">835</span><br><span class="line">836</span><br><span class="line">837</span><br><span class="line">838</span><br><span class="line">839</span><br><span class="line">840</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"># Source: calico/templates/calico-config.yaml</span><br><span class="line"># This ConfigMap is used to configure a self-hosted Calico installation.</span><br><span class="line">kind: ConfigMap</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-config</span><br><span class="line">  namespace: kube-system</span><br><span class="line">data:</span><br><span class="line">  # Typha is disabled.</span><br><span class="line">  typha_service_name: &quot;none&quot;</span><br><span class="line">  # Configure the backend to use.</span><br><span class="line">  calico_backend: &quot;bird&quot;</span><br><span class="line">  # Configure the MTU to use for workload interfaces and the</span><br><span class="line">  # tunnels.  For IPIP, set to your network MTU - 20; for VXLAN</span><br><span class="line">  # set to your network MTU - 50.</span><br><span class="line">  veth_mtu: &quot;1440&quot;</span><br><span class="line"></span><br><span class="line">  # The CNI network configuration to install on each node.  The special</span><br><span class="line">  # values in this config will be automatically populated.</span><br><span class="line">  cni_network_config: |-</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;name&quot;: &quot;k8s-pod-network&quot;,</span><br><span class="line">      &quot;cniVersion&quot;: &quot;0.3.1&quot;,</span><br><span class="line">      &quot;plugins&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;type&quot;: &quot;calico&quot;,</span><br><span class="line">          &quot;log_level&quot;: &quot;info&quot;,</span><br><span class="line">          &quot;datastore_type&quot;: &quot;kubernetes&quot;,</span><br><span class="line">          &quot;nodename&quot;: &quot;__KUBERNETES_NODE_NAME__&quot;,</span><br><span class="line">          &quot;mtu&quot;: __CNI_MTU__,</span><br><span class="line">          &quot;ipam&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;calico-ipam&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;policy&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;k8s&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;kubernetes&quot;: &#123;</span><br><span class="line">              &quot;kubeconfig&quot;: &quot;__KUBECONFIG_FILEPATH__&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;type&quot;: &quot;portmap&quot;,</span><br><span class="line">          &quot;snat&quot;: true,</span><br><span class="line">          &quot;capabilities&quot;: &#123;&quot;portMappings&quot;: true&#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;type&quot;: &quot;bandwidth&quot;,</span><br><span class="line">          &quot;capabilities&quot;: &#123;&quot;bandwidth&quot;: true&#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># Source: calico/templates/kdd-crds.yaml</span><br><span class="line"></span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: bgpconfigurations.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: BGPConfiguration</span><br><span class="line">    plural: bgpconfigurations</span><br><span class="line">    singular: bgpconfiguration</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: bgppeers.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: BGPPeer</span><br><span class="line">    plural: bgppeers</span><br><span class="line">    singular: bgppeer</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: blockaffinities.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: BlockAffinity</span><br><span class="line">    plural: blockaffinities</span><br><span class="line">    singular: blockaffinity</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: clusterinformations.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: ClusterInformation</span><br><span class="line">    plural: clusterinformations</span><br><span class="line">    singular: clusterinformation</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: felixconfigurations.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: FelixConfiguration</span><br><span class="line">    plural: felixconfigurations</span><br><span class="line">    singular: felixconfiguration</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: globalnetworkpolicies.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: GlobalNetworkPolicy</span><br><span class="line">    plural: globalnetworkpolicies</span><br><span class="line">    singular: globalnetworkpolicy</span><br><span class="line">    shortNames:</span><br><span class="line">    - gnp</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: globalnetworksets.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: GlobalNetworkSet</span><br><span class="line">    plural: globalnetworksets</span><br><span class="line">    singular: globalnetworkset</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: hostendpoints.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: HostEndpoint</span><br><span class="line">    plural: hostendpoints</span><br><span class="line">    singular: hostendpoint</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: ipamblocks.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: IPAMBlock</span><br><span class="line">    plural: ipamblocks</span><br><span class="line">    singular: ipamblock</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: ipamconfigs.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: IPAMConfig</span><br><span class="line">    plural: ipamconfigs</span><br><span class="line">    singular: ipamconfig</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: ipamhandles.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: IPAMHandle</span><br><span class="line">    plural: ipamhandles</span><br><span class="line">    singular: ipamhandle</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: ippools.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: IPPool</span><br><span class="line">    plural: ippools</span><br><span class="line">    singular: ippool</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: kubecontrollersconfigurations.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Cluster</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: KubeControllersConfiguration</span><br><span class="line">    plural: kubecontrollersconfigurations</span><br><span class="line">    singular: kubecontrollersconfiguration</span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: networkpolicies.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Namespaced</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: NetworkPolicy</span><br><span class="line">    plural: networkpolicies</span><br><span class="line">    singular: networkpolicy</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: apiextensions.k8s.io/v1beta1</span><br><span class="line">kind: CustomResourceDefinition</span><br><span class="line">metadata:</span><br><span class="line">  name: networksets.crd.projectcalico.org</span><br><span class="line">spec:</span><br><span class="line">  scope: Namespaced</span><br><span class="line">  group: crd.projectcalico.org</span><br><span class="line">  version: v1</span><br><span class="line">  names:</span><br><span class="line">    kind: NetworkSet</span><br><span class="line">    plural: networksets</span><br><span class="line">    singular: networkset</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">---</span><br><span class="line"># Source: calico/templates/rbac.yaml</span><br><span class="line"></span><br><span class="line"># Include a clusterrole for the kube-controllers component,</span><br><span class="line"># and bind it to the calico-kube-controllers serviceaccount.</span><br><span class="line">kind: ClusterRole</span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-kube-controllers</span><br><span class="line">rules:</span><br><span class="line">  # Nodes are watched to monitor for deletions.</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - nodes</span><br><span class="line">    verbs:</span><br><span class="line">      - watch</span><br><span class="line">      - list</span><br><span class="line">      - get</span><br><span class="line">  # Pods are queried to check for existence.</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - pods</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">  # IPAM resources are manipulated when nodes are deleted.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - ippools</span><br><span class="line">    verbs:</span><br><span class="line">      - list</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - blockaffinities</span><br><span class="line">      - ipamblocks</span><br><span class="line">      - ipamhandles</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">      - list</span><br><span class="line">      - create</span><br><span class="line">      - update</span><br><span class="line">      - delete</span><br><span class="line">  # kube-controllers manages hostendpoints.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - hostendpoints</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">      - list</span><br><span class="line">      - create</span><br><span class="line">      - update</span><br><span class="line">      - delete</span><br><span class="line">  # Needs access to update clusterinformations.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - clusterinformations</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">      - create</span><br><span class="line">      - update</span><br><span class="line">  # KubeControllersConfiguration is where it gets its config</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - kubecontrollersconfigurations</span><br><span class="line">    verbs:</span><br><span class="line">      # read its own config</span><br><span class="line">      - get</span><br><span class="line">      # create a default if none exists</span><br><span class="line">      - create</span><br><span class="line">      # update status</span><br><span class="line">      - update</span><br><span class="line">      # watch for changes</span><br><span class="line">      - watch</span><br><span class="line">---</span><br><span class="line">kind: ClusterRoleBinding</span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-kube-controllers</span><br><span class="line">roleRef:</span><br><span class="line">  apiGroup: rbac.authorization.k8s.io</span><br><span class="line">  kind: ClusterRole</span><br><span class="line">  name: calico-kube-controllers</span><br><span class="line">subjects:</span><br><span class="line">- kind: ServiceAccount</span><br><span class="line">  name: calico-kube-controllers</span><br><span class="line">  namespace: kube-system</span><br><span class="line">---</span><br><span class="line"># Include a clusterrole for the calico-node DaemonSet,</span><br><span class="line"># and bind it to the calico-node serviceaccount.</span><br><span class="line">kind: ClusterRole</span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-node</span><br><span class="line">rules:</span><br><span class="line">  # The CNI plugin needs to get pods, nodes, and namespaces.</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - pods</span><br><span class="line">      - nodes</span><br><span class="line">      - namespaces</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - endpoints</span><br><span class="line">      - services</span><br><span class="line">    verbs:</span><br><span class="line">      # Used to discover service IPs for advertisement.</span><br><span class="line">      - watch</span><br><span class="line">      - list</span><br><span class="line">      # Used to discover Typhas.</span><br><span class="line">      - get</span><br><span class="line">  # Pod CIDR auto-detection on kubeadm needs access to config maps.</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - configmaps</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - nodes/status</span><br><span class="line">    verbs:</span><br><span class="line">      # Needed for clearing NodeNetworkUnavailable flag.</span><br><span class="line">      - patch</span><br><span class="line">      # Calico stores some configuration information in node annotations.</span><br><span class="line">      - update</span><br><span class="line">  # Watch for changes to Kubernetes NetworkPolicies.</span><br><span class="line">  - apiGroups: [&quot;networking.k8s.io&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - networkpolicies</span><br><span class="line">    verbs:</span><br><span class="line">      - watch</span><br><span class="line">      - list</span><br><span class="line">  # Used by Calico for policy information.</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - pods</span><br><span class="line">      - namespaces</span><br><span class="line">      - serviceaccounts</span><br><span class="line">    verbs:</span><br><span class="line">      - list</span><br><span class="line">      - watch</span><br><span class="line">  # The CNI plugin patches pods/status.</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - pods/status</span><br><span class="line">    verbs:</span><br><span class="line">      - patch</span><br><span class="line">  # Calico monitors various CRDs for config.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - globalfelixconfigs</span><br><span class="line">      - felixconfigurations</span><br><span class="line">      - bgppeers</span><br><span class="line">      - globalbgpconfigs</span><br><span class="line">      - bgpconfigurations</span><br><span class="line">      - ippools</span><br><span class="line">      - ipamblocks</span><br><span class="line">      - globalnetworkpolicies</span><br><span class="line">      - globalnetworksets</span><br><span class="line">      - networkpolicies</span><br><span class="line">      - networksets</span><br><span class="line">      - clusterinformations</span><br><span class="line">      - hostendpoints</span><br><span class="line">      - blockaffinities</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">      - list</span><br><span class="line">      - watch</span><br><span class="line">  # Calico must create and update some CRDs on startup.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - ippools</span><br><span class="line">      - felixconfigurations</span><br><span class="line">      - clusterinformations</span><br><span class="line">    verbs:</span><br><span class="line">      - create</span><br><span class="line">      - update</span><br><span class="line">  # Calico stores some configuration information on the node.</span><br><span class="line">  - apiGroups: [&quot;&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - nodes</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">      - list</span><br><span class="line">      - watch</span><br><span class="line">  # These permissions are only requried for upgrade from v2.6, and can</span><br><span class="line">  # be removed after upgrade or on fresh installations.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - bgpconfigurations</span><br><span class="line">      - bgppeers</span><br><span class="line">    verbs:</span><br><span class="line">      - create</span><br><span class="line">      - update</span><br><span class="line">  # These permissions are required for Calico CNI to perform IPAM allocations.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - blockaffinities</span><br><span class="line">      - ipamblocks</span><br><span class="line">      - ipamhandles</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">      - list</span><br><span class="line">      - create</span><br><span class="line">      - update</span><br><span class="line">      - delete</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - ipamconfigs</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line">  # Block affinities must also be watchable by confd for route aggregation.</span><br><span class="line">  - apiGroups: [&quot;crd.projectcalico.org&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - blockaffinities</span><br><span class="line">    verbs:</span><br><span class="line">      - watch</span><br><span class="line">  # The Calico IPAM migration needs to get daemonsets. These permissions can be</span><br><span class="line">  # removed if not upgrading from an installation using host-local IPAM.</span><br><span class="line">  - apiGroups: [&quot;apps&quot;]</span><br><span class="line">    resources:</span><br><span class="line">      - daemonsets</span><br><span class="line">    verbs:</span><br><span class="line">      - get</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1</span><br><span class="line">kind: ClusterRoleBinding</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-node</span><br><span class="line">roleRef:</span><br><span class="line">  apiGroup: rbac.authorization.k8s.io</span><br><span class="line">  kind: ClusterRole</span><br><span class="line">  name: calico-node</span><br><span class="line">subjects:</span><br><span class="line">- kind: ServiceAccount</span><br><span class="line">  name: calico-node</span><br><span class="line">  namespace: kube-system</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># Source: calico/templates/calico-node.yaml</span><br><span class="line"># This manifest installs the calico-node container, as well</span><br><span class="line"># as the CNI plugins and network config on</span><br><span class="line"># each master and worker node in a Kubernetes cluster.</span><br><span class="line">kind: DaemonSet</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-node</span><br><span class="line">  namespace: kube-system</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: calico-node</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      k8s-app: calico-node</span><br><span class="line">  updateStrategy:</span><br><span class="line">    type: RollingUpdate</span><br><span class="line">    rollingUpdate:</span><br><span class="line">      maxUnavailable: 1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        k8s-app: calico-node</span><br><span class="line">      annotations:</span><br><span class="line">        # This, along with the CriticalAddonsOnly toleration below,</span><br><span class="line">        # marks the pod as a critical add-on, ensuring it gets</span><br><span class="line">        # priority scheduling and that its resources are reserved</span><br><span class="line">        # if it ever gets evicted.</span><br><span class="line">        scheduler.alpha.kubernetes.io/critical-pod: &apos;&apos;</span><br><span class="line">    spec:</span><br><span class="line">      nodeSelector:</span><br><span class="line">        kubernetes.io/os: linux</span><br><span class="line">      hostNetwork: true</span><br><span class="line">      tolerations:</span><br><span class="line">        # Make sure calico-node gets scheduled on all nodes.</span><br><span class="line">        - effect: NoSchedule</span><br><span class="line">          operator: Exists</span><br><span class="line">        # Mark the pod as a critical add-on for rescheduling.</span><br><span class="line">        - key: CriticalAddonsOnly</span><br><span class="line">          operator: Exists</span><br><span class="line">        - effect: NoExecute</span><br><span class="line">          operator: Exists</span><br><span class="line">      serviceAccountName: calico-node</span><br><span class="line">      # Minimize downtime during a rolling upgrade or deletion; tell Kubernetes to do a &quot;force</span><br><span class="line">      # deletion&quot;: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods.</span><br><span class="line">      terminationGracePeriodSeconds: 0</span><br><span class="line">      priorityClassName: system-node-critical</span><br><span class="line">      initContainers:</span><br><span class="line">        # This container performs upgrade from host-local IPAM to calico-ipam.</span><br><span class="line">        # It can be deleted if this is a fresh installation, or if you have already</span><br><span class="line">        # upgraded to use calico-ipam.</span><br><span class="line">        - name: upgrade-ipam</span><br><span class="line">          image: calico/cni:v3.14.1</span><br><span class="line">          command: [&quot;/opt/cni/bin/calico-ipam&quot;, &quot;-upgrade&quot;]</span><br><span class="line">          env:</span><br><span class="line">            - name: KUBERNETES_NODE_NAME</span><br><span class="line">              valueFrom:</span><br><span class="line">                fieldRef:</span><br><span class="line">                  fieldPath: spec.nodeName</span><br><span class="line">            - name: CALICO_NETWORKING_BACKEND</span><br><span class="line">              valueFrom:</span><br><span class="line">                configMapKeyRef:</span><br><span class="line">                  name: calico-config</span><br><span class="line">                  key: calico_backend</span><br><span class="line">          volumeMounts:</span><br><span class="line">            - mountPath: /var/lib/cni/networks</span><br><span class="line">              name: host-local-net-dir</span><br><span class="line">            - mountPath: /host/opt/cni/bin</span><br><span class="line">              name: cni-bin-dir</span><br><span class="line">          securityContext:</span><br><span class="line">            privileged: true</span><br><span class="line">        # This container installs the CNI binaries</span><br><span class="line">        # and CNI network config file on each node.</span><br><span class="line">        - name: install-cni</span><br><span class="line">          image: calico/cni:v3.14.1</span><br><span class="line">          command: [&quot;/install-cni.sh&quot;]</span><br><span class="line">          env:</span><br><span class="line">            # Name of the CNI config file to create.</span><br><span class="line">            - name: CNI_CONF_NAME</span><br><span class="line">              value: &quot;10-calico.conflist&quot;</span><br><span class="line">            # The CNI network config to install on each node.</span><br><span class="line">            - name: CNI_NETWORK_CONFIG</span><br><span class="line">              valueFrom:</span><br><span class="line">                configMapKeyRef:</span><br><span class="line">                  name: calico-config</span><br><span class="line">                  key: cni_network_config</span><br><span class="line">            # Set the hostname based on the k8s node name.</span><br><span class="line">            - name: KUBERNETES_NODE_NAME</span><br><span class="line">              valueFrom:</span><br><span class="line">                fieldRef:</span><br><span class="line">                  fieldPath: spec.nodeName</span><br><span class="line">            # CNI MTU Config variable</span><br><span class="line">            - name: CNI_MTU</span><br><span class="line">              valueFrom:</span><br><span class="line">                configMapKeyRef:</span><br><span class="line">                  name: calico-config</span><br><span class="line">                  key: veth_mtu</span><br><span class="line">            # Prevents the container from sleeping forever.</span><br><span class="line">            - name: SLEEP</span><br><span class="line">              value: &quot;false&quot;</span><br><span class="line">          volumeMounts:</span><br><span class="line">            - mountPath: /host/opt/cni/bin</span><br><span class="line">              name: cni-bin-dir</span><br><span class="line">            - mountPath: /host/etc/cni/net.d</span><br><span class="line">              name: cni-net-dir</span><br><span class="line">          securityContext:</span><br><span class="line">            privileged: true</span><br><span class="line">        # Adds a Flex Volume Driver that creates a per-pod Unix Domain Socket to allow Dikastes</span><br><span class="line">        # to communicate with Felix over the Policy Sync API.</span><br><span class="line">        - name: flexvol-driver</span><br><span class="line">          image: calico/pod2daemon-flexvol:v3.14.1</span><br><span class="line">          volumeMounts:</span><br><span class="line">          - name: flexvol-driver-host</span><br><span class="line">            mountPath: /host/driver</span><br><span class="line">          securityContext:</span><br><span class="line">            privileged: true</span><br><span class="line">      containers:</span><br><span class="line">        # Runs calico-node container on each Kubernetes node.  This</span><br><span class="line">        # container programs network policy and routes on each</span><br><span class="line">        # host.</span><br><span class="line">        - name: calico-node</span><br><span class="line">          image: calico/node:v3.14.1</span><br><span class="line">          env:</span><br><span class="line">            # Use Kubernetes API as the backing datastore.</span><br><span class="line">            - name: DATASTORE_TYPE</span><br><span class="line">              value: &quot;kubernetes&quot;</span><br><span class="line">            # Wait for the datastore.</span><br><span class="line">            - name: WAIT_FOR_DATASTORE</span><br><span class="line">              value: &quot;true&quot;</span><br><span class="line">            # Set based on the k8s node name.</span><br><span class="line">            - name: NODENAME</span><br><span class="line">              valueFrom:</span><br><span class="line">                fieldRef:</span><br><span class="line">                  fieldPath: spec.nodeName</span><br><span class="line">            # Choose the backend to use.</span><br><span class="line">            - name: CALICO_NETWORKING_BACKEND</span><br><span class="line">              valueFrom:</span><br><span class="line">                configMapKeyRef:</span><br><span class="line">                  name: calico-config</span><br><span class="line">                  key: calico_backend</span><br><span class="line">            # Cluster type to identify the deployment type</span><br><span class="line">            - name: CLUSTER_TYPE</span><br><span class="line">              value: &quot;k8s,bgp&quot;</span><br><span class="line">            # Auto-detect the BGP IP address.</span><br><span class="line">            - name: IP</span><br><span class="line">              value: &quot;autodetect&quot;</span><br><span class="line">            # Enable IPIP</span><br><span class="line">            - name: CALICO_IPV4POOL_IPIP</span><br><span class="line">              value: &quot;Always&quot;</span><br><span class="line">            # Enable or Disable VXLAN on the default IP pool.</span><br><span class="line">            - name: CALICO_IPV4POOL_VXLAN</span><br><span class="line">              value: &quot;Never&quot;</span><br><span class="line">            # Set MTU for tunnel device used if ipip is enabled</span><br><span class="line">            - name: FELIX_IPINIPMTU</span><br><span class="line">              valueFrom:</span><br><span class="line">                configMapKeyRef:</span><br><span class="line">                  name: calico-config</span><br><span class="line">                  key: veth_mtu</span><br><span class="line">            # Set MTU for the VXLAN tunnel device.</span><br><span class="line">            - name: FELIX_VXLANMTU</span><br><span class="line">              valueFrom:</span><br><span class="line">                configMapKeyRef:</span><br><span class="line">                  name: calico-config</span><br><span class="line">                  key: veth_mtu</span><br><span class="line">            # The default IPv4 pool to create on startup if none exists. Pod IPs will be</span><br><span class="line">            # chosen from this range. Changing this value after installation will have</span><br><span class="line">            # no effect. This should fall within `--cluster-cidr`.</span><br><span class="line">            # - name: CALICO_IPV4POOL_CIDR</span><br><span class="line">            #   value: &quot;10.96.0.0/12&quot;</span><br><span class="line">            # Disable file logging so `kubectl logs` works.</span><br><span class="line">            - name: CALICO_DISABLE_FILE_LOGGING</span><br><span class="line">              value: &quot;true&quot;</span><br><span class="line">            # Set Felix endpoint to host default action to ACCEPT.</span><br><span class="line">            - name: FELIX_DEFAULTENDPOINTTOHOSTACTION</span><br><span class="line">              value: &quot;ACCEPT&quot;</span><br><span class="line">            # Disable IPv6 on Kubernetes.</span><br><span class="line">            - name: FELIX_IPV6SUPPORT</span><br><span class="line">              value: &quot;false&quot;</span><br><span class="line">            # Set Felix logging to &quot;info&quot;</span><br><span class="line">            - name: FELIX_LOGSEVERITYSCREEN</span><br><span class="line">              value: &quot;info&quot;</span><br><span class="line">            - name: FELIX_HEALTHENABLED</span><br><span class="line">              value: &quot;true&quot;</span><br><span class="line">          securityContext:</span><br><span class="line">            privileged: true</span><br><span class="line">          resources:</span><br><span class="line">            requests:</span><br><span class="line">              cpu: 250m</span><br><span class="line">          livenessProbe:</span><br><span class="line">            exec:</span><br><span class="line">              command:</span><br><span class="line">              - /bin/calico-node</span><br><span class="line">              - -felix-live</span><br><span class="line">              - -bird-live</span><br><span class="line">            periodSeconds: 10</span><br><span class="line">            initialDelaySeconds: 10</span><br><span class="line">            failureThreshold: 6</span><br><span class="line">          readinessProbe:</span><br><span class="line">            exec:</span><br><span class="line">              command:</span><br><span class="line">              - /bin/calico-node</span><br><span class="line">              - -felix-ready</span><br><span class="line">              - -bird-ready</span><br><span class="line">            periodSeconds: 10</span><br><span class="line">          volumeMounts:</span><br><span class="line">            - mountPath: /lib/modules</span><br><span class="line">              name: lib-modules</span><br><span class="line">              readOnly: true</span><br><span class="line">            - mountPath: /run/xtables.lock</span><br><span class="line">              name: xtables-lock</span><br><span class="line">              readOnly: false</span><br><span class="line">            - mountPath: /var/run/calico</span><br><span class="line">              name: var-run-calico</span><br><span class="line">              readOnly: false</span><br><span class="line">            - mountPath: /var/lib/calico</span><br><span class="line">              name: var-lib-calico</span><br><span class="line">              readOnly: false</span><br><span class="line">            - name: policysync</span><br><span class="line">              mountPath: /var/run/nodeagent</span><br><span class="line">      volumes:</span><br><span class="line">        # Used by calico-node.</span><br><span class="line">        - name: lib-modules</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /lib/modules</span><br><span class="line">        - name: var-run-calico</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /var/run/calico</span><br><span class="line">        - name: var-lib-calico</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /var/lib/calico</span><br><span class="line">        - name: xtables-lock</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /run/xtables.lock</span><br><span class="line">            type: FileOrCreate</span><br><span class="line">        # Used to install CNI.</span><br><span class="line">        - name: cni-bin-dir</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /opt/cni/bin</span><br><span class="line">        - name: cni-net-dir</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /etc/cni/net.d</span><br><span class="line">        # Mount in the directory for host-local IPAM allocations. This is</span><br><span class="line">        # used when upgrading from host-local to calico-ipam, and can be removed</span><br><span class="line">        # if not using the upgrade-ipam init container.</span><br><span class="line">        - name: host-local-net-dir</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /var/lib/cni/networks</span><br><span class="line">        # Used to create per-pod Unix Domain Sockets</span><br><span class="line">        - name: policysync</span><br><span class="line">          hostPath:</span><br><span class="line">            type: DirectoryOrCreate</span><br><span class="line">            path: /var/run/nodeagent</span><br><span class="line">        # Used to install Flex Volume Driver</span><br><span class="line">        - name: flexvol-driver-host</span><br><span class="line">          hostPath:</span><br><span class="line">            type: DirectoryOrCreate</span><br><span class="line">            path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/nodeagent~uds</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-node</span><br><span class="line">  namespace: kube-system</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># Source: calico/templates/calico-kube-controllers.yaml</span><br><span class="line"># See https://github.com/projectcalico/kube-controllers</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-kube-controllers</span><br><span class="line">  namespace: kube-system</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: calico-kube-controllers</span><br><span class="line">spec:</span><br><span class="line">  # The controllers can only have a single active instance.</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      k8s-app: calico-kube-controllers</span><br><span class="line">  strategy:</span><br><span class="line">    type: Recreate</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      name: calico-kube-controllers</span><br><span class="line">      namespace: kube-system</span><br><span class="line">      labels:</span><br><span class="line">        k8s-app: calico-kube-controllers</span><br><span class="line">      annotations:</span><br><span class="line">        scheduler.alpha.kubernetes.io/critical-pod: &apos;&apos;</span><br><span class="line">    spec:</span><br><span class="line">      nodeSelector:</span><br><span class="line">        kubernetes.io/os: linux</span><br><span class="line">      tolerations:</span><br><span class="line">        # Mark the pod as a critical add-on for rescheduling.</span><br><span class="line">        - key: CriticalAddonsOnly</span><br><span class="line">          operator: Exists</span><br><span class="line">        - key: node-role.kubernetes.io/master</span><br><span class="line">          effect: NoSchedule</span><br><span class="line">      serviceAccountName: calico-kube-controllers</span><br><span class="line">      priorityClassName: system-cluster-critical</span><br><span class="line">      containers:</span><br><span class="line">        - name: calico-kube-controllers</span><br><span class="line">          image: calico/kube-controllers:v3.14.1</span><br><span class="line">          env:</span><br><span class="line">            # Choose which controllers to run.</span><br><span class="line">            - name: ENABLED_CONTROLLERS</span><br><span class="line">              value: node</span><br><span class="line">            - name: DATASTORE_TYPE</span><br><span class="line">              value: kubernetes</span><br><span class="line">          readinessProbe:</span><br><span class="line">            exec:</span><br><span class="line">              command:</span><br><span class="line">              - /usr/bin/check-status</span><br><span class="line">              - -r</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  name: calico-kube-controllers</span><br><span class="line">  namespace: kube-system</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># Source: calico/templates/calico-etcd-secrets.yaml</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># Source: calico/templates/calico-typha.yaml</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># Source: calico/templates/configure-canal.yaml</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/运维/docker/Docker安全/" rel="next" title="docker安全">
+                <i class="fa fa-chevron-left"></i> docker安全
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/数据结构与算法/简介/" rel="prev" title="数据结构的存储方式">
+                数据结构的存储方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="WeiLai">
+            
+              <p class="site-author-name" itemprop="name">WeiLai</p>
+              <p class="site-description motion-element" itemprop="description">好学近乎知，力行近乎仁，知耻近乎勇</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/itswl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:imwl@live.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/6aa4c1b2a4a4" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100021764796181" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker容器化封装缺点"><span class="nav-number">1.1.</span> <span class="nav-text">docker容器化封装缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k8s主要功能"><span class="nav-number">1.2.</span> <span class="nav-text">k8s主要功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本对象"><span class="nav-number">1.3.</span> <span class="nav-text">基本对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装步骤"><span class="nav-number">1.4.</span> <span class="nav-text">安装步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#centsos7-安装最新版-k8s-流程示例"><span class="nav-number">1.5.</span> <span class="nav-text">centsos7 安装最新版 k8s 流程示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.5.1.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#以下操作在所有主机进行-（虚拟机可以在一台主机操作完后-clone）"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">以下操作在所有主机进行 （虚拟机可以在一台主机操作完后 clone）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以下操作在各个主机进行"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">以下操作在各个主机进行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kubeadm-补"><span class="nav-number">1.5.2.</span> <span class="nav-text">kubeadm 补</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#token-过期"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">token 过期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Master-组件的-YAML-文件会被生成在-etc-kubernetes-manifests-路径下"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">Master 组件的 YAML 文件会被生成在 /etc/kubernetes/manifests 路径下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成的证书文件都放在-Master-节点的-etc-kubernetes-pki-目录下"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">生成的证书文件都放在 Master 节点的 /etc/kubernetes/pki 目录下</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二进制安装"><span class="nav-number">1.5.3.</span> <span class="nav-text">二进制安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#calico-示例"><span class="nav-number">1.5.3.0.1.</span> <span class="nav-text">calico 示例</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLai</span>
+
+  
+</div>
+
+
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
