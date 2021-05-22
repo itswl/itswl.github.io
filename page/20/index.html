@@ -308,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/flask/部署/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/基础知识/learn_linux/文件，目录/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -327,7 +327,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/python/flask/部署/" itemprop="url">部署</a></h1>
+                <a class="post-title-link" href="/基础知识/learn_linux/文件，目录/" itemprop="url">文件，目录</a></h1>
         
 
         <div class="post-meta">
@@ -362,8 +362,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/flask/" itemprop="url" rel="index">
-                    <span itemprop="name">flask</span>
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
                   </a>
                 </span>
 
@@ -401,27 +401,16 @@
       
         
           
-          部署流程
-自动执行全部任务
-把生产环境中的错误写入日志
+          目录与路径
+cd pwd mkdir rmdir
+mkdir -m 711 test , mkdir  -p -m mkdir -m 711 test/test/test/test1  (仅test1 为711)
+rmdir -p test/test/test/test1 （递归删除空目录）
 
-部署方式
-云托管
-容器 eg:docker
-PaaS 平台即服务
-
-使用docker 部署
-安装docker
-构建容器映像
-运行容器
-数据库等最好另开容器
-容器编排 Docker Compose 
-
-定义的所有容器，可以使用 docker-c
+查询
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/python/flask/部署/#more" rel="contents">
+            <a class="btn" href="/基础知识/learn_linux/文件，目录/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -472,7 +461,7 @@ PaaS 平台即服务
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://imwl.ml/python/flask/readme/">
+    <link itemprop="mainEntityOfPage" href="http://imwl.ml/运维/docker/DockerFile示例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WeiLai">
@@ -491,7 +480,7 @@ PaaS 平台即服务
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/python/flask/readme/" itemprop="url">常用模块</a></h1>
+                <a class="post-title-link" href="/运维/docker/DockerFile示例/" itemprop="url">dockerfile</a></h1>
         
 
         <div class="post-meta">
@@ -526,8 +515,8 @@ PaaS 平台即服务
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/flask/" itemprop="url" rel="index">
-                    <span itemprop="name">flask</span>
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
                   </a>
                 </span>
 
@@ -565,15 +554,14 @@ PaaS 平台即服务
       
         
           
-          常用模块
-pipenv   # 虚拟环境
-flask   # 主要 路由、调试、web服务器网关接口子系统由 Werkzeug 提供。模板系统 Jinja2提供。
-flask-wtf  # 对独立的WTForms包进行了封装，用于表单处理
-flask-sqlalchemy  # 数据库框架，简化fl
+          简介Dockerfile 是由一系列命令和参数构成的脚本，这些命令应用于操作系统基础镜像并最终创建的一个新镜像；
+生产实践中一定优先使用 Dockerfile 的方式构建镜像。 
+基础镜像体积应该尽量小
+尽量减少 Dockerfile 的行数，因为 Dockerfile 的每一条指令都会生成一个镜像
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/python/flask/readme/#more" rel="contents">
+            <a class="btn" href="/运维/docker/DockerFile示例/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
