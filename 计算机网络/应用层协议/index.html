@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Get busy living">
 <meta property="og:description" content="DNSDNS : Domain Name System  域名系统  运行在 udp 之上，使用 53 端口 1234root@R7000:~# ping tj.imwl.mlPING  tj.imwl.ml (195.20.49.63) 56(84) bytes of data.64 bytes from 195.20.49.63 (195.20.49.63): icmp_seq=1 ttl=6">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-05-20T03:15:56.338Z">
+<meta property="og:updated_time" content="2021-05-26T09:36:19.140Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="部分应用层协议">
 <meta name="twitter:description" content="DNSDNS : Domain Name System  域名系统  运行在 udp 之上，使用 53 端口 1234root@R7000:~# ping tj.imwl.mlPING  tj.imwl.ml (195.20.49.63) 56(84) bytes of data.64 bytes from 195.20.49.63 (195.20.49.63): icmp_seq=1 ttl=6">
@@ -415,6 +415,11 @@
 <p>给 客户端 分配 一个 临时 IP + 租期</p>
 <p>过程:<br>Client 使用 UPD 协议广播 DHCP 发现报文<br>DHCP  服务器发出 DHCP 提供报文<br>Client 向 DHCP 服务器发出 DHCP 请求报文<br>DHCP 服务器回应并提供 IP 地址</p>
 <p>补:<br>DHCP Client重新登录<br>DHCP Client更新租约</p>
+<h2 id="A-AAAA-CANME-NS-记录"><a href="#A-AAAA-CANME-NS-记录" class="headerlink" title="A, AAAA, CANME, NS 记录"></a>A, AAAA, CANME, NS 记录</h2><h3 id="A"><a href="#A" class="headerlink" title="A"></a>A</h3><p><code>ipv4</code> 和 域名对应<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 定义www.example.com的ip地址</span><br><span class="line">www.example.com.     IN     A     139.18.28.5;</span><br></pre></td></tr></table></figure></p>
+<h3 id="AAAA"><a href="#AAAA" class="headerlink" title="AAAA"></a>AAAA</h3><p><code>ipv6</code> 和 域名对应<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.example.com.  IN  AAAA    1080::8:800:200C:417A</span><br></pre></td></tr></table></figure></p>
+<h3 id="CNAME"><a href="#CNAME" class="headerlink" title="CNAME"></a>CNAME</h3><p>定义了 <code>a.example.com</code> 是 <code>b.example.com</code> 的别名。用户在浏览器中输入 <code>a.example.com</code> 时候，通过 <code>DNS</code> 查询会知道 <code>a.example.com</code> 是 <code>b.example.com</code> 的别名，因此需要实际 <code>IP</code> 的时候，会去拿 <code>b.exampl.com</code> 的 <code>A</code> 记录</p>
+<p>因为走的是 <code>DNS</code> 查询的路径，速度很快（因为有缓存），不需要 <code>HTTP</code> 重定向等操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 定义www.example.com的别名</span><br><span class="line">a.example.com.          IN     CNAME   b.example.com.</span><br></pre></td></tr></table></figure></p>
+<p>把一个网站迁移到新域名，旧域名仍然保留的时候；静态资源放到 CDN 上的时候，CNAME 就非常有用</p>
 
       
     </div>
@@ -613,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS"><span class="nav-number">1.</span> <span class="nav-text">DNS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#httpdns"><span class="nav-number">2.</span> <span class="nav-text">httpdns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DHCP"><span class="nav-number">3.</span> <span class="nav-text">DHCP</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS"><span class="nav-number">1.</span> <span class="nav-text">DNS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#httpdns"><span class="nav-number">2.</span> <span class="nav-text">httpdns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DHCP"><span class="nav-number">3.</span> <span class="nav-text">DHCP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-AAAA-CANME-NS-记录"><span class="nav-number">4.</span> <span class="nav-text">A, AAAA, CANME, NS 记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A"><span class="nav-number">4.1.</span> <span class="nav-text">A</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AAAA"><span class="nav-number">4.2.</span> <span class="nav-text">AAAA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNAME"><span class="nav-number">4.3.</span> <span class="nav-text">CNAME</span></a></li></ol></li></ol></div>
             
 
           </div>

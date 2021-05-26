@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Get busy living">
 <meta property="og:description" content="网络模型应用层，（表现层，会话层），传输层，网络层，网络接口层（链路层+物理层） 0. HTTP 的特性HTTP 协议构建于 TCP/IP 协议之上，是一个应用层协议，默认端口号是 80 (HTTPS:  443) HTTP 是无连接无状态的  无连接：服务器处理完客户的请求，并收到客户的应答后，即断开连接  （keep-alive :Keep-Alive 功能使客户端到服务器端的连接持续有效，当">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-05-20T03:15:56.338Z">
+<meta property="og:updated_time" content="2021-05-26T09:43:57.236Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP基本原理">
 <meta name="twitter:description" content="网络模型应用层，（表现层，会话层），传输层，网络层，网络接口层（链路层+物理层） 0. HTTP 的特性HTTP 协议构建于 TCP/IP 协议之上，是一个应用层协议，默认端口号是 80 (HTTPS:  443) HTTP 是无连接无状态的  无连接：服务器处理完客户的请求，并收到客户的应答后，即断开连接  （keep-alive :Keep-Alive 功能使客户端到服务器端的连接持续有效，当">
@@ -524,6 +524,9 @@
 <h2 id="9-CDN"><a href="#9-CDN" class="headerlink" title="9. CDN"></a>9. CDN</h2><p>CDN（Content Delivery Network 或 Content Distribution Network）： 内容分发网络</p>
 <p>CDN 的最核心原则是“就近访问”</p>
 <p>应用了 HTTP 协议里的缓存和代理技术，代替源站响应客户端的请求。CDN 是构建在现有网络基础之上的网络，它依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。</p>
+<p>为了让用户请求的是自己的网站，而使用的是 CDN 的服务，这里会使用 CNAME 让自己的域名作为 CDN 域名的一个别名。当请求到 CDN 服务的时候，会首先由 CDN 的 DNS 服务帮助用户选择一个最优的节点，这个 DNS 服务还充当了负载均衡的作用。接下来，用户开始向 CDN 节点请求资源。如果这个时候资源已经过期或者还没有在 CDN 节点上，就会从源站读取数据，这个步骤称为CDN 的回源Í</p>
+<p>比如源站在 s.example.com 中发布静态资源，然后在 CDN 管理后台配置了这个源站。在使用 CDN 时，服务提供方会使用另一个域名，比如说 b.example.com。然后配置将 b.example.com 用 CNAME 记录指向 CDN 的智能 DNS。这个时候，如果用户下载b.example.com/a.jpg，CDN 的智能 DNS 会帮用户选择一个最优的 IP 地址（最优的 CDN 节点）响应这次资源的请求。如果这个 CDN 节点没有 a.jpg，CDN 就会到 s.example.com 源站去下载，缓存到 CDN 节点，然后再返回给用户。</p>
+<p>CDN 回源有 3 种情况，一种是 CDN 节点没有对应资源时主动到源站获取资源；另一种是缓存失效后，CDN 节点到源站获取资源；还有一种情况是在 CDN 管理后台或者使用开放接口主动刷新触发回源。</p>
 <h2 id="10-WAF"><a href="#10-WAF" class="headerlink" title="10. WAF"></a>10. WAF</h2><p>WAF 是一种 Web 应用程序防护系统（Web Application Firewall，简称 WAF），它是一种通过执行一系列针对HTTP / HTTPS的安全策略来专门为Web应用提供保护的一款产品，它是应用层面的防火墙，专门检测 HTTP 流量，是防护 Web 应用的安全技术。<br>WAF 通常位于 Web 服务器之前，可以阻止如 SQL 注入、跨站脚本等攻击，目前应用较多的一个开源项目是 ModSecurity，它能够完全集成进 Apache 或 Nginx。</p>
 <h2 id="11-连接池"><a href="#11-连接池" class="headerlink" title="11. 连接池"></a>11. 连接池</h2><p>连接池就是将应用所需的连接对象放在池中，每次访问时从池中获取，使用完毕再放回池中，以达到连接复用的目的，减少创建、销毁连接过程中不必要消耗的资源</p>
 <p>通过连接池可以极大地提高服务间的通信性能。</p>
@@ -554,8 +557,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/计算机网络/socket 编程/" rel="next" title="socket 编程">
-                <i class="fa fa-chevron-left"></i> socket 编程
+              <a href="/计算机网络/传输层/" rel="next" title="传输层">
+                <i class="fa fa-chevron-left"></i> 传输层
               </a>
             
           </div>
