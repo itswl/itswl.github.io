@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Get busy living">
 <meta property="og:description" content="网络模型应用层，（表现层，会话层），传输层，网络层，网络接口层（链路层+物理层） 0. HTTP 的特性HTTP 协议构建于 TCP/IP 协议之上，是一个应用层协议，默认端口号是 80 (HTTPS:  443) HTTP 是无连接无状态的  无连接：服务器处理完客户的请求，并收到客户的应答后，即断开连接  （keep-alive :Keep-Alive 功能使客户端到服务器端的连接持续有效，当">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-05-26T09:43:57.236Z">
+<meta property="og:updated_time" content="2021-05-31T03:54:46.828Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP基本原理">
 <meta name="twitter:description" content="网络模型应用层，（表现层，会话层），传输层，网络层，网络接口层（链路层+物理层） 0. HTTP 的特性HTTP 协议构建于 TCP/IP 协议之上，是一个应用层协议，默认端口号是 80 (HTTPS:  443) HTTP 是无连接无状态的  无连接：服务器处理完客户的请求，并收到客户的应答后，即断开连接  （keep-alive :Keep-Alive 功能使客户端到服务器端的连接持续有效，当">
@@ -510,6 +510,8 @@
 <p>no_store ：不允许缓存，用于某些变化非常频繁的数据，例如秒杀页面；</p>
 <p>no_cache：而是可以缓存，但在使用之前必须要去服务器验证是否过期，用最新的版本；</p>
 <p>must-revalidate：缓存不过期就可以继续使用，但过期了如果还想用就必须去服务器验证。</p>
+<p>强制缓存： 当一个文件被强制缓存后，下一次请求会直接使用本地版本，而不会真的发出去。要求浏览器将文件缓存到本地，并且设置这个文件的失效时间（或者永久有效）</p>
+<p>协商缓存： 协商缓存启用后，第一次获取接口数据，会将数据缓存到本地，并存储下数据的摘要。第二次请求时，浏览器检查到本地有缓存，将摘要发送给服务端。服务端会检查服务端数据的摘要和浏览器发送来的是否一致。如果不一致，说明服务端数据发生了更新，服务端会回传全部数据。如果一致，说明数据没有更新，服务端不需要回传数据</p>
 <p><strong>条件请求</strong><br>Last-modified  : 最后更新时间<br>ETag : 资源的一个唯一标识，主要是用来解决修改时间无法准确区分文件变化的问题</p>
 <p>强 ETag 要求资源在字节级别必须完全相符，弱 ETag 在值前有个“W/”标记，只要求资源在语义上没有变化，但内部可能会有部分发生了改变</p>
 <h2 id="8-代理"><a href="#8-代理" class="headerlink" title="8. 代理"></a>8. 代理</h2><p>HTTP 代理就是客户端和服务器通信链路中的一个中间环节，为两端提供“代理服务”；</p>
@@ -557,8 +559,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/计算机网络/传输层/" rel="next" title="传输层">
-                <i class="fa fa-chevron-left"></i> 传输层
+              <a href="/计算机网络/socket 编程/" rel="next" title="socket 编程">
+                <i class="fa fa-chevron-left"></i> socket 编程
               </a>
             
           </div>
@@ -648,7 +650,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">232</span>
+                  <span class="site-state-item-count">233</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
